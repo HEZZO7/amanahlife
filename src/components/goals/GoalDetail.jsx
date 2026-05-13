@@ -24,7 +24,7 @@ export default function GoalDetail({ goalId, onBack }) {
 
   const handleProgressChange = async (val) => {
     await base44.entities.Goal.update(goalId, { progress: val[0] });
-    setData(prev => ({ ...prev, goal: { ...prev.goal, progress: val[0] } }));
+    setData(prev => ({ ...prev, progress: val[0] }));
   };
 
   const handleToggleMilestone = async (ms) => {
@@ -47,7 +47,8 @@ export default function GoalDetail({ goalId, onBack }) {
   if (loading) return <div className="py-12 text-center" style={{ color: 'var(--mizan-text-secondary)' }}>...</div>;
   if (!data) return null;
 
-  const { goal, milestones, milestoneProgress } = data;
+  const goal = data;
+  const milestones = data.milestones || [];
 
   return (
     <div>
@@ -68,7 +69,7 @@ export default function GoalDetail({ goalId, onBack }) {
         <Slider value={[goal.progress || 0]} onValueChange={handleProgressChange} max={100} step={1} className="my-2" />
         {milestones.length > 0 && (
           <p className="text-xs mt-2" style={{ color: 'var(--mizan-text-secondary)' }}>
-            {data.completedMilestones}/{data.totalMilestones} {t('goals.milestones')}
+            {data.milestoneCompleted}/{data.milestoneTotal} {t('goals.milestones')}
           </p>
         )}
       </div>

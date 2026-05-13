@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-// i18n module - single source of truth for translations
 
 const translations = {
   // App

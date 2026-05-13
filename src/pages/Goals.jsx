@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
-import { getUserSummary, getProgress } from '@/lib/goalsService';
+import { getUserSummary } from '@/lib/goalsService';
 import { base44 } from '@/api/base44Client';
 import { Plus, Target, CheckCircle2, Pause, ChevronRight, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';

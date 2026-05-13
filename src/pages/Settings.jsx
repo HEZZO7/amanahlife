@@ -13,7 +13,7 @@ export default function Settings() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-8" style={{ color: 'var(--mizan-text)' }}>
+      <h1 className="text-2xl font-bold mb-8 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
         {t('settings.title')}
       </h1>
 

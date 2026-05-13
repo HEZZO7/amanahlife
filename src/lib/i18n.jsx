@@ -95,6 +95,12 @@ const translations = {
   "dashboard.greeting.afternoon": { en: "Good afternoon", ar: "مساء الخير" },
   "dashboard.greeting.evening": { en: "Good evening", ar: "مساء الخير" },
   "dashboard.noData": { en: "Start building your life balance", ar: "ابدأ ببناء توازن حياتك" },
+  "dashboard.noDataSub": { en: "Add your first task to get started", ar: "أضف مهمتك الأولى للبدء" },
+  "dashboard.addTask": { en: "Add Task", ar: "إضافة مهمة" },
+  "dashboard.prayersToday": { en: "Prayers Today", ar: "صلوات اليوم" },
+  "dashboard.todayTasks": { en: "Today's Tasks", ar: "مهام اليوم" },
+  "dashboard.netBalance": { en: "Net Balance", ar: "الرصيد الصافي" },
+  "dashboard.activeGoals": { en: "Active Goals", ar: "الأهداف النشطة" },
 
   // Common
   "common.loading": { en: "Loading...", ar: "جاري التحميل..." },

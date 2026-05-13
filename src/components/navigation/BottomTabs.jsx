@@ -86,7 +86,7 @@ export default function BottomTabs() {
                   key={key}
                   onClick={() => setShowMore(!showMore)}
                   className="flex flex-col items-center gap-0.5 py-1 px-3 min-w-[56px]"
-                  style={{ color: showMore ? 'var(--mizan-emerald)' : 'var(--mizan-text-secondary)' }}
+                  style={{ color: showMore ? 'var(--mizan-emerald)' : '#6B7280' }}
                 >
                   <Icon className="w-6 h-6" />
                   <span className="text-[10px] font-medium">{t(`nav.${key}`)}</span>
@@ -99,7 +99,7 @@ export default function BottomTabs() {
                 key={key}
                 to={path}
                 className="flex flex-col items-center gap-0.5 py-1 px-3 min-w-[56px]"
-                style={{ color: active ? 'var(--mizan-emerald)' : 'var(--mizan-text-secondary)' }}
+                style={{ color: active ? 'var(--mizan-emerald)' : '#6B7280' }}
               >
                 <Icon className="w-6 h-6" />
                 <span className="text-[10px] font-medium">{t(`nav.${key}`)}</span>

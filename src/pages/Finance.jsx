@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
-import { getSnapshot } from '@/lib/services/financeService';
+import { getSnapshot } from '@/lib/financeService';
 import { base44 } from '@/api/base44Client';
 import { format } from 'date-fns';
 import { Plus, TrendingUp, TrendingDown, Minus } from 'lucide-react';

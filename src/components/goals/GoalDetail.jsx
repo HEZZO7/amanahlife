@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
-import { getProgress } from '@/lib/services/goalsService';
+import { getProgress } from '@/lib/goalsService';
 import { base44 } from '@/api/base44Client';
 import { ArrowLeft, Plus, CheckCircle2, Circle, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';

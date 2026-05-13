@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
-import { getDailyScore, getStreak } from '@/lib/spiritualService';
+import { getDailyScore, getStreak } from '@/lib/spiritualService.js';
 import { base44 } from '@/api/base44Client';
 import { format } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';

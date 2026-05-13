@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
-import { buildDashboard } from '@/lib/services/dashboardService';
+import { build as buildDashboard } from '@/lib/dashboardService';
 import { Target, Wallet, Heart, CheckSquare, Plus, TrendingUp, TrendingDown, Sparkles, X, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';

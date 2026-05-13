@@ -13,6 +13,10 @@ import { UserSettingsProvider, useUserSettings } from '@/lib/UserSettingsContext
 import Onboarding from '@/pages/Onboarding';
 import Dashboard from '@/pages/Dashboard';
 import Settings from '@/pages/Settings';
+import Finance from '@/pages/Finance';
+import Goals from '@/pages/Goals';
+import Planner from '@/pages/Planner';
+import Spiritual from '@/pages/Spiritual';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -42,6 +46,10 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/finance" element={<Finance />} />
+        <Route path="/goals" element={<Goals />} />
+        <Route path="/planner" element={<Planner />} />
+        <Route path="/spiritual" element={<Spiritual />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

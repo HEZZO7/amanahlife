@@ -109,6 +109,73 @@ const translations = {
   "common.delete": { en: "Delete", ar: "حذف" },
   "common.edit": { en: "Edit", ar: "تعديل" },
   "common.add": { en: "Add", ar: "إضافة" },
+  "common.viewAll": { en: "View All", ar: "عرض الكل" },
+
+  // Dashboard extras
+  "dashboard.aiInsights": { en: "AI Insights", ar: "رؤى الذكاء الاصطناعي" },
+  "goals.avgProgress": { en: "avg", ar: "متوسط" },
+
+  // Finance
+  "finance.tab.overview": { en: "Overview", ar: "نظرة عامة" },
+  "finance.tab.transactions": { en: "Transactions", ar: "المعاملات" },
+  "finance.tab.budget": { en: "Budget", ar: "الميزانية" },
+  "finance.income": { en: "Income", ar: "الدخل" },
+  "finance.expense": { en: "Expense", ar: "مصروف" },
+  "finance.expenses": { en: "Expenses", ar: "المصروفات" },
+  "finance.net": { en: "Net", ar: "الصافي" },
+  "finance.savingsRate": { en: "Savings Rate", ar: "معدل الادخار" },
+  "finance.spendingByCategory": { en: "Spending by Category", ar: "الإنفاق حسب الفئة" },
+  "finance.noData": { en: "No transactions yet", ar: "لا توجد معاملات بعد" },
+  "finance.noTransactions": { en: "No transactions found", ar: "لا توجد معاملات" },
+  "finance.noBudgets": { en: "No budgets set", ar: "لم يتم تحديد ميزانيات" },
+  "finance.addBudget": { en: "Add Budget", ar: "إضافة ميزانية" },
+  "finance.addIncome": { en: "Add Income", ar: "إضافة دخل" },
+  "finance.addExpense": { en: "Add Expense", ar: "إضافة مصروف" },
+  "finance.amount": { en: "Amount", ar: "المبلغ" },
+  "finance.category": { en: "Category", ar: "الفئة" },
+  "finance.description": { en: "Description", ar: "الوصف" },
+  "finance.date": { en: "Date", ar: "التاريخ" },
+  "finance.limit": { en: "Limit", ar: "الحد" },
+  "finance.used": { en: "used", ar: "مستخدم" },
+  "finance.all": { en: "All", ar: "الكل" },
+
+  // Goals
+  "goals.active": { en: "Active", ar: "نشط" },
+  "goals.completed": { en: "Completed", ar: "مكتمل" },
+  "goals.paused": { en: "Paused", ar: "متوقف" },
+  "goals.all": { en: "All", ar: "الكل" },
+  "goals.empty": { en: "No goals found", ar: "لا توجد أهداف" },
+  "goals.progress": { en: "Progress", ar: "التقدم" },
+  "goals.milestones": { en: "Milestones", ar: "المعالم" },
+  "goals.noMilestones": { en: "No milestones yet", ar: "لا توجد معالم بعد" },
+  "goals.milestonePlaceholder": { en: "Milestone title...", ar: "عنوان المعلم..." },
+
+  // Planner
+  "planner.list": { en: "List", ar: "قائمة" },
+  "planner.week": { en: "Week", ar: "أسبوع" },
+  "planner.calendar": { en: "Calendar", ar: "تقويم" },
+  "planner.addTask": { en: "Add Task", ar: "إضافة مهمة" },
+  "planner.taskTitle": { en: "Task title", ar: "عنوان المهمة" },
+  "planner.priority": { en: "Priority", ar: "الأولوية" },
+  "planner.time": { en: "Time", ar: "الوقت" },
+  "planner.noTasks": { en: "No tasks", ar: "لا توجد مهام" },
+  "planner.noDate": { en: "No Due Date", ar: "بدون تاريخ" },
+  "planner.today": { en: "Today", ar: "اليوم" },
+  "planner.tomorrow": { en: "Tomorrow", ar: "غداً" },
+  "planner.pending": { en: "Pending", ar: "معلق" },
+
+  // Spiritual
+  "spiritual.dailyScore": { en: "Today's Prayers", ar: "صلوات اليوم" },
+  "spiritual.streak": { en: "Day Streak", ar: "أيام متتالية" },
+  "spiritual.todayPrayers": { en: "Prayer Tracker", ar: "متتبع الصلاة" },
+  "spiritual.weeklyOverview": { en: "Weekly Overview", ar: "نظرة أسبوعية" },
+  "spiritual.charity": { en: "Charity Log", ar: "سجل الصدقات" },
+  "spiritual.noCharity": { en: "No charity logged yet", ar: "لم يتم تسجيل صدقات بعد" },
+  "spiritual.fajr": { en: "Fajr", ar: "الفجر" },
+  "spiritual.dhuhr": { en: "Dhuhr", ar: "الظهر" },
+  "spiritual.asr": { en: "Asr", ar: "العصر" },
+  "spiritual.maghrib": { en: "Maghrib", ar: "المغرب" },
+  "spiritual.isha": { en: "Isha", ar: "العشاء" },
 };
 
 const I18nContext = createContext();

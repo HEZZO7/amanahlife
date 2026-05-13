@@ -1,0 +1,80 @@
+{
+  "name": "Settings",
+  "type": "object",
+  "properties": {
+    "language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "ar"
+      ],
+      "default": "ar"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "light",
+        "dark"
+      ],
+      "default": "dark"
+    },
+    "notifications_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_tasks": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_finance": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_prayer": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_goals": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_wellness": {
+      "type": "boolean",
+      "default": true
+    },
+    "notify_ai": {
+      "type": "boolean",
+      "default": true
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR"
+    },
+    "currency_symbol": {
+      "type": "string",
+      "default": "\u0631.\u0633"
+    },
+    "show_eastern_numerals": {
+      "type": "boolean",
+      "default": false
+    },
+    "ramadan_mode_active": {
+      "type": "boolean",
+      "default": false
+    },
+    "onboarding_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "subscription_tier": {
+      "type": "string",
+      "enum": [
+        "free",
+        "premium",
+        "family"
+      ],
+      "default": "free"
+    }
+  },
+  "required": []
+}

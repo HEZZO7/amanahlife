@@ -1,0 +1,33 @@
+{
+  "name": "PrayerLog",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "fajr": {
+      "type": "boolean",
+      "default": false
+    },
+    "dhuhr": {
+      "type": "boolean",
+      "default": false
+    },
+    "asr": {
+      "type": "boolean",
+      "default": false
+    },
+    "maghrib": {
+      "type": "boolean",
+      "default": false
+    },
+    "isha": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "date"
+  ]
+}

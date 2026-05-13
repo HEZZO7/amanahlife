@@ -1,0 +1,36 @@
+{
+  "name": "WellnessLog",
+  "type": "object",
+  "properties": {
+    "mood": {
+      "type": "string",
+      "enum": [
+        "very_low",
+        "low",
+        "neutral",
+        "good",
+        "excellent"
+      ]
+    },
+    "sleep_hours": {
+      "type": "number"
+    },
+    "hydration_level": {
+      "type": "number"
+    },
+    "stress_level": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "mood",
+    "date"
+  ]
+}

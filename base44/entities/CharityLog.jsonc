@@ -1,0 +1,30 @@
+{
+  "name": "CharityLog",
+  "type": "object",
+  "properties": {
+    "amount": {
+      "type": "number"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "sadaqah",
+        "zakat",
+        "donation",
+        "zakat_al_fitr"
+      ]
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "amount",
+    "type",
+    "date"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "RamadanLog",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "fasting_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "suhoor_logged": {
+      "type": "boolean",
+      "default": false
+    },
+    "iftar_logged": {
+      "type": "boolean",
+      "default": false
+    },
+    "quran_pages": {
+      "type": "number",
+      "default": 0
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "date"
+  ]
+}

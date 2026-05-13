@@ -4,6 +4,10 @@ module.exports = {
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
   	extend: {
+  		fontFamily: {
+  			inter: ['var(--font-inter)'],
+  			arabic: ['var(--font-arabic)']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -50,6 +54,19 @@ module.exports = {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			},
+  			mizan: {
+  				emerald: 'var(--mizan-emerald)',
+  				'emerald-light': 'var(--mizan-emerald-light)',
+  				gold: 'var(--mizan-gold)',
+  				red: 'var(--mizan-red)',
+  				green: 'var(--mizan-green)',
+  				bg: 'var(--mizan-bg)',
+  				surface: 'var(--mizan-surface)',
+  				elevated: 'var(--mizan-elevated)',
+  				text: 'var(--mizan-text)',
+  				'text-secondary': 'var(--mizan-text-secondary)',
+  				border: 'var(--mizan-border)'
+  			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
@@ -63,20 +80,12 @@ module.exports = {
   		},
   		keyframes: {
   			'accordion-down': {
-  				from: {
-  					height: '0'
-  				},
-  				to: {
-  					height: 'var(--radix-accordion-content-height)'
-  				}
+  				from: { height: '0' },
+  				to: { height: 'var(--radix-accordion-content-height)' }
   			},
   			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
-  				},
-  				to: {
-  					height: '0'
-  				}
+  				from: { height: 'var(--radix-accordion-content-height)' },
+  				to: { height: '0' }
   			}
   		},
   		animation: {

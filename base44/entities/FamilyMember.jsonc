@@ -1,0 +1,27 @@
+{
+  "name": "FamilyMember",
+  "type": "object",
+  "properties": {
+    "family_id": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "father",
+        "mother",
+        "child",
+        "admin",
+        "member"
+      ]
+    }
+  },
+  "required": [
+    "family_id",
+    "user_id",
+    "role"
+  ]
+}

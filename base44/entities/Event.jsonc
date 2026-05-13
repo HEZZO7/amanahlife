@@ -1,0 +1,42 @@
+{
+  "name": "Event",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "start_datetime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "end_datetime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "all_day": {
+      "type": "boolean",
+      "default": false
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "personal",
+        "family",
+        "religious",
+        "work",
+        "health"
+      ]
+    },
+    "family_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "start_datetime",
+    "type"
+  ]
+}

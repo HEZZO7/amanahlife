@@ -1,0 +1,33 @@
+{
+  "name": "ZakatRecord",
+  "type": "object",
+  "properties": {
+    "total_assets": {
+      "type": "number"
+    },
+    "liabilities": {
+      "type": "number"
+    },
+    "zakat_due": {
+      "type": "number"
+    },
+    "calculation_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "paid_status": {
+      "type": "boolean",
+      "default": false
+    },
+    "paid_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "total_assets",
+    "liabilities",
+    "zakat_due",
+    "calculation_date"
+  ]
+}

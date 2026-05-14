@@ -21,10 +21,12 @@ export default function Goals() {
 
   const CATEGORIES = ['personal', 'financial', 'spiritual', 'family', 'health'];
 
-  const load = async () => {
-    const s = await getUserSummary();
-    setSummary(s);
-    setLoading(false);
+  const load = () => {
+    setLoading(true);
+    getUserSummary()
+      .then(s => setSummary(s))
+      .catch(err => console.error('Goals load error:', err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);

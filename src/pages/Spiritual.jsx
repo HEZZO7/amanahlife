@@ -24,12 +24,12 @@ export default function Spiritual() {
   const [loading, setLoading] = useState(true);
   const today = format(new Date(), 'yyyy-MM-dd');
 
-  const load = async () => {
+  const load = () => {
     setLoading(true);
-    const [s, str] = await Promise.all([getDailyScore(today), getStreak()]);
-    setScore(s);
-    setStreakData(str);
-    setLoading(false);
+    Promise.all([getDailyScore(today), getStreak()])
+      .then(([s, str]) => { setScore(s); setStreakData(str); })
+      .catch(err => console.error('Spiritual load error:', err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);

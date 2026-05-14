@@ -5,7 +5,14 @@ import { format, startOfMonth, endOfMonth } from 'date-fns';
  * Returns a financial snapshot for a given month (YYYY-MM).
  * If month is omitted, defaults to current month.
  */
+const SAFE_DEFAULT = {
+  totalIncome: 0, totalExpenses: 0, netBalance: 0,
+  categoryBreakdown: [], budgetStatus: [], recentTransactions: [],
+  trend: [], latestZakat: null, savingsRate: 0,
+};
+
 export async function getSnapshot(month) {
+  try {
   const monthStr = month || format(new Date(), 'yyyy-MM');
   const start = `${monthStr}-01`;
   // end: last day of that month
@@ -71,6 +78,8 @@ export async function getSnapshot(month) {
     });
   }
 
+  const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0;
+
   return {
     month: monthStr,
     totalIncome,
@@ -81,5 +90,10 @@ export async function getSnapshot(month) {
     recentTransactions: monthTx.slice(0, 20),
     latestZakat,
     trend,
+    savingsRate,
   };
+  } catch (err) {
+    console.error('getSnapshot error:', err);
+    return { ...SAFE_DEFAULT, month: month || format(new Date(), 'yyyy-MM') };
+  }
 }

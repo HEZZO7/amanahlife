@@ -26,15 +26,15 @@ export default function Planner() {
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
 
-  const load = async () => {
+  const load = () => {
     setLoading(true);
-    const [allTasks, allEvents] = await Promise.all([
+    Promise.all([
       base44.entities.Task.list('-due_date', 200),
       base44.entities.Event.list('-start_datetime', 100),
-    ]);
-    setTasks(allTasks);
-    setEvents(allEvents);
-    setLoading(false);
+    ])
+      .then(([allTasks, allEvents]) => { setTasks(allTasks); setEvents(allEvents); })
+      .catch(err => console.error('Planner load error:', err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);

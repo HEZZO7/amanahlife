@@ -7,7 +7,12 @@ const COLORS = ['#0B5B50','#B89A5E','#12897A','#C0392B','#27AE60','#8A9B97','#16
 export default function FinanceOverview({ snapshot, currSymbol }) {
   const { t } = useI18n();
 
-  if (!snapshot) return null;
+  if (!snapshot) return (
+    <div className="text-center py-14 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+      <p className="text-sm mb-1 font-medium" style={{ color: 'var(--mizan-text)' }}>Add your first transaction to see your overview</p>
+      <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>Track income and expenses to unlock insights</p>
+    </div>
+  );
 
   const categories = snapshot.byCategory || snapshot.categoryBreakdown || [];
   const pieData = categories.slice(0, 8).map(c => ({ name: c.category, value: c.amount }));
@@ -19,7 +24,7 @@ export default function FinanceOverview({ snapshot, currSymbol }) {
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{t('finance.savingsRate')}</span>
           <span className="text-lg font-bold" style={{ color: 'var(--mizan-emerald)' }}>
-            {snapshot.savingsRate.toFixed(1)}%
+            {(snapshot.savingsRate || 0).toFixed(1)}%
           </span>
         </div>
         <div className="h-2 rounded-full" style={{ background: 'var(--mizan-border)' }}>

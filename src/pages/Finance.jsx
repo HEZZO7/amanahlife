@@ -25,9 +25,10 @@ export default function Finance() {
 
   const load = async () => {
     setLoading(true);
-    const s = await getSnapshot(month);
-    setSnapshot(s);
-    setLoading(false);
+    getSnapshot(month)
+      .then(s => { console.log('Finance snapshot:', s); setSnapshot(s); })
+      .catch(err => console.error('Finance load error:', err))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, [month]);

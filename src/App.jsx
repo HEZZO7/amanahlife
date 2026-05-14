@@ -17,6 +17,12 @@ import Finance from '@/pages/Finance';
 import Goals from '@/pages/Goals';
 import Planner from '@/pages/Planner';
 import Spiritual from '@/pages/Spiritual';
+import Ramadan from '@/pages/Ramadan';
+import Family from '@/pages/Family';
+import Learning from '@/pages/Learning';
+import Work from '@/pages/Work';
+import Wellness from '@/pages/Wellness';
+import Analytics from '@/pages/Analytics';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -50,6 +56,12 @@ const AppRoutes = () => {
         <Route path="/goals" element={<Goals />} />
         <Route path="/planner" element={<Planner />} />
         <Route path="/spiritual" element={<Spiritual />} />
+        <Route path="/ramadan" element={<Ramadan />} />
+        <Route path="/family" element={<Family />} />
+        <Route path="/learning" element={<Learning />} />
+        <Route path="/work" element={<Work />} />
+        <Route path="/wellness" element={<Wellness />} />
+        <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

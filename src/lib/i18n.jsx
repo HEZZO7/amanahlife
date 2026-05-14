@@ -165,6 +165,46 @@ const translations = {
   "planner.tomorrow": { en: "Tomorrow", ar: "غداً" },
   "planner.pending": { en: "Pending", ar: "معلق" },
 
+  // Ramadan
+  "ramadan.countdown": { en: "Days until Ramadan", ar: "أيام حتى رمضان" },
+  "ramadan.todayLog": { en: "Today's Log", ar: "سجل اليوم" },
+  "ramadan.fastingGrid": { en: "30-Day Fasting Grid", ar: "شبكة الصيام ٣٠ يوم" },
+  "ramadan.eidPlanning": { en: "Eid Planning", ar: "تخطيط العيد" },
+  "ramadan.insight": { en: "Daily Insight", ar: "رؤية يومية" },
+
+  // Family
+  "family.members": { en: "Members", ar: "الأعضاء" },
+  "family.sharedTasks": { en: "Shared Tasks", ar: "المهام المشتركة" },
+  "family.goals": { en: "Family Goals", ar: "الأهداف العائلية" },
+  "family.calendar": { en: "Family Calendar", ar: "التقويم العائلي" },
+
+  // Learning
+  "learning.addCourse": { en: "Add Course", ar: "إضافة دورة" },
+  "learning.progress": { en: "Progress", ar: "التقدم" },
+  "learning.milestones": { en: "Milestones", ar: "المعالم" },
+  "learning.completed": { en: "Completed", ar: "مكتملة" },
+  "learning.active": { en: "In Progress", ar: "جارية" },
+
+  // Work
+  "work.projects": { en: "Projects", ar: "المشاريع" },
+  "work.invoices": { en: "Invoices", ar: "الفواتير" },
+  "work.summary": { en: "Summary", ar: "الملخص" },
+
+  // Wellness
+  "wellness.mood": { en: "Mood", ar: "الحالة المزاجية" },
+  "wellness.sleep": { en: "Sleep", ar: "النوم" },
+  "wellness.hydration": { en: "Hydration", ar: "الترطيب" },
+  "wellness.stress": { en: "Stress", ar: "التوتر" },
+  "wellness.log": { en: "Log Today", ar: "سجل اليوم" },
+  "wellness.weeklyMood": { en: "Weekly Mood", ar: "المزاج الأسبوعي" },
+
+  // Analytics
+  "analytics.premium": { en: "Premium Feature", ar: "ميزة مميزة" },
+  "analytics.upgrade": { en: "Upgrade to Unlock", ar: "ترقية للوصول" },
+  "analytics.finance": { en: "Finance Trend", ar: "الاتجاه المالي" },
+  "analytics.mood": { en: "Mood Trend", ar: "اتجاه المزاج" },
+  "analytics.prayers": { en: "Prayer Completion", ar: "الصلوات" },
+
   // Spiritual
   "spiritual.dailyScore": { en: "Today's Prayers", ar: "صلوات اليوم" },
   "spiritual.streak": { en: "Day Streak", ar: "أيام متتالية" },

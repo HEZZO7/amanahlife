@@ -12,8 +12,8 @@ export default function SpiritualStreak({ streakData }) {
           {language === 'ar' ? 'التسلسل' : 'Prayer Streak'}
         </span>
         <div className="flex items-center gap-1.5">
-          <span className="text-xl">🔥</span>
           <span className="text-lg font-bold" style={{ color: 'var(--mizan-emerald)' }}>{streak}</span>
+          <span style={{ color: 'var(--mizan-emerald)', fontSize: '10px' }}>■</span>
           <span className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>{language === 'ar' ? 'يوم' : 'days'}</span>
         </div>
       </div>

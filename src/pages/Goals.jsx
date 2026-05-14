@@ -100,8 +100,24 @@ export default function Goals() {
 
           {/* Goals List */}
           {goals.length === 0 ? (
-            <div className="text-center py-12 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-              <p className="text-sm" style={{ color: 'var(--mizan-text-secondary)' }}>{t('goals.empty')}</p>
+            <div className="text-center py-16 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="mx-auto mb-4 opacity-40">
+                <polygon points="32,4 60,48 4,48" fill="none" stroke="var(--mizan-emerald)" strokeWidth="1.5"/>
+                <polygon points="32,14 50,44 14,44" fill="none" stroke="var(--mizan-gold)" strokeWidth="1" opacity="0.5"/>
+                <line x1="32" y1="20" x2="32" y2="36" stroke="var(--mizan-emerald)" strokeWidth="1.5"/>
+                <circle cx="32" cy="40" r="1.5" fill="var(--mizan-emerald)"/>
+              </svg>
+              <p className="text-base font-semibold mb-1" style={{ color: 'var(--mizan-text)' }}>{t('goals.empty')}</p>
+              <p className="text-sm mb-5" style={{ color: 'var(--mizan-text-secondary)' }}>
+                {t('goals.emptyHint')}
+              </p>
+              <button
+                onClick={() => setShowAdd(true)}
+                className="px-5 py-2.5 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
+                style={{ background: 'var(--mizan-emerald)' }}
+              >
+                + {t('common.add')}
+              </button>
             </div>
           ) : (
             <div className="space-y-3">

@@ -65,8 +65,8 @@ export default function Finance() {
       {!loading && snapshot && (
         <div className="grid grid-cols-3 gap-3 mb-6">
           {[
-            { label: t('finance.income'), value: snapshot.income, color: 'var(--mizan-green)', icon: TrendingUp },
-            { label: t('finance.expenses'), value: snapshot.expenses, color: 'var(--mizan-red)', icon: TrendingDown },
+            { label: t('finance.income'), value: snapshot.totalIncome ?? snapshot.income, color: 'var(--mizan-green)', icon: TrendingUp },
+            { label: t('finance.expenses'), value: snapshot.totalExpenses ?? snapshot.expenses, color: 'var(--mizan-red)', icon: TrendingDown },
             { label: t('finance.net'), value: snapshot.netBalance, color: 'var(--mizan-gold)', icon: Minus },
           ].map(({ label, value, color, icon: Icon }) => (
             <div key={label} className="p-4 rounded-xl text-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>

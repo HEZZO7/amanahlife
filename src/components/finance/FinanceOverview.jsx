@@ -9,7 +9,8 @@ export default function FinanceOverview({ snapshot, currSymbol }) {
 
   if (!snapshot) return null;
 
-  const pieData = snapshot.byCategory.slice(0, 8).map(c => ({ name: c.category, value: c.amount }));
+  const categories = snapshot.byCategory || snapshot.categoryBreakdown || [];
+  const pieData = categories.slice(0, 8).map(c => ({ name: c.category, value: c.amount }));
 
   return (
     <div className="space-y-6">
@@ -44,7 +45,7 @@ export default function FinanceOverview({ snapshot, currSymbol }) {
               </ResponsiveContainer>
             </div>
             <div className="flex-1 space-y-2">
-              {snapshot.byCategory.slice(0, 6).map((c, i) => (
+              {categories.slice(0, 6).map((c, i) => (
                 <div key={c.category} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: COLORS[i % COLORS.length] }} />

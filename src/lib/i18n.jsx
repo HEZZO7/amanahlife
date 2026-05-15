@@ -2,11 +2,11 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 
 const translations = {
   // App
-  "app.name": { en: "Mizan", ar: "ميزان" },
+  "app.name": { en: "AmanahLife", ar: "أمانة لايف" },
   "app.tagline": { en: "Your intelligent life companion", ar: "رفيقك الذكي في الحياة" },
 
   // Onboarding
-  "onboarding.welcome": { en: "Welcome to Mizan", ar: "مرحباً بك في ميزان" },
+  "onboarding.welcome": { en: "Welcome to AmanahLife", ar: "مرحباً بك في أمانة لايف" },
   "onboarding.chooseLanguage": { en: "Choose your language", ar: "اختر لغتك" },
   "onboarding.english": { en: "English", ar: "English" },
   "onboarding.arabic": { en: "عربي", ar: "عربي" },
@@ -16,7 +16,7 @@ const translations = {
   "onboarding.finish": { en: "Get Started", ar: "ابدأ الآن" },
   "onboarding.nameTitle": { en: "What should we call you?", ar: "كيف نناديك؟" },
   "onboarding.namePlaceholder": { en: "Your name", ar: "اسمك" },
-  "onboarding.modeTitle": { en: "How will you use Mizan?", ar: "كيف ستستخدم ميزان؟" },
+  "onboarding.modeTitle": { en: "How will you use AmanahLife?", ar: "كيف ستستخدم أمانة لايف؟" },
   "onboarding.individual": { en: "Individual", ar: "فردي" },
   "onboarding.family": { en: "Family", ar: "عائلي" },
   "onboarding.familyName": { en: "Family name", ar: "اسم العائلة" },

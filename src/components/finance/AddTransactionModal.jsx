@@ -29,8 +29,8 @@ export default function AddTransactionModal({ type, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}>
-      <div className="w-full max-w-md rounded-2xl p-6" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 pb-[env(safe-area-inset-bottom,0px)]" style={{ background: 'rgba(0,0,0,0.5)' }}>
+      <div className="w-full max-w-md rounded-2xl p-6 max-h-[85vh] overflow-y-auto sm:mb-0 mb-20" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-bold" style={{ color: 'var(--mizan-text)' }}>
             {type === 'income' ? t('finance.addIncome') : t('finance.addExpense')}

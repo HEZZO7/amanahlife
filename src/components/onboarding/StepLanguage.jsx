@@ -11,10 +11,10 @@ export default function StepLanguage({ onSelect }) {
       className="flex flex-col items-center justify-center min-h-[70vh] px-6"
     >
       <h1 className="text-3xl font-bold mb-2 text-center" style={{ color: 'var(--mizan-text)' }}>
-        Mizan
+        AmanahLife
       </h1>
       <p className="text-lg mb-2 text-center font-arabic" style={{ color: 'var(--mizan-text)' }}>
-        ميزان
+        أمانة لايف
       </p>
       <p className="text-sm mb-12 text-center" style={{ color: 'var(--mizan-text-secondary)' }}>
         Choose your language / اختر لغتك

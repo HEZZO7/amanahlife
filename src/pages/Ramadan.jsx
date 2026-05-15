@@ -6,8 +6,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Moon, Sun, BookOpen, Heart, Calendar, Sparkles } from 'lucide-react';
 
-// Next Ramadan 2026: March 1, 2026
-const NEXT_RAMADAN = new Date('2026-03-01');
+// Dynamically compute the next Ramadan date — always in the future
+function getNextRamadan() {
+  // Ramadan 2026 starts approximately March 1, 2026
+  let candidate = new Date('2026-03-01');
+  const now = new Date();
+  // If the candidate is in the past, keep adding one Hijri year (~354 days)
+  while (candidate <= now) {
+    candidate = new Date(candidate.getTime() + 354 * 24 * 60 * 60 * 1000);
+  }
+  return candidate;
+}
+const NEXT_RAMADAN = getNextRamadan();
 const RAMADAN_DAYS = Array.from({ length: 30 }, (_, i) => i + 1);
 
 function GeometricIllustration() {
@@ -108,7 +118,7 @@ export default function Ramadan() {
             {language === 'ar' ? 'يوماً حتى رمضان' : 'days until Ramadan'}
           </p>
           <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
-            {language === 'ar' ? '١ مارس ٢٠٢٦' : 'March 1, 2026'}
+            {NEXT_RAMADAN.toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
       ) : (

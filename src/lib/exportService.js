@@ -36,7 +36,7 @@ function addSectionHeader(doc, y, text) {
 // ─── 1. Financial Summary PDF ────────────────────────────────────────────────
 
 export function exportFinancePDF(snapshot, currSymbol = 'SAR') {
-  const doc = initPDF('Financial Summary — Mizan');
+  const doc = initPDF('Financial Summary — AmanahLife');
   let y = 45;
 
   y = addSectionHeader(doc, y, 'Monthly Overview');
@@ -54,7 +54,7 @@ export function exportFinancePDF(snapshot, currSymbol = 'SAR') {
     });
   }
 
-  doc.save('mizan-finance.pdf');
+  doc.save('amanahlife-finance.pdf');
 }
 
 // ─── 2. Transactions Excel (CSV) ────────────────────────────────────────────
@@ -70,13 +70,13 @@ export function exportTransactionsCSV(transactions, currSymbol = 'SAR') {
   ]);
 
   const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
-  downloadText(csv, 'mizan-transactions.csv', 'text/csv');
+  downloadText(csv, 'amanahlife-transactions.csv', 'text/csv');
 }
 
 // ─── 3. Ramadan Report PDF ───────────────────────────────────────────────────
 
 export function exportRamadanPDF(logs) {
-  const doc = initPDF('Ramadan Report — Mizan');
+  const doc = initPDF('Ramadan Report — AmanahLife');
   let y = 45;
 
   y = addSectionHeader(doc, y, '30-Day Fasting Log');
@@ -99,13 +99,13 @@ export function exportRamadanPDF(logs) {
   doc.setTextColor(11, 91, 80);
   doc.text(`Total fasted: ${fasted}/30 days`, 20, y);
 
-  doc.save('mizan-ramadan.pdf');
+  doc.save('amanahlife-ramadan.pdf');
 }
 
 // ─── 4. Goals Report PDF ────────────────────────────────────────────────────
 
 export function exportGoalsPDF(goals) {
-  const doc = initPDF('Goals Report — Mizan');
+  const doc = initPDF('Goals Report — AmanahLife');
   let y = 45;
 
   y = addSectionHeader(doc, y, 'All Goals');
@@ -117,7 +117,7 @@ export function exportGoalsPDF(goals) {
     y = addRow(doc, y, [g.title, g.category, `${g.progress || 0}%`, g.status], [60, 40, 30, 40]);
   });
 
-  doc.save('mizan-goals.pdf');
+  doc.save('amanahlife-goals.pdf');
 }
 
 // ─── 5. Full Data Export CSV ─────────────────────────────────────────────────
@@ -145,7 +145,7 @@ export function exportAllDataCSV(data) {
     data.wellness.forEach(w => sections.push(`${w.date},${w.mood},${w.sleep_hours||''},${w.hydration_level||''},${w.stress_level||''}`));
   }
 
-  downloadText(sections.join('\n'), 'mizan-all-data.csv', 'text/csv');
+  downloadText(sections.join('\n'), 'amanahlife-all-data.csv', 'text/csv');
 }
 
 // ─── Utility ─────────────────────────────────────────────────────────────────

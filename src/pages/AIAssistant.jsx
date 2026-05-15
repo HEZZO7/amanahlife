@@ -87,7 +87,7 @@ export default function AIAssistant() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-0px)] lg:h-screen" style={{ background: 'var(--mizan-bg)' }}>
+    <div className="flex flex-col h-[calc(100dvh-64px)] lg:h-screen" style={{ background: 'var(--mizan-bg)' }}>
       {/* Header */}
       <div
         className="flex items-center gap-3 px-5 py-4 border-b flex-shrink-0"
@@ -160,7 +160,7 @@ export default function AIAssistant() {
 
       {/* Input Bar */}
       <div
-        className="flex-shrink-0 px-4 py-3 border-t pb-[env(safe-area-inset-bottom,12px)] mb-16 lg:mb-0"
+        className="flex-shrink-0 px-4 py-3 border-t"
         style={{ background: 'var(--mizan-surface)', borderColor: 'var(--mizan-border)' }}
       >
         <div

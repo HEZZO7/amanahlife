@@ -64,6 +64,6 @@ export async function build() {
       completed: completedTasks,
       total: todayTasks.length,
     },
-    insights: recentInsights.slice(0, 3),
+    aiInsights: recentInsights.slice(0, 3),
   };
 }

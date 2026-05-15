@@ -80,12 +80,18 @@ export default function Dashboard() {
   const [insights, setInsights] = useState([]);
 
   useEffect(() => {
+    const triggerKey = `ai_insights_triggered_${format(new Date(), 'yyyy-MM-dd')}`;
     Promise.all([base44.auth.me(), buildDashboard()])
       .then(([u, d]) => {
         setUser(u);
         setData(d);
         setInsights(d.aiInsights || []);
         setLoading(false);
+        // Trigger daily insight generation on first load of the day
+        if (!sessionStorage.getItem(triggerKey)) {
+          sessionStorage.setItem(triggerKey, '1');
+          base44.functions.invoke('aiInsightTriggers', {}).catch(() => {});
+        }
       })
       .catch(() => setLoading(false));
   }, []);

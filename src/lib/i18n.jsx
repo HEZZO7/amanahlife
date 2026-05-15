@@ -47,6 +47,7 @@ const translations = {
   "nav.wellness": { en: "Wellness", ar: "الصحة" },
   "nav.analytics": { en: "Analytics", ar: "التحليلات" },
   "nav.settings": { en: "Settings", ar: "الإعدادات" },
+  "nav.ai": { en: "AI", ar: "الذكاء" },
   "nav.more": { en: "More", ar: "المزيد" },
 
   // Settings

@@ -132,7 +132,7 @@ Deno.serve(async (req) => {
     for (const notif of notifications) {
       await base44.asServiceRole.integrations.Core.SendEmail({
         to: userEmail,
-        subject: `Mizan — ${notif.subject}`,
+        subject: `AmanahLife — ${notif.subject}`,
         body: notif.body,
       });
     }

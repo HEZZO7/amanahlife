@@ -23,6 +23,7 @@ import Learning from '@/pages/Learning';
 import Work from '@/pages/Work';
 import Wellness from '@/pages/Wellness';
 import Analytics from '@/pages/Analytics';
+import AIAssistant from '@/pages/AIAssistant';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -62,6 +63,7 @@ const AppRoutes = () => {
         <Route path="/work" element={<Work />} />
         <Route path="/wellness" element={<Wellness />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/ai" element={<AIAssistant />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

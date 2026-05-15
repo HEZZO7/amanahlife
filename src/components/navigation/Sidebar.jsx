@@ -3,11 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '@/lib/i18n';
 import {
   LayoutDashboard, Wallet, Target, CalendarDays, Heart,
-  Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings
+  Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, Sparkles
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { key: 'dashboard', path: '/', icon: LayoutDashboard },
+  { key: 'ai', path: '/ai', icon: Sparkles },
   { key: 'finance', path: '/finance', icon: Wallet },
   { key: 'goals', path: '/goals', icon: Target },
   { key: 'planner', path: '/planner', icon: CalendarDays },
@@ -35,7 +36,7 @@ export default function Sidebar() {
           className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm"
           style={{ background: 'var(--mizan-emerald)' }}
         >
-          M
+          A
         </div>
         <span className="text-lg font-bold" style={{ color: 'var(--mizan-text)' }}>
           {t('app.name')}

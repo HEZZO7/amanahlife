@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Lock, BarChart3, TrendingUp, Target, Heart, Activity } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
 import PaywallSheet from '@/components/monetization/PaywallSheet';
+import MonthlyReport from '@/components/analytics/MonthlyReport';
 
 const COLORS = ['#0B5B50','#B89A5E','#12897A','#C0392B','#27AE60','#8A9B97'];
 
@@ -127,9 +128,17 @@ export default function Analytics() {
       {loading ? (
         <div className="space-y-4">{[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-xl" />)}</div>
       ) : (
-        <div className="space-y-5">
+       <div className="space-y-5">
 
-          {/* 1. Finance Trend */}
+         {/* Monthly Report */}
+         <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+           <h2 className="text-sm font-semibold mb-4 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
+             {language === 'ar' ? 'التقرير الشهري' : 'Monthly Report'}
+           </h2>
+           <MonthlyReport />
+         </div>
+
+         {/* 1. Finance Trend */}
           <ChartCard title={language === 'ar' ? 'الاتجاه المالي (٦ أشهر)' : 'Finance Trend (6 Months)'} isPremium={false} language={language}>
             <div style={{ height: 180 }}>
               <ResponsiveContainer width="100%" height="100%">

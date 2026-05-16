@@ -217,6 +217,19 @@ Respond with a JSON object (no markdown):
       review = await base44.entities.LifeReview.create(reviewData);
     }
 
+    // --- Send completion notification if enabled ---
+    const notifyOnComplete = settings?.review_notify_on_complete !== false;
+    if (notifyOnComplete && user?.email) {
+      const periodLabel = type === 'monthly' ? period : `${period} (Annual)`;
+      const subject = lang === 'ar'
+        ? `✅ تقريرك لـ ${periodLabel} جاهز!`
+        : `✅ Your ${periodLabel} review is ready!`;
+      const body = lang === 'ar'
+        ? `السلام عليكم،\n\nتقريرك الذكي لـ ${periodLabel} جاهز الآن. افتح التطبيق لمطالعة تحليلك الشامل وتوصيات الفترة القادمة.\n\nبارك الله فيك.`
+        : `Hello,\n\nYour AmanahLife review for ${periodLabel} is ready. Open the app to read your full analysis and recommendations.\n\nMay Allah bless you.`;
+      await base44.asServiceRole.integrations.Core.SendEmail({ to: user.email, subject, body }).catch(() => {});
+    }
+
     return Response.json({ review });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });

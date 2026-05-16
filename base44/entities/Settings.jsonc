@@ -82,6 +82,29 @@
     "show_islamic_events": {
       "type": "boolean",
       "default": true
+    },
+    "review_monthly_time": {
+      "type": "string",
+      "default": "06:00",
+      "description": "HH:MM time for monthly review delivery"
+    },
+    "review_annual_time": {
+      "type": "string",
+      "default": "08:00",
+      "description": "HH:MM time for annual review delivery"
+    },
+    "review_notify_on_complete": {
+      "type": "boolean",
+      "default": true,
+      "description": "Send notification when review is ready"
+    },
+    "review_monthly_enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "review_annual_enabled": {
+      "type": "boolean",
+      "default": true
     }
   },
   "required": []

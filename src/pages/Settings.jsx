@@ -7,6 +7,7 @@ import NotificationsSection from '@/components/settings/NotificationsSection';
 import SubscriptionSection from '@/components/settings/SubscriptionSection';
 import DataExportSection from '@/components/settings/DataExportSection';
 import AccountSection from '@/components/settings/AccountSection';
+import ReviewScheduleSection from '@/components/settings/ReviewScheduleSection';
 
 export default function Settings() {
   const { t } = useI18n();
@@ -36,6 +37,10 @@ export default function Settings() {
 
         <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
           <SubscriptionSection />
+        </div>
+
+        <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+          <ReviewScheduleSection />
         </div>
 
         <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>

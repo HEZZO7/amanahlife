@@ -9,7 +9,8 @@ import PlannerWeek from '@/components/planner/PlannerWeek';
 import PlannerAgenda from '@/components/planner/PlannerAgenda';
 import AddTaskModal from '@/components/planner/AddTaskModal';
 import TaskFilters from '@/components/planner/TaskFilters';
-import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import TaskTemplateModal from '@/components/planner/TaskTemplateModal';
+import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight, SlidersHorizontal, LayoutTemplate } from 'lucide-react';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { formatHijriDate } from '@/lib/hijriUtils';
 
@@ -29,6 +30,7 @@ export default function Planner() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
+  const [showTemplate, setShowTemplate] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ priority: 'all', status: 'all', todayOnly: false });
 
@@ -88,6 +90,14 @@ export default function Planner() {
               </span>
             )}
           </button>
+          <button
+            onClick={() => setShowTemplate(true)}
+            className="h-9 px-3 rounded-lg flex items-center gap-1.5 text-sm font-medium transition-all"
+            style={{ background: 'var(--mizan-surface)', color: 'var(--mizan-text-secondary)', border: '1px solid var(--mizan-border)' }}
+          >
+            <LayoutTemplate className="w-3.5 h-3.5" />
+            {language === 'ar' ? 'قالب' : 'Template'}
+          </button>
           <Button onClick={() => setShowAdd(true)} size="sm" className="h-9 rounded-lg text-white gap-1.5" style={{ background: 'var(--mizan-emerald)' }}>
             <Plus className="w-3.5 h-3.5" />
             {language === 'ar' ? 'إضافة' : 'Add'}
@@ -144,6 +154,7 @@ export default function Planner() {
       )}
 
       {showAdd && <AddTaskModal onClose={() => setShowAdd(false)} onSave={() => { setShowAdd(false); load(); }} defaultDate={format(selectedDate, 'yyyy-MM-dd')} />}
+      {showTemplate && <TaskTemplateModal onClose={() => setShowTemplate(false)} onSave={() => { setShowTemplate(false); load(); }} defaultDate={format(selectedDate, 'yyyy-MM-dd')} language={language} />}
     </div>
   );
 }

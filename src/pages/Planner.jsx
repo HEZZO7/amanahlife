@@ -7,16 +7,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 import PlannerDay from '@/components/planner/PlannerDay';
 import PlannerWeek from '@/components/planner/PlannerWeek';
 import PlannerAgenda from '@/components/planner/PlannerAgenda';
+import PlannerMonth from '@/components/planner/PlannerMonth';
 import AddTaskModal from '@/components/planner/AddTaskModal';
 import TaskFilters from '@/components/planner/TaskFilters';
 import TaskTemplateModal from '@/components/planner/TaskTemplateModal';
-import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight, SlidersHorizontal, LayoutTemplate } from 'lucide-react';
+import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight, SlidersHorizontal, LayoutTemplate, Calendar } from 'lucide-react';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { formatHijriDate } from '@/lib/hijriUtils';
 
 const VIEWS = [
   { key: 'day', enLabel: 'Day', arLabel: 'يوم', icon: CalendarDays },
   { key: 'week', enLabel: 'Week', arLabel: 'أسبوع', icon: LayoutGrid },
+  { key: 'month', enLabel: 'Month', arLabel: 'شهر', icon: Calendar },
   { key: 'agenda', enLabel: 'Agenda', arLabel: 'جدول', icon: List },
 ];
 
@@ -26,6 +28,7 @@ export default function Planner() {
   const [view, setView] = useState('day');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 6 }));
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,6 +52,7 @@ export default function Planner() {
 
   const navigateDay = (dir) => setSelectedDate(d => { const n = new Date(d); n.setDate(d.getDate() + dir); return n; });
   const navigateWeek = (dir) => setWeekStart(d => dir > 0 ? addWeeks(d, 1) : subWeeks(d, 1));
+  const navigateMonth = (dir) => setCurrentMonth(d => { const n = new Date(d); n.setMonth(d.getMonth() + dir); return n; });
 
   const applyFilters = (taskList, f, forDate) => {
     let result = [...taskList];
@@ -63,6 +67,8 @@ export default function Planner() {
     ? format(selectedDate, 'EEEE, MMMM d')
     : view === 'week'
     ? `${format(weekStart, 'MMM d')} – ${format(endOfWeek(weekStart, { weekStartsOn: 6 }), 'MMM d, yyyy')}`
+    : view === 'month'
+    ? format(currentMonth, 'MMMM yyyy')
     : (language === 'ar' ? 'الجدول' : 'Agenda');
 
   return (
@@ -119,7 +125,7 @@ export default function Planner() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button onClick={() => view === 'week' ? navigateWeek(-1) : navigateDay(-1)}
+          <button onClick={() => view === 'week' ? navigateWeek(-1) : view === 'month' ? navigateMonth(-1) : navigateDay(-1)}
             className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
             <ChevronLeft className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />
           </button>
@@ -129,7 +135,7 @@ export default function Planner() {
               <p className="text-xs" style={{ color: '#6B7280' }}>{formatHijriDate(selectedDate, language)}</p>
             )}
           </div>
-          <button onClick={() => view === 'week' ? navigateWeek(1) : navigateDay(1)}
+          <button onClick={() => view === 'week' ? navigateWeek(1) : view === 'month' ? navigateMonth(1) : navigateDay(1)}
             className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
             <ChevronRight className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />
           </button>
@@ -149,6 +155,7 @@ export default function Planner() {
         <>
           {view === 'day' && <PlannerDay date={selectedDate} tasks={applyFilters(tasks, filters, selectedDate)} events={events} onReload={load} />}
           {view === 'week' && <PlannerWeek weekStart={weekStart} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
+          {view === 'month' && <PlannerMonth month={currentMonth} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
           {view === 'agenda' && <PlannerAgenda tasks={applyFilters(tasks, filters)} events={events} onReload={load} />}
         </>
       )}

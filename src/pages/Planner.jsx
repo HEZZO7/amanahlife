@@ -8,6 +8,7 @@ import PlannerDay from '@/components/planner/PlannerDay';
 import PlannerWeek from '@/components/planner/PlannerWeek';
 import PlannerAgenda from '@/components/planner/PlannerAgenda';
 import PlannerMonth from '@/components/planner/PlannerMonth';
+import WeeklySummary from '@/components/planner/WeeklySummary';
 import AddTaskModal from '@/components/planner/AddTaskModal';
 import TaskFilters from '@/components/planner/TaskFilters';
 import TaskTemplateModal from '@/components/planner/TaskTemplateModal';
@@ -152,6 +153,7 @@ export default function Planner() {
         <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}</div>
       ) : (
         <>
+          {view === 'week' && <WeeklySummary tasks={tasks} weekStart={weekStart} />}
           {view === 'day' && <PlannerDay date={selectedDate} tasks={applyFilters(tasks, filters, selectedDate)} events={events} onReload={load} />}
           {view === 'week' && <PlannerWeek weekStart={weekStart} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
           {view === 'month' && <PlannerMonth month={selectedDate} tasks={tasks} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}

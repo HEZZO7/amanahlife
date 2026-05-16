@@ -60,7 +60,40 @@
   }
 
   .dark {
-    /* Dark Mode — Cinematic Layered System */
+    /* Dark Mode — Premium Amanah Theme */
+    /* Core layers */
+    --al-bg: #092E28;
+    --al-surface: #0D3830;
+    --al-card: #0F4438;
+    --al-card-raised: #134E42;
+    --al-modal: #17594B;
+    --al-input: #0D3830;
+
+    /* Borders */
+    --al-border-subtle: rgba(46, 170, 150, 0.15);
+    --al-border-card: rgba(46, 170, 150, 0.25);
+    --al-border-active: rgba(46, 170, 150, 0.55);
+    --al-border-gold: rgba(212, 168, 83, 0.35);
+
+    /* Text */
+    --al-text-primary: #EDF5F4;
+    --al-text-secondary: #9DCFC9;
+    --al-text-tertiary: #5FA89F;
+    --al-text-disabled: #3D7870;
+    --al-text-gold: #D4A853;
+    --al-text-gold-soft: #E8C97A;
+
+    /* Brand */
+    --al-emerald: #2EAA96;
+    --al-emerald-deep: #25917F;
+    --al-emerald-glow: #3DBFAA;
+    --al-gold: #D4A853;
+    --al-gold-soft: #E8C97A;
+    --al-sage: #5FB3A8;
+    --al-red-muted: #C0392B;
+    --al-green-muted: #27AE60;
+
+    /* Map to mizan */
     --background: 163 40% 5%;
     --foreground: 38 30% 94%;
     --card: 163 30% 8%;
@@ -86,18 +119,20 @@
     --chart-4: 38 40% 60%;
     --chart-5: 0 62% 45%;
 
-    --mizan-emerald: #0B5B50;
-    --mizan-emerald-light: #12897A;
-    --mizan-gold: #B89A5E;
-    --mizan-red: #E74C3C;
-    --mizan-green: #27AE60;
-    --mizan-bg: #071412;
-    --mizan-surface: #0B1816;
-    --mizan-elevated: #10211E;
-    --mizan-text: #F5F1E8;
-    --mizan-text-secondary: #8A9B97;
-    --mizan-border: #16302B;
-    --mizan-pattern: #0B5B50;
+    --mizan-bg: var(--al-bg);
+    --mizan-surface: var(--al-surface);
+    --mizan-card: var(--al-card);
+    --mizan-elevated: var(--al-card-raised);
+    --mizan-text: var(--al-text-primary);
+    --mizan-text-secondary: var(--al-text-secondary);
+    --mizan-emerald: var(--al-emerald);
+    --mizan-gold: var(--al-gold);
+    --mizan-border: var(--al-border-card);
+
+    --mizan-emerald-light: var(--al-emerald-glow);
+    --mizan-red: var(--al-red-muted);
+    --mizan-green: var(--al-green-muted);
+    --mizan-pattern: var(--al-emerald);
 
     --sidebar-background: 163 30% 6%;
     --sidebar-foreground: 38 30% 90%;

@@ -5,6 +5,7 @@ import { format, subDays, eachDayOfInterval } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import SmartReminders from '@/components/wellness/SmartReminders';
 
 const MOODS = [
   { key: 'very_low', label: '1', color: '#C0392B' },
@@ -133,6 +134,9 @@ export default function Wellness() {
         <div className="space-y-4">{[1,2,3].map(i => <Skeleton key={i} className="h-28 rounded-xl" />)}</div>
       ) : (
         <div className="space-y-5">
+
+          {/* Smart Reminders */}
+          <SmartReminders />
 
           {/* Today's Score Rings */}
           <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>

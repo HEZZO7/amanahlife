@@ -203,6 +203,10 @@ const translations = {
   "wellness.stress": { en: "Stress", ar: "التوتر" },
   "wellness.log": { en: "Log Today", ar: "سجل اليوم" },
   "wellness.weeklyMood": { en: "Weekly Mood", ar: "المزاج الأسبوعي" },
+  "wellness.reminders": { en: "Daily Reminders", ar: "التذكيرات اليومية" },
+  "wellness.hydration": { en: "Stay Hydrated", ar: "ابقَ رطباً" },
+  "wellness.activity": { en: "Get Moving", ar: "تحرك قليلاً" },
+  "wellness.sleepTip": { en: "Sleep Well", ar: "نم بشكل جيد" },
 
   // Analytics
   "analytics.premium": { en: "Premium Feature", ar: "ميزة مميزة" },

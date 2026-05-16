@@ -16,27 +16,23 @@ const NOTIFY_KEYS = [
 function ToggleRow({ label, checked, onCheckedChange, bold }) {
   return (
     <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'auto 1fr',
+      display: 'flex',
       alignItems: 'center',
+      justifyContent: 'space-between',
       width: '100%',
-      direction: 'ltr',
       padding: '10px 0',
       borderBottom: '1px solid rgba(0,0,0,0.05)',
     }}>
-      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-        <Switch checked={checked} onCheckedChange={onCheckedChange} />
-      </div>
       <span style={{
-        justifySelf: 'end',
-        textAlign: 'right',
-        width: '100%',
         fontSize: '15px',
         fontWeight: bold ? '600' : '500',
         color: bold ? 'var(--mizan-text, #111827)' : 'var(--mizan-text-secondary, #6b7280)',
       }}>
         {label}
       </span>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
     </div>
   );
 }
@@ -82,8 +78,8 @@ export default function NotificationsSection() {
             onCheckedChange={(val) => updateSettings({ task_due_reminder_enabled: val })}
           />
           {settings?.task_due_reminder_enabled !== false && (
-            <div style={{ paddingTop: '10px' }}>
-              <span className="text-xs mb-2 block" style={{ color: 'var(--mizan-text-secondary)' }}>
+            <div style={{ paddingTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
                 {t('settings.taskReminderTiming')}
               </span>
               <div className="flex gap-2">

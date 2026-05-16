@@ -128,6 +128,8 @@ const translations = {
   "finance.tab.overview": { en: "Overview", ar: "نظرة عامة" },
   "finance.tab.transactions": { en: "Transactions", ar: "المعاملات" },
   "finance.tab.budget": { en: "Budget", ar: "الميزانية" },
+  "finance.tab.zakat": { en: "Zakat", ar: "الزكاة" },
+  "finance.tab.scanner": { en: "Halal Scanner", ar: "ماسح الحلال" },
   "finance.income": { en: "Income", ar: "الدخل" },
   "finance.expense": { en: "Expense", ar: "مصروف" },
   "finance.expenses": { en: "Expenses", ar: "المصروفات" },
@@ -232,7 +234,45 @@ const translations = {
   "spiritual.asr": { en: "Asr", ar: "العصر" },
   "spiritual.maghrib": { en: "Maghrib", ar: "المغرب" },
   "spiritual.isha": { en: "Isha", ar: "العشاء" },
-};
+
+  // Zakat Calculator
+  "zakat.calculator": { en: "Zakat Calculator", ar: "حاسبة الزكاة" },
+  "zakat.assets": { en: "Assets", ar: "الأصول" },
+  "zakat.liabilities": { en: "Liabilities & Debts", ar: "الخصوم والالتزامات" },
+  "zakat.totalAssets": { en: "Total Assets", ar: "إجمالي الأصول" },
+  "zakat.netAssets": { en: "Net Assets", ar: "صافي الأصول" },
+  "zakat.zakatDue": { en: "Zakat Due", ar: "الزكاة المستحقة" },
+  "zakat.saveCalculation": { en: "Save Calculation", ar: "حفظ الحساب" },
+  "zakat.history": { en: "Zakat History", ar: "سجل الزكاة" },
+  "zakat.noRecords": { en: "No records yet", ar: "لا توجد سجلات بعد" },
+  "zakat.paid": { en: "Paid", ar: "مدفوعة" },
+  "zakat.markPaid": { en: "Mark Paid", ar: "تم الدفع" },
+  "zakat.nisab": { en: "You are obligated to pay Zakat", ar: "تجب عليك الزكاة" },
+  "zakat.belowNisab": { en: "Below the Nisab threshold", ar: "لم تصل إلى حد النصاب بعد" },
+  "zakat.percentage": { en: "(2.5% of net assets)", ar: "(2.5% من صافي الأصول)" },
+  "zakat.cash": { en: "Cash", ar: "النقد" },
+  "zakat.gold": { en: "Gold", ar: "الذهب" },
+  "zakat.silver": { en: "Silver", ar: "الفضة" },
+  "zakat.stocks": { en: "Stocks", ar: "الأسهم" },
+  "zakat.property": { en: "Property", ar: "العقارات" },
+  "zakat.other": { en: "Other", ar: "أخرى" },
+
+  // Goals - Milestones
+  "goals.milestone": { en: "Milestone", ar: "مرحلة" },
+  "goals.addMilestone": { en: "Add Milestone", ar: "إضافة مرحلة" },
+
+  // Family - Shared Budget
+  "family.budget": { en: "Budget", ar: "الميزانية" },
+  "family.sharedBudget": { en: "Shared Budget", ar: "الميزانية المشتركة" },
+  "family.addBudget": { en: "Add Budget", ar: "إضافة ميزانية" },
+  "family.budgetCategory": { en: "Category (e.g., Food)", ar: "الفئة (مثال: الغذاء)" },
+  "family.budgetAmount": { en: "Amount", ar: "المبلغ" },
+  "family.budgetDescription": { en: "Description (optional)", ar: "وصف (اختياري)" },
+  "family.totalBudget": { en: "Budget", ar: "الميزانية" },
+  "family.totalSpent": { en: "Spent", ar: "المصروف" },
+  "family.remaining": { en: "Remaining", ar: "المتبقي" },
+  "family.noBudgets": { en: "No budgets yet", ar: "لا توجد ميزانيات" },
+  };
 
 const I18nContext = createContext();
 

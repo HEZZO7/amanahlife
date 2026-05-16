@@ -12,8 +12,9 @@ import TransactionsList from '@/components/finance/TransactionsList';
 import BudgetTracker from '@/components/finance/BudgetTracker';
 import HalalScanner from '@/components/finance/HalalScanner';
 import AddTransactionModal from '@/components/finance/AddTransactionModal';
+import ZakatCalculator from '@/components/finance/ZakatCalculator';
 
-const TABS = ['overview', 'transactions', 'budget', 'scanner'];
+const TABS = ['overview', 'transactions', 'budget', 'zakat', 'scanner'];
 
 export default function Finance() {
   const { t } = useI18n();
@@ -136,6 +137,7 @@ export default function Finance() {
           {tab === 'overview' && <FinanceOverview snapshot={snapshot} currSymbol={currSymbol} />}
           {tab === 'transactions' && <TransactionsList snapshot={snapshot} onRefresh={load} />}
           {tab === 'budget' && <BudgetTracker snapshot={snapshot} month={month} onRefresh={load} />}
+          {tab === 'zakat' && <ZakatCalculator />}
           {tab === 'scanner' && <HalalScanner />}
         </>
       )}

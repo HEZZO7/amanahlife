@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import GoalCard from '@/components/goals/GoalCard';
 import GoalDetail from '@/components/goals/GoalDetail';
 import GoalsProgressChart from '@/components/goals/GoalsProgressChart';
+import GoalMilestones from '@/components/goals/GoalMilestones';
 
 export default function Goals() {
   const { t } = useI18n();

@@ -6,12 +6,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Users, CheckSquare, Target, Calendar, Plus, Check } from 'lucide-react';
 import WealthTab from '@/components/family/WealthTab';
+import SharedBudgetTab from '@/components/family/SharedBudgetTab';
 
 const TABS = [
   { key: 'members', en: 'Members', ar: 'الأعضاء' },
   { key: 'tasks', en: 'Tasks', ar: 'المهام' },
   { key: 'goals', en: 'Goals', ar: 'الأهداف' },
   { key: 'calendar', en: 'Calendar', ar: 'التقويم' },
+  { key: 'budget', en: 'Budget', ar: 'الميزانية' },
   { key: 'wealth', en: 'Wealth', ar: 'الثروة' },
 ];
 
@@ -196,6 +198,9 @@ export default function Family() {
                )}
              </div>
            )}
+
+           {/* Budget */}
+           {tab === 'budget' && <SharedBudgetTab familyId="shared" />}
 
            {/* Wealth */}
            {tab === 'wealth' && <WealthTab familyId="shared" members={members} userMap={userMap} />}

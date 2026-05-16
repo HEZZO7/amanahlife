@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
+import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { buildContext } from '@/lib/aiContextBuilder';
 import { Send, Sparkles, Loader2 } from 'lucide-react';
@@ -50,7 +51,9 @@ const SUGGESTED = [
 ];
 
 export default function AIAssistant() {
-  const { t, language } = useI18n();
+  const { t } = useI18n();
+  const { settings } = useUserSettings();
+  const language = settings?.language || 'ar';
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);

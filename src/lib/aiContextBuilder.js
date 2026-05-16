@@ -75,6 +75,7 @@ Mood: ${wellnessScore?.log?.mood ?? 'Not logged'}
 Sleep: ${wellnessScore?.log?.sleep_hours ?? 'N/A'} hours
 
 Respond only to what the user asks. Use the context above only when it adds value to your answer.
+Never end responses with open-ended questions like "How would you like to begin?", "What would you like to do next?", or similar. Give a complete, specific answer and stop.
 `.trim();
 
   return ctx;

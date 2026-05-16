@@ -3,7 +3,7 @@ import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Heart, Wallet, Target, Activity, Sparkles, ChevronDown, ChevronUp, Download, Archive, X } from 'lucide-react';
+import { Heart, Wallet, Target, Activity, Sparkles, ChevronDown, ChevronUp, Download, Archive, X, CheckCircle2 } from 'lucide-react';
 import { exportReviewPDF } from '@/lib/reviewExportService';
 
 function ScoreRing({ value, color }) {
@@ -57,6 +57,7 @@ export default function LifeReviewCard({ review, onDismiss, onArchive }) {
   const financial = raw.financial || {};
   const goals = review.goals_summary || {};
   const wellness = review.wellness_summary || {};
+  const tasks = raw.tasks || {};
 
   const moodLabels = { 1: '😔', 2: '😕', 3: '😐', 4: '😊', 5: '😄' };
   const moodEmoji = moodLabels[Math.round(wellness.avgMood)] || '—';
@@ -175,6 +176,35 @@ export default function LifeReviewCard({ review, onDismiss, onArchive }) {
               <DataPill label={lang === 'ar' ? 'أيام مسجلة' : 'Days logged'} value={wellness.logsCount || 0} />
             </SectionCard>
           </div>
+
+          {/* Completed Tasks */}
+          {tasks.completedCount > 0 && (
+            <div className="p-4 rounded-xl" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+              <div className="flex items-center gap-2 mb-3">
+                <CheckCircle2 className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
+                <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>
+                  {lang === 'ar'
+                    ? `${tasks.completedCount} مهمة مكتملة هذا الشهر`
+                    : `${tasks.completedCount} Tasks Completed This Month`}
+                </span>
+                {tasks.highPriorityCompleted > 0 && (
+                  <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: '#B89A5E15', color: 'var(--mizan-gold)' }}>
+                    {tasks.highPriorityCompleted} {lang === 'ar' ? 'عالية الأولوية' : 'high priority'}
+                  </span>
+                )}
+              </div>
+              {tasks.titles?.length > 0 && (
+                <div className="space-y-1.5">
+                  {tasks.titles.map((title, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--mizan-emerald)' }} />
+                      <span className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>{title}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* AI Narrative */}
           {narrative && (

@@ -38,6 +38,7 @@ Deno.serve(async (req) => {
       goals,
       wellnessLogs,
       budgets,
+      allTasks,
     ] = await Promise.all([
       base44.entities.Transaction.list('-date', 1000),
       base44.entities.PrayerLog.list('-date', 400),
@@ -46,6 +47,7 @@ Deno.serve(async (req) => {
       base44.entities.Goal.list('-created_date', 200),
       base44.entities.WellnessLog.list('-date', 400),
       base44.entities.Budget.list('-created_date', 100),
+      base44.entities.Task.list('-updated_date', 500),
     ]);
 
     // --- SPIRITUAL SCORE ---
@@ -103,6 +105,20 @@ Deno.serve(async (req) => {
     const gradeScore = savingsRate >= 20 ? 'A' : savingsRate >= 10 ? 'B' : savingsRate >= 0 ? 'C' : 'D';
     const financialData = { totalIncome, totalExpenses, netBalance, savingsRate, topCategory, budgetAdherence, grade: gradeScore };
 
+    // --- COMPLETED TASKS SUMMARY ---
+    // Filter tasks completed within the period (use updated_date as proxy, or due_date)
+    const completedTasks = allTasks.filter(t => {
+      if (t.status !== 'completed') return false;
+      const taskDate = t.due_date || (t.updated_date ? t.updated_date.split('T')[0] : null);
+      return taskDate && taskDate >= startDate && taskDate <= endDate;
+    });
+    const completedTaskTitles = completedTasks.slice(0, 10).map(t => t.title);
+    const tasksSummary = {
+      completedCount: completedTasks.length,
+      titles: completedTaskTitles,
+      highPriorityCompleted: completedTasks.filter(t => t.priority === 'high').length,
+    };
+
     // --- GOALS SUMMARY ---
     const activeGoals = goals.filter(g => g.status === 'active');
     const completedGoals = goals.filter(g => g.status === 'completed');
@@ -145,6 +161,7 @@ DATA:
 - Prayer completion: ${prayerPct}% | Quran pages: ${totalQuranPages} | Charity: ${currency}${totalCharity.toFixed(0)} | Max prayer streak: ${maxStreak} days
 - Financial grade: ${gradeScore} | Savings rate: ${savingsRate.toFixed(1)}% | Net balance: ${currency}${netBalance.toFixed(0)} | Top spending: ${topCategory} | Budget adherence: ${budgetAdherence}%
 - Goals: ${activeGoals.length} active, ${completedGoals.length} completed, ${stalledGoals.length} stalled, avg progress ${avgProgress}%
+- Tasks completed this period: ${completedTasks.length} tasks${completedTaskTitles.length > 0 ? ` including: ${completedTaskTitles.slice(0, 5).join(', ')}` : ''}
 - Wellness: mood avg ${avgMood}/5 | sleep avg ${avgSleep}h | stress avg ${avgStress}/10
 ${type === 'annual' ? `- Top achievement: ${topGoal?.title || 'N/A'}` : ''}
 
@@ -190,7 +207,7 @@ Respond with a JSON object (no markdown):
       focus_recommendation_en: aiResponse.focus_recommendation_en || '',
       word_of_year: aiResponse.word_of_year || null,
       top_achievement: aiResponse.top_achievement || null,
-      raw_data: { spiritual: spiritualData, financial: financialData, goals: goalsSummary, wellness: wellnessSummary },
+      raw_data: { spiritual: spiritualData, financial: financialData, goals: goalsSummary, wellness: wellnessSummary, tasks: tasksSummary },
     };
 
     let review;

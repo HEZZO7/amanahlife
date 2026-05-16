@@ -10,12 +10,12 @@ export default function StepLanguage({ onSelect }) {
       transition={{ duration: 0.28, ease: 'easeOut' }}
       className="flex flex-col items-center justify-center min-h-[70vh] px-6"
     >
-      <h1 className="text-3xl font-bold mb-2 text-center" style={{ color: 'var(--mizan-text)' }}>
-        AmanahLife
-      </h1>
-      <p className="text-lg mb-2 text-center font-arabic" style={{ color: 'var(--mizan-text)' }}>
-        أمانة لايف
-      </p>
+      <img
+        src="https://media.base44.com/images/public/6a049882fbea7efd5b32a60b/6875a2aae_file_00000000284071fb8f12ecdcbd7ccf94.png"
+        alt="AmanahLife"
+        className="mb-8"
+        style={{ width: '220px', height: '220px', objectFit: 'contain' }}
+      />
       <p className="text-sm mb-12 text-center" style={{ color: 'var(--mizan-text-secondary)' }}>
         Choose your language / اختر لغتك
       </p>

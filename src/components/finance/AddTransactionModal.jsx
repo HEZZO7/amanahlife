@@ -83,7 +83,18 @@ export default function AddTransactionModal({ type, onClose, onSaved }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 pb-[env(safe-area-inset-bottom,0px)]" style={{ background: 'rgba(0,0,0,0.5)' }}>
-      <div className="w-full max-w-md rounded-2xl p-6 max-h-[85vh] overflow-y-auto sm:mb-0 mb-20" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+      <div style={{
+        width: '100%',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        borderRadius: '16px',
+        padding: '24px',
+        maxHeight: '85vh',
+        overflowY: 'auto',
+        background: 'var(--mizan-surface)',
+        border: '1px solid var(--mizan-border)',
+        marginBottom: 'env(safe-area-inset-bottom, 80px)'
+      }}>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-bold" style={{ color: 'var(--mizan-text)' }}>
             {type === 'income' ? t('finance.addIncome') : t('finance.addExpense')}
@@ -97,13 +108,32 @@ export default function AddTransactionModal({ type, onClose, onSaved }) {
           </div>
           <div>
             <Label style={{ color: 'var(--mizan-text-secondary)' }}>{t('finance.category')}</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {cats.map(c => (
-                <button key={c} onClick={() => setCategory(c)} className="px-3 py-1.5 rounded-full text-xs font-medium transition-all capitalize" style={{ background: category === c ? 'var(--mizan-emerald)' : 'var(--mizan-elevated)', color: category === c ? 'white' : 'var(--mizan-text-secondary)', border: `1px solid ${category === c ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}` }}>
-                  {c}
-                </button>
-              ))}
-            </div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              gap: '8px',
+              marginTop: '8px',
+              width: '100%',
+              boxSizing: 'border-box'
+            }}>
+                {cats.map(c => (
+                  <button key={c} onClick={() => setCategory(c)} style={{
+                    padding: '8px 12px',
+                    borderRadius: '9999px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    transition: 'all 0.2s',
+                    background: category === c ? 'var(--mizan-emerald)' : 'var(--mizan-elevated)',
+                    color: category === c ? 'white' : 'var(--mizan-text-secondary)',
+                    border: `1px solid ${category === c ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}`,
+                    cursor: 'pointer',
+                    textTransform: 'capitalize'
+                  }}>
+                    {c}
+                  </button>
+                ))}
+              </div>
           </div>
           <div>
             <Label style={{ color: 'var(--mizan-text-secondary)' }}>{t('finance.description')}</Label>

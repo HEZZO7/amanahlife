@@ -22,13 +22,18 @@ const NAV_ITEMS = [
 ];
 
 export default function Sidebar() {
-  const { t } = useI18n();
+  const { t, isRTL } = useI18n();
   const location = useLocation();
 
   return (
     <aside
-      className="hidden lg:flex flex-col w-64 h-screen fixed top-0 border-r z-40"
-      style={{ background: 'var(--mizan-bg)', borderColor: 'var(--mizan-border)' }}
+      className="hidden lg:flex flex-col w-64 h-screen fixed top-0 z-40"
+      style={{
+        background: 'var(--mizan-bg)',
+        borderColor: 'var(--mizan-border)',
+        [isRTL ? 'right' : 'left']: 0,
+        [isRTL ? 'borderLeft' : 'borderRight']: '1px solid var(--mizan-border)',
+      }}
     >
       {/* Logo */}
       <div className="px-6 py-6 flex items-center gap-3">

@@ -8,7 +8,8 @@ import PlannerDay from '@/components/planner/PlannerDay';
 import PlannerWeek from '@/components/planner/PlannerWeek';
 import PlannerAgenda from '@/components/planner/PlannerAgenda';
 import AddTaskModal from '@/components/planner/AddTaskModal';
-import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight } from 'lucide-react';
+import TaskFilters from '@/components/planner/TaskFilters';
+import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { formatHijriDate } from '@/lib/hijriUtils';
 
@@ -28,6 +29,8 @@ export default function Planner() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({ priority: 'all', status: 'all', todayOnly: false });
 
   const load = () => {
     setLoading(true);
@@ -45,6 +48,15 @@ export default function Planner() {
   const navigateDay = (dir) => setSelectedDate(d => { const n = new Date(d); n.setDate(d.getDate() + dir); return n; });
   const navigateWeek = (dir) => setWeekStart(d => dir > 0 ? addWeeks(d, 1) : subWeeks(d, 1));
 
+  const applyFilters = (taskList, f, forDate) => {
+    let result = [...taskList];
+    const todayStr = format(new Date(), 'yyyy-MM-dd');
+    if (f.todayOnly) result = result.filter(t => t.due_date === todayStr);
+    if (f.priority !== 'all') result = result.filter(t => t.priority === f.priority);
+    if (f.status !== 'all') result = result.filter(t => t.status === f.status);
+    return result;
+  };
+
   const headerLabel = view === 'day'
     ? format(selectedDate, 'EEEE, MMMM d')
     : view === 'week'
@@ -58,10 +70,29 @@ export default function Planner() {
         <h1 className="text-2xl font-bold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
           {t('nav.planner')}
         </h1>
-        <Button onClick={() => setShowAdd(true)} size="sm" className="h-9 rounded-lg text-white gap-1.5" style={{ background: 'var(--mizan-emerald)' }}>
-          <Plus className="w-3.5 h-3.5" />
-          {language === 'ar' ? 'إضافة' : 'Add Task'}
-        </Button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowFilters(f => !f)}
+            className="h-9 px-3 rounded-lg flex items-center gap-1.5 text-sm font-medium transition-all"
+            style={{
+              background: (filters.priority !== 'all' || filters.status !== 'all' || filters.todayOnly) ? 'var(--mizan-emerald)' : 'var(--mizan-surface)',
+              color: (filters.priority !== 'all' || filters.status !== 'all' || filters.todayOnly) ? 'white' : 'var(--mizan-text-secondary)',
+              border: '1px solid var(--mizan-border)',
+            }}
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+            {language === 'ar' ? 'تصفية' : 'Filter'}
+            {(filters.priority !== 'all' || filters.status !== 'all' || filters.todayOnly) && (
+              <span className="w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold" style={{ background: 'white', color: 'var(--mizan-emerald)' }}>
+                {[filters.priority !== 'all', filters.status !== 'all', filters.todayOnly].filter(Boolean).length}
+              </span>
+            )}
+          </button>
+          <Button onClick={() => setShowAdd(true)} size="sm" className="h-9 rounded-lg text-white gap-1.5" style={{ background: 'var(--mizan-emerald)' }}>
+            <Plus className="w-3.5 h-3.5" />
+            {language === 'ar' ? 'إضافة' : 'Add'}
+          </Button>
+        </div>
       </div>
 
       {/* View switcher + nav */}
@@ -95,13 +126,20 @@ export default function Planner() {
         </div>
       </div>
 
+      {/* Filters panel */}
+      {showFilters && (
+        <div className="mb-4">
+          <TaskFilters filters={filters} onChange={setFilters} />
+        </div>
+      )}
+
       {loading ? (
         <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}</div>
       ) : (
         <>
-          {view === 'day' && <PlannerDay date={selectedDate} tasks={tasks} events={events} onReload={load} />}
-          {view === 'week' && <PlannerWeek weekStart={weekStart} tasks={tasks} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
-          {view === 'agenda' && <PlannerAgenda tasks={tasks} events={events} onReload={load} />}
+          {view === 'day' && <PlannerDay date={selectedDate} tasks={applyFilters(tasks, filters, selectedDate)} events={events} onReload={load} />}
+          {view === 'week' && <PlannerWeek weekStart={weekStart} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
+          {view === 'agenda' && <PlannerAgenda tasks={applyFilters(tasks, filters)} events={events} onReload={load} />}
         </>
       )}
 

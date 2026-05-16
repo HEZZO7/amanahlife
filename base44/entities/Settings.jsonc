@@ -85,6 +85,18 @@
       "default": true,
       "description": "Enable silent hours for prayer reminders"
     },
+    "prayer_location_latitude": {
+      "type": "number",
+      "description": "Saved prayer location latitude"
+    },
+    "prayer_location_longitude": {
+      "type": "number",
+      "description": "Saved prayer location longitude"
+    },
+    "prayer_location_name": {
+      "type": "string",
+      "description": "Saved prayer location name (city/place)"
+    },
     "currency": {
       "type": "string",
       "default": "SAR"

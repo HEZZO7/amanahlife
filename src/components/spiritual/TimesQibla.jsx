@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { format } from 'date-fns';
-import { Loader2, MapPin } from 'lucide-react';
+import { Loader2, MapPin, Save } from 'lucide-react';
 import PrayerTimesCard from './PrayerTimesCard';
 import QiblaCompass from './QiblaCompass';
+import { useUserSettings } from '@/lib/UserSettingsContext';
 
 export default function TimesQibla({ language }) {
+  const { settings, updateSettings } = useUserSettings();
   const [location, setLocation] = useState(null);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [qibla, setQibla] = useState(null);
@@ -14,10 +16,20 @@ export default function TimesQibla({ language }) {
   const [error, setError] = useState(null);
   const [autoLogEnabled, setAutoLogEnabled] = useState(false);
   const [manualCity, setManualCity] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [locationName, setLocationName] = useState('');
 
   // جلب الموقع الجغرافي
   useEffect(() => {
-    if (navigator.geolocation) {
+    // تحقق من وجود موقع محفوظ أولاً
+    if (settings?.prayer_location_latitude && settings?.prayer_location_longitude) {
+      setLocation({ 
+        lat: settings.prayer_location_latitude, 
+        lng: settings.prayer_location_longitude 
+      });
+      setLocationName(settings.prayer_location_name || '');
+      fetchPrayerData(settings.prayer_location_latitude, settings.prayer_location_longitude);
+    } else if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -31,7 +43,7 @@ export default function TimesQibla({ language }) {
         }
       );
     }
-  }, []);
+  }, [settings]);
 
   // جلب بيانات أوقات الصلاة
   const fetchPrayerData = async (lat, lng) => {
@@ -86,12 +98,13 @@ export default function TimesQibla({ language }) {
       const cityData = await cityResponse.json();
 
       if (cityData.code === 200 && cityData.data) {
-        const { latitude, longitude } = cityData.data;
-        setLocation({ lat: latitude, lng: longitude });
-        await fetchPrayerData(latitude, longitude);
-        setManualCity('');
+       const { latitude, longitude } = cityData.data;
+       setLocation({ lat: latitude, lng: longitude });
+       setLocationName(manualCity);
+       await fetchPrayerData(latitude, longitude);
+       setManualCity('');
       } else {
-        setError('city_not_found');
+       setError('city_not_found');
       }
     } catch (err) {
       console.error('City search error:', err);
@@ -155,8 +168,46 @@ export default function TimesQibla({ language }) {
     );
   }
 
+  const handleSaveLocation = async () => {
+    if (!location) return;
+    setSaving(true);
+    try {
+      await updateSettings({
+        prayer_location_latitude: location.lat,
+        prayer_location_longitude: location.lng,
+        prayer_location_name: locationName
+      });
+    } catch (err) {
+      console.error('Error saving location:', err);
+    }
+    setSaving(false);
+  };
+
   return (
     <div className="space-y-4">
+      {/* Save Location Banner */}
+      {location && locationName && !(settings?.prayer_location_latitude === location.lat && settings?.prayer_location_longitude === location.lng) && (
+        <div className="rounded-xl p-4 flex items-center justify-between" style={{ background: 'var(--mizan-emerald)20', border: '1px solid var(--mizan-emerald)40' }}>
+          <div>
+            <p className="text-sm font-medium" style={{ color: 'var(--mizan-emerald)' }}>
+              {language === 'ar' ? 'حفظ موقعك' : 'Save Your Location'}
+            </p>
+            <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
+              {locationName}
+            </p>
+          </div>
+          <button
+            onClick={handleSaveLocation}
+            disabled={saving}
+            className="px-3 py-1.5 rounded-lg text-white text-xs font-medium flex items-center gap-1.5 transition-opacity disabled:opacity-50"
+            style={{ background: 'var(--mizan-emerald)' }}
+          >
+            <Save className="w-3.5 h-3.5" />
+            {saving ? (language === 'ar' ? 'جاري...' : 'Saving...') : (language === 'ar' ? 'حفظ' : 'Save')}
+          </button>
+        </div>
+      )}
+
       {/* Hijri Date */}
       {hijriDate && (
         <div className="rounded-xl p-4" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>

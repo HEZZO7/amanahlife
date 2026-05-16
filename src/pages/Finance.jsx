@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button';
 import FinanceOverview from '@/components/finance/FinanceOverview';
 import TransactionsList from '@/components/finance/TransactionsList';
 import BudgetTracker from '@/components/finance/BudgetTracker';
+import HalalScanner from '@/components/finance/HalalScanner';
 import AddTransactionModal from '@/components/finance/AddTransactionModal';
 
-const TABS = ['overview', 'transactions', 'budget'];
+const TABS = ['overview', 'transactions', 'budget', 'scanner'];
 
 export default function Finance() {
   const { t } = useI18n();
@@ -98,13 +99,14 @@ export default function Finance() {
         ))}
       </div>
 
-      {loading ? (
+      {loading && tab !== 'scanner' ? (
         <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
       ) : (
         <>
           {tab === 'overview' && <FinanceOverview snapshot={snapshot} currSymbol={currSymbol} />}
           {tab === 'transactions' && <TransactionsList snapshot={snapshot} onRefresh={load} />}
           {tab === 'budget' && <BudgetTracker snapshot={snapshot} month={month} onRefresh={load} />}
+          {tab === 'scanner' && <HalalScanner />}
         </>
       )}
 

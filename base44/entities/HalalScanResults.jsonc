@@ -1,0 +1,50 @@
+{
+  "name": "HalalScanResults",
+  "type": "object",
+  "properties": {
+    "scan_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "raw_input": {
+      "type": "string",
+      "description": "Raw receipt text or transaction list"
+    },
+    "results": {
+      "type": "array",
+      "description": "Array of analyzed transactions",
+      "items": {
+        "type": "object",
+        "properties": {
+          "merchant": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "halal",
+              "questionable",
+              "avoid"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "halal_score": {
+      "type": "number",
+      "description": "Percentage 0-100"
+    }
+  },
+  "required": [
+    "scan_date",
+    "raw_input",
+    "results",
+    "halal_score"
+  ]
+}

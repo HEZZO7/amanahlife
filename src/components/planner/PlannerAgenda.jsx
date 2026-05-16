@@ -1,7 +1,9 @@
 import React from 'react';
 import { useI18n } from '@/lib/i18n';
+import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { format, isToday, isTomorrow, isPast } from 'date-fns';
+import { formatHijriDate } from '@/lib/hijriUtils';
 import { CheckCircle2, Circle, Clock, Trash2 } from 'lucide-react';
 
 const PRIORITY_COLOR = { high: '#C0392B', medium: '#B89A5E', low: '#8A9B97' };
@@ -25,6 +27,8 @@ function dayLabel(dateStr, language) {
 
 export default function PlannerAgenda({ tasks, events, onReload }) {
   const { language } = useI18n();
+  const { settings } = useUserSettings();
+  const showHijri = settings?.show_hijri_calendar !== false;
   const pending = tasks.filter(t => t.status !== 'completed');
   const groups = groupByDate(pending);
 
@@ -52,10 +56,15 @@ export default function PlannerAgenda({ tasks, events, onReload }) {
         const overdue = isPast(new Date(dateStr)) && !isToday(new Date(dateStr));
         return (
           <div key={dateStr}>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
               <span className="text-xs font-semibold" style={{ color: overdue ? 'var(--mizan-red)' : 'var(--mizan-emerald)' }}>
                 {dayLabel(dateStr, language)}
               </span>
+              {showHijri && (
+                <span className="text-xs" style={{ color: '#6B7280' }}>
+                  {formatHijriDate(new Date(dateStr), language)}
+                </span>
+              )}
               {overdue && <span className="text-[10px] px-1.5 py-0.5 rounded-full" style={{ background: 'rgba(192,57,43,0.1)', color: 'var(--mizan-red)' }}>
                 {language === 'ar' ? 'متأخر' : 'Overdue'}
               </span>}

@@ -2,12 +2,41 @@ import React from 'react';
 import { useI18n } from '@/lib/i18n';
 import { useTheme } from '@/lib/ThemeContext';
 import { useUserSettings } from '@/lib/UserSettingsContext';
+import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
+
+function ToggleRow({ label, checked, onCheckedChange }) {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'auto 1fr',
+      alignItems: 'center',
+      width: '100%',
+      direction: 'ltr',
+      padding: '10px 0',
+      borderBottom: '1px solid rgba(0,0,0,0.05)',
+    }}>
+      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
+      <span style={{
+        justifySelf: 'end',
+        textAlign: 'right',
+        width: '100%',
+        fontSize: '15px',
+        fontWeight: '500',
+        color: 'var(--mizan-text)',
+      }}>
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export default function AppearanceSection() {
   const { t, language, setLanguage } = useI18n();
   const { theme, setTheme } = useTheme();
-  const { updateSettings } = useUserSettings();
+  const { settings, updateSettings } = useUserSettings();
 
   const handleLangChange = async (lang) => {
     setLanguage(lang);
@@ -75,6 +104,23 @@ export default function AppearanceSection() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Islamic Calendar Toggles */}
+      <div>
+        <p className="text-sm font-medium mb-1" style={{ color: 'var(--mizan-text-secondary)' }}>
+          {language === 'ar' ? 'التقويم الإسلامي' : 'Islamic Calendar'}
+        </p>
+        <ToggleRow
+          label={language === 'ar' ? 'عرض التاريخ الهجري' : 'Show Hijri Calendar'}
+          checked={settings?.show_hijri_calendar !== false}
+          onCheckedChange={val => updateSettings({ show_hijri_calendar: val })}
+        />
+        <ToggleRow
+          label={language === 'ar' ? 'عرض المناسبات الإسلامية' : 'Show Islamic Events'}
+          checked={settings?.show_islamic_events !== false}
+          onCheckedChange={val => updateSettings({ show_islamic_events: val })}
+        />
       </div>
     </div>
   );

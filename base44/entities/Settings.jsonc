@@ -74,6 +74,14 @@
         "family"
       ],
       "default": "free"
+    },
+    "show_hijri_calendar": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_islamic_events": {
+      "type": "boolean",
+      "default": true
     }
   },
   "required": []

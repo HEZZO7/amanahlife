@@ -9,6 +9,8 @@ import PlannerWeek from '@/components/planner/PlannerWeek';
 import PlannerAgenda from '@/components/planner/PlannerAgenda';
 import AddTaskModal from '@/components/planner/AddTaskModal';
 import { Plus, CalendarDays, List, LayoutGrid, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useUserSettings } from '@/lib/UserSettingsContext';
+import { formatHijriDate } from '@/lib/hijriUtils';
 
 const VIEWS = [
   { key: 'day', enLabel: 'Day', arLabel: 'يوم', icon: CalendarDays },
@@ -18,6 +20,7 @@ const VIEWS = [
 
 export default function Planner() {
   const { t, language } = useI18n();
+  const { settings } = useUserSettings();
   const [view, setView] = useState('day');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 6 }));
@@ -79,7 +82,12 @@ export default function Planner() {
             className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
             <ChevronLeft className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />
           </button>
-          <span className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{headerLabel}</span>
+          <div className="text-center">
+            <span className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{headerLabel}</span>
+            {view === 'day' && settings?.show_hijri_calendar !== false && (
+              <p className="text-xs" style={{ color: '#6B7280' }}>{formatHijriDate(selectedDate, language)}</p>
+            )}
+          </div>
           <button onClick={() => view === 'week' ? navigateWeek(1) : navigateDay(1)}
             className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
             <ChevronRight className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />

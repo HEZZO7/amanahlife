@@ -1,16 +1,27 @@
 import React from 'react';
 import { useI18n } from '@/lib/i18n';
+import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { format } from 'date-fns';
 import { CheckCircle2, Circle, Trash2, Clock } from 'lucide-react';
+import { formatHijriDate, getIslamicEventsForDate, getSunnahFastsForDate } from '@/lib/hijriUtils';
+import IslamicEventPill from './IslamicEventPill';
+import SunnahDot from './SunnahDot';
 
 const PRIORITY_COLOR = { high: '#C0392B', medium: '#B89A5E', low: '#8A9B97' };
 
 export default function PlannerDay({ date, tasks, events, onReload }) {
   const { language } = useI18n();
+  const { settings } = useUserSettings();
   const dateStr = format(date, 'yyyy-MM-dd');
   const dayTasks = tasks.filter(t => t.due_date === dateStr);
   const dayEvents = events.filter(e => e.start_datetime?.startsWith(dateStr));
+
+  const showHijri = settings?.show_hijri_calendar !== false;
+  const showIslamicEvents = settings?.show_islamic_events !== false;
+
+  const islamicEvents = showIslamicEvents ? getIslamicEventsForDate(date, language) : [];
+  const sunnahFasts = showIslamicEvents ? getSunnahFastsForDate(date, language) : [];
 
   const handleToggle = async (task) => {
     const newStatus = task.status === 'completed' ? 'pending' : 'completed';
@@ -23,10 +34,29 @@ export default function PlannerDay({ date, tasks, events, onReload }) {
     onReload();
   };
 
-  const isEmpty = dayTasks.length === 0 && dayEvents.length === 0;
-
   return (
     <div className="space-y-4">
+      {/* Hijri date */}
+      {showHijri && (
+        <p className="text-xs" style={{ color: '#6B7280' }}>
+          {formatHijriDate(date, language)}
+        </p>
+      )}
+
+      {/* Islamic events */}
+      {islamicEvents.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {islamicEvents.map((ev, i) => <IslamicEventPill key={i} event={ev} />)}
+        </div>
+      )}
+
+      {/* Sunnah suggestions */}
+      {sunnahFasts.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {sunnahFasts.map((s, i) => <SunnahDot key={i} suggestion={s} />)}
+        </div>
+      )}
+
       {/* Events */}
       {dayEvents.length > 0 && (
         <div>
@@ -57,7 +87,7 @@ export default function PlannerDay({ date, tasks, events, onReload }) {
         <p className="text-xs font-semibold mb-2" style={{ color: 'var(--mizan-text-secondary)' }}>
           {language === 'ar' ? 'المهام' : 'Tasks'} {dayTasks.length > 0 && `(${dayTasks.filter(t => t.status === 'completed').length}/${dayTasks.length})`}
         </p>
-        {dayTasks.length === 0 && !dayEvents.length && (
+        {dayTasks.length === 0 && !dayEvents.length && islamicEvents.length === 0 && sunnahFasts.length === 0 && (
           <div className="py-12 text-center rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
             <p style={{ color: 'var(--mizan-text-secondary)' }}>{language === 'ar' ? 'لا توجد مهام لهذا اليوم' : 'No tasks for this day'}</p>
           </div>

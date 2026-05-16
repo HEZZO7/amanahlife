@@ -29,6 +29,7 @@ export default function Family() {
   const { t, language } = useI18n();
   const [tab, setTab] = useState('members');
   const [members, setMembers] = useState([]);
+  const [userMap, setUserMap] = useState({});
   const [tasks, setTasks] = useState([]);
   const [goals, setGoals] = useState([]);
   const [events, setEvents] = useState([]);
@@ -44,7 +45,19 @@ export default function Family() {
       base44.entities.Goal.filter({ family_id: { $exists: true } }),
       base44.entities.Event.filter({ family_id: { $exists: true } }),
     ])
-      .then(([m, t, g, e]) => { setMembers(m); setTasks(t); setGoals(g); setEvents(e); })
+      .then(async ([m, t, g, e]) => {
+        setMembers(m);
+        setTasks(t);
+        setGoals(g);
+        setEvents(e);
+        // Fetch user names for each member
+        if (m.length > 0) {
+          const users = await base44.entities.User.list().catch(() => []);
+          const map = {};
+          users.forEach(u => { map[u.id] = u.full_name; });
+          setUserMap(map);
+        }
+      })
       .catch(err => console.error('Family load:', err))
       .finally(() => setLoading(false));
   };
@@ -97,10 +110,10 @@ export default function Family() {
               ) : members.map(m => (
                 <div key={m.id} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
                   <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--mizan-emerald)' }}>
-                    {(m.user_id || 'M')[0].toUpperCase()}
+                    {(userMap[m.user_id] || 'M')[0].toUpperCase()}
                   </div>
                   <div>
-                    <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{m.user_id}</p>
+                    <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{userMap[m.user_id] || 'Member'}</p>
                     <p className="text-xs capitalize" style={{ color: 'var(--mizan-text-secondary)' }}>{m.role}</p>
                   </div>
                 </div>

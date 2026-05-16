@@ -9,6 +9,7 @@ import PlannerWeek from '@/components/planner/PlannerWeek';
 import PlannerAgenda from '@/components/planner/PlannerAgenda';
 import PlannerMonth from '@/components/planner/PlannerMonth';
 import WeeklySummary from '@/components/planner/WeeklySummary';
+import CompletionDashboard from '@/components/planner/CompletionDashboard';
 import AddTaskModal from '@/components/planner/AddTaskModal';
 import TaskFilters from '@/components/planner/TaskFilters';
 import TaskTemplateModal from '@/components/planner/TaskTemplateModal';
@@ -154,6 +155,7 @@ export default function Planner() {
       ) : (
         <>
           {view === 'week' && <WeeklySummary tasks={tasks} weekStart={weekStart} />}
+          {view === 'month' && <CompletionDashboard tasks={tasks} />}
           {view === 'day' && <PlannerDay date={selectedDate} tasks={applyFilters(tasks, filters, selectedDate)} events={events} onReload={load} />}
           {view === 'week' && <PlannerWeek weekStart={weekStart} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
           {view === 'month' && <PlannerMonth month={selectedDate} tasks={tasks} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}

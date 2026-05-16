@@ -1,0 +1,73 @@
+{
+  "name": "WasiyyahNotes",
+  "type": "object",
+  "properties": {
+    "assets_notes": {
+      "type": "string",
+      "description": "My Assets - free text field"
+    },
+    "debts_notes": {
+      "type": "string",
+      "description": "My Debts & Obligations - free text field"
+    },
+    "distribution_notes": {
+      "type": "string",
+      "description": "Distribution Intentions - free text field"
+    },
+    "executor_name": {
+      "type": "string",
+      "description": "Executor name"
+    },
+    "executor_contact": {
+      "type": "string",
+      "description": "Executor contact information"
+    },
+    "final_wishes": {
+      "type": "string",
+      "description": "Final Wishes - free text field"
+    },
+    "family_message": {
+      "type": "string",
+      "description": "My Message to My Family - rich text field"
+    },
+    "blood_type": {
+      "type": "string",
+      "enum": [
+        "O+",
+        "O-",
+        "A+",
+        "A-",
+        "B+",
+        "B-",
+        "AB+",
+        "AB-"
+      ],
+      "description": "Blood type"
+    },
+    "emergency_contact_name": {
+      "type": "string",
+      "description": "Emergency contact name"
+    },
+    "emergency_contact_phone": {
+      "type": "string",
+      "description": "Emergency contact phone"
+    },
+    "doctor_name": {
+      "type": "string",
+      "description": "Doctor name"
+    },
+    "doctor_phone": {
+      "type": "string",
+      "description": "Doctor phone"
+    },
+    "medical_conditions": {
+      "type": "string",
+      "description": "Medical conditions notes"
+    },
+    "medications": {
+      "type": "string",
+      "description": "Medications notes"
+    }
+  },
+  "required": []
+}

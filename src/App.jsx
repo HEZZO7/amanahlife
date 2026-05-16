@@ -27,6 +27,7 @@ import AIAssistant from '@/pages/AIAssistant';
 import LifeReviews from '@/pages/LifeReviews';
 import AchievementsDashboard from '@/pages/AchievementsDashboard';
 import Archive from '@/pages/Archive';
+import AmanaVault from '@/pages/AmanaVault';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -70,6 +71,7 @@ const AppRoutes = () => {
         <Route path="/reviews" element={<LifeReviews />} />
         <Route path="/achievements" element={<AchievementsDashboard />} />
         <Route path="/archive" element={<Archive />} />
+        <Route path="/vault" element={<AmanaVault />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

@@ -1,0 +1,44 @@
+{
+  "name": "VaultDocuments",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Document name/title"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "identity",
+        "property",
+        "finance",
+        "insurance",
+        "medical",
+        "legal",
+        "other"
+      ],
+      "description": "Document category"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes about the document"
+    },
+    "expiry_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional expiry date"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL to the uploaded file"
+    },
+    "family_id": {
+      "type": "string",
+      "description": "Optional family ID for shared documents"
+    }
+  },
+  "required": [
+    "name",
+    "category"
+  ]
+}

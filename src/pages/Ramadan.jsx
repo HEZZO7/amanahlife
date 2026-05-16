@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
-import { format, differenceInDays, parseISO } from 'date-fns';
+import { format, differenceInDays, parseISO, addDays, subDays } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, BookOpen, Heart, Calendar, Sparkles } from 'lucide-react';
+import { Moon, Sun, BookOpen, Heart, Calendar, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import RamadanDailySchedule from '@/components/ramadan/RamadanDailySchedule';
 
 // Dynamically compute the next Ramadan date — always in the future
 function getNextRamadan() {
@@ -38,6 +39,7 @@ export default function Ramadan() {
   const [saving, setSaving] = useState(false);
   const [aiInsight, setAiInsight] = useState('');
   const [loadingInsight, setLoadingInsight] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const today = format(new Date(), 'yyyy-MM-dd');
   const daysUntil = differenceInDays(NEXT_RAMADAN, new Date());
   const isRamadan = daysUntil <= 0 && daysUntil > -30;
@@ -129,9 +131,49 @@ export default function Ramadan() {
       )}
 
       {loading ? (
-        <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
+       <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
       ) : (
-        <div className="space-y-5">
+       <div className="space-y-5">
+         {/* Daily Schedule */}
+         <div className="rounded-2xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+           <div className="flex items-center justify-between mb-4">
+             <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
+               {language === 'ar' ? 'جدول اليوم الزمني' : 'Daily Schedule'}
+             </h2>
+             <div className="flex items-center gap-1">
+               <button
+                 onClick={() => setSelectedDate(subDays(selectedDate, 1))}
+                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                 style={{ background: 'var(--mizan-border)' }}
+               >
+                 {language === 'ar' ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+               </button>
+               <button
+                 onClick={() => setSelectedDate(new Date())}
+                 className="px-2 py-1 rounded-lg text-xs font-medium transition-all"
+                 style={{
+                   background: format(selectedDate, 'yyyy-MM-dd') === today ? 'var(--mizan-emerald)' : 'transparent',
+                   color: format(selectedDate, 'yyyy-MM-dd') === today ? 'white' : 'var(--mizan-text-secondary)'
+                 }}
+               >
+                 {language === 'ar' ? 'اليوم' : 'Today'}
+               </button>
+               <button
+                 onClick={() => setSelectedDate(addDays(selectedDate, 1))}
+                 className="w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                 style={{ background: 'var(--mizan-border)' }}
+               >
+                 {language === 'ar' ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+               </button>
+             </div>
+           </div>
+           <RamadanDailySchedule date={selectedDate} />
+         </div>
+       </div>
+      )}
+
+      {loading ? null : (
+       <div className="space-y-5">
           {/* Today's Log Card */}
           <div className="rounded-2xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
             <h2 className="text-sm font-semibold mb-4 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>

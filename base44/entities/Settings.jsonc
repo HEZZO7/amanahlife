@@ -46,6 +46,20 @@
       "type": "boolean",
       "default": true
     },
+    "task_due_reminder_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Send reminder before task due date"
+    },
+    "task_due_reminder_timing": {
+      "type": "string",
+      "enum": [
+        "1hour",
+        "1day"
+      ],
+      "default": "1day",
+      "description": "How early to send the task due reminder"
+    },
     "currency": {
       "type": "string",
       "default": "SAR"

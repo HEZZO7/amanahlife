@@ -9,11 +9,13 @@ import { Input } from '@/components/ui/input';
 import SpiritualPrayerTracker from '@/components/spiritual/SpiritualPrayerTracker';
 import SpiritualStreak from '@/components/spiritual/SpiritualStreak';
 import SpiritualCharity from '@/components/spiritual/SpiritualCharity';
+import TimesQibla from '@/components/spiritual/TimesQibla';
 
 const TABS = [
   { key: 'prayer', en: 'Prayer', ar: 'الصلاة' },
   { key: 'quran', en: "Qur'an & Dhikr", ar: 'القرآن والذكر' },
   { key: 'charity', en: 'Charity', ar: 'الصدقة' },
+  { key: 'times', en: 'Times & Qibla', ar: 'الأوقات والقبلة' },
 ];
 
 export default function Spiritual() {
@@ -69,6 +71,7 @@ export default function Spiritual() {
           {tab === 'prayer' && <SpiritualPrayerTracker score={score} streakData={streakData} onReload={load} />}
           {tab === 'quran' && <SpiritualQuranTab score={score} onReload={load} />}
           {tab === 'charity' && <SpiritualCharity onReload={load} />}
+          {tab === 'times' && <TimesQibla language={language} />}
         </>
       )}
     </div>

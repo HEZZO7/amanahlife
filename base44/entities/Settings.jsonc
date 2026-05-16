@@ -60,6 +60,31 @@
       "default": "1day",
       "description": "How early to send the task due reminder"
     },
+    "prayer_reminder_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Send prayer time reminders"
+    },
+    "prayer_reminder_minutes_before": {
+      "type": "number",
+      "default": 15,
+      "description": "Minutes before prayer time to send reminder"
+    },
+    "prayer_silent_start_time": {
+      "type": "string",
+      "default": "22:00",
+      "description": "Start time for silent hours (HH:MM)"
+    },
+    "prayer_silent_end_time": {
+      "type": "string",
+      "default": "06:00",
+      "description": "End time for silent hours (HH:MM)"
+    },
+    "prayer_silent_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Enable silent hours for prayer reminders"
+    },
     "currency": {
       "type": "string",
       "default": "SAR"

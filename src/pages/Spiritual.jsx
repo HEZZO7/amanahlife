@@ -10,12 +10,14 @@ import SpiritualPrayerTracker from '@/components/spiritual/SpiritualPrayerTracke
 import SpiritualStreak from '@/components/spiritual/SpiritualStreak';
 import SpiritualCharity from '@/components/spiritual/SpiritualCharity';
 import TimesQibla from '@/components/spiritual/TimesQibla';
+import PrayerReminderSettings from '@/components/spiritual/PrayerReminderSettings';
 
 const TABS = [
   { key: 'prayer', en: 'Prayer', ar: 'الصلاة' },
   { key: 'quran', en: "Qur'an & Dhikr", ar: 'القرآن والذكر' },
   { key: 'charity', en: 'Charity', ar: 'الصدقة' },
   { key: 'times', en: 'Times & Qibla', ar: 'الأوقات والقبلة' },
+  { key: 'reminders', en: 'Reminders', ar: 'التنبيهات' },
 ];
 
 export default function Spiritual() {
@@ -68,12 +70,13 @@ export default function Spiritual() {
         </div>
       ) : (
         <>
-          {tab === 'prayer' && <SpiritualPrayerTracker score={score} streakData={streakData} onReload={load} />}
-          {tab === 'quran' && <SpiritualQuranTab score={score} onReload={load} />}
-          {tab === 'charity' && <SpiritualCharity onReload={load} />}
-          {tab === 'times' && <TimesQibla language={language} />}
-        </>
-      )}
+           {tab === 'prayer' && <SpiritualPrayerTracker score={score} streakData={streakData} onReload={load} />}
+           {tab === 'quran' && <SpiritualQuranTab score={score} onReload={load} />}
+           {tab === 'charity' && <SpiritualCharity onReload={load} />}
+           {tab === 'times' && <TimesQibla language={language} />}
+           {tab === 'reminders' && <PrayerReminderSettings />}
+         </>
+        )}
     </div>
   );
 }

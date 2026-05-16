@@ -92,8 +92,9 @@ export default function Finance() {
         overflowX: 'auto', 
         whiteSpace: 'nowrap',
         padding: '6px 4px',
-        backgroundColor: '#f3f4f6',
+        backgroundColor: '#111827',
         borderRadius: '12px',
+        border: '1px solid #1f2937',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
         marginBottom: '20px'
@@ -118,9 +119,9 @@ export default function Finance() {
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                backgroundColor: isActive ? '#ffffff' : 'transparent',
-                color: isActive ? '#064e3b' : '#6b7280',
-                boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)' : 'none'
+                backgroundColor: isActive ? '#064e3b' : 'transparent',
+                color: isActive ? '#ffffff' : '#9ca3af',
+                boxShadow: isActive ? '0 2px 8px rgba(6,78,59,0.3)' : 'none'
               }}
             >
               {t(`finance.tab.${tab_key}`)}

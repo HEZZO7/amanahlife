@@ -13,7 +13,7 @@ export default function Settings() {
   const { t } = useI18n();
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       <h1 className="text-2xl font-bold mb-8 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
         {t('settings.title')}
       </h1>

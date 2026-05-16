@@ -57,7 +57,7 @@ export default function Archive() {
   const lowCount = archivedTasks.filter(t => t.priority === 'low').length;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-4xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>

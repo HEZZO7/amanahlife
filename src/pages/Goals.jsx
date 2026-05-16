@@ -54,7 +54,7 @@ export default function Goals() {
   const goals = (summary?.goals || []).filter(g => filter === 'all' || g.status === filter);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-6 max-w-3xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       {selectedGoal ? (
         <GoalDetail goalId={selectedGoal} onBack={() => { setSelectedGoal(null); load(); }} />
       ) : (

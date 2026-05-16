@@ -6,7 +6,7 @@ import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
 import { Loader2, TrendingUp, TrendingDown, Target, DollarSign } from 'lucide-react';
 
-const COLORS = ['#0B5B50', '#B89A5E', '#12897A', '#C0392B', '#27AE60'];
+const COLORS = ['#2EAA96', '#D4A853', '#25917F', '#C0392B', '#27AE60'];
 
 export default function MonthlyReport() {
   const { language } = useI18n();

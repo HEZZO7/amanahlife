@@ -151,7 +151,7 @@ export default function Learning() {
   const done = courses.filter(c => c.is_completed);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-6 max-w-3xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
           {language === 'ar' ? 'التعلم' : 'Learning'}

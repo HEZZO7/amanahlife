@@ -45,7 +45,7 @@ export default function GoalsProgressChart({ goals, tasks }) {
 
   return (
     <div className="mb-6 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-      <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--mizan-text)' }}>
+      <h3 className="text-sm font-semibold mb-4" style={{ color: '#ffffff' }}>
         {language === 'ar' ? '📊 تقدم الأهداف طويلة المدى' : '📊 Long-term Goals Progress'}
       </h3>
 
@@ -89,7 +89,7 @@ export default function GoalsProgressChart({ goals, tasks }) {
       <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
         {chartData.slice(0, 6).map(item => (
           <div key={item.goalId} className="p-2 rounded-lg" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-            <p className="truncate font-medium" style={{ color: 'var(--mizan-text)' }} title={item.name}>{item.name}</p>
+            <p className="truncate font-medium" style={{ color: '#d1fae5' }} title={item.name}>{item.name}</p>
             <div className="flex items-center gap-1 mt-1">
               <div className="flex-1 h-1.5 rounded-full" style={{ background: 'var(--mizan-border)' }}>
                 <div

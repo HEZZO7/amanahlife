@@ -10,9 +10,9 @@ import SmartReminders from '@/components/wellness/SmartReminders';
 const MOODS = [
   { key: 'very_low', label: '1', color: '#C0392B' },
   { key: 'low', label: '2', color: '#E67E22' },
-  { key: 'neutral', label: '3', color: '#B89A5E' },
+  { key: 'neutral', label: '3', color: '#D4A853' },
   { key: 'good', label: '4', color: '#27AE60' },
-  { key: 'excellent', label: '5', color: '#0B5B50' },
+  { key: 'excellent', label: '5', color: '#2EAA96' },
 ];
 
 const MOOD_SCORE = { very_low: 1, low: 2, neutral: 3, good: 4, excellent: 5 };
@@ -125,7 +125,7 @@ export default function Wellness() {
   } : { mood: 0, sleep: 0, hydration: 0, stress: 0 };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-6 max-w-3xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       <h1 className="text-2xl font-bold mizan-section-header mb-6" style={{ color: 'var(--mizan-text)' }}>
         {language === 'ar' ? 'الصحة والعافية' : 'Wellness'}
       </h1>

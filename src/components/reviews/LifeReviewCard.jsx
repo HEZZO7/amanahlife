@@ -3,8 +3,9 @@ import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Heart, Wallet, Target, Activity, Sparkles, ChevronDown, ChevronUp, Download, Archive, X, CheckCircle2 } from 'lucide-react';
+import { Heart, Wallet, Target, Activity, Sparkles, ChevronDown, ChevronUp, Download, Archive, X, CheckCircle2, Share2 } from 'lucide-react';
 import { exportReviewPDF } from '@/lib/reviewExportService';
+import ShareReviewModal from '@/components/reviews/ShareReviewModal';
 
 function ScoreRing({ value, color }) {
   const r = 22, c = 2 * Math.PI * r;
@@ -49,6 +50,7 @@ export default function LifeReviewCard({ review, onDismiss, onArchive }) {
   const lang = settings?.language || language || 'ar';
   const [expanded, setExpanded] = useState(true);
   const [exporting, setExporting] = useState(false);
+  const [showShare, setShowShare] = useState(false);
 
   const narrative = lang === 'ar' ? review.ai_narrative_ar : review.ai_narrative_en;
   const recommendation = lang === 'ar' ? review.focus_recommendation_ar : review.focus_recommendation_en;
@@ -235,6 +237,10 @@ export default function LifeReviewCard({ review, onDismiss, onArchive }) {
               <Download className="w-3.5 h-3.5" />
               {exporting ? (lang === 'ar' ? 'جارٍ التصدير...' : 'Exporting...') : (lang === 'ar' ? 'تصدير PDF' : 'Export PDF')}
             </Button>
+            <Button onClick={() => setShowShare(true)} size="sm" variant="outline" className="gap-1.5 text-xs">
+              <Share2 className="w-3.5 h-3.5" />
+              {lang === 'ar' ? 'مشاركة' : 'Share'}
+            </Button>
             {onArchive && (
               <Button onClick={onArchive} size="sm" variant="outline" className="gap-1.5 text-xs">
                 <Archive className="w-3.5 h-3.5" />
@@ -244,6 +250,7 @@ export default function LifeReviewCard({ review, onDismiss, onArchive }) {
           </div>
         </div>
       )}
+      {showShare && <ShareReviewModal review={review} onClose={() => setShowShare(false)} />}
     </div>
   );
 }

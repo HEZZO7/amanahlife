@@ -83,51 +83,21 @@ export default function Finance() {
       )}
 
       {/* Tabs */}
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        gap: '8px', 
-        width: '100%', 
-        overflowX: 'auto', 
-        whiteSpace: 'nowrap',
-        padding: '6px 4px',
-        backgroundColor: '#022c22',
-        borderRadius: '12px',
-        border: '1px solid rgba(45, 212, 191, 0.15)',
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none',
-        marginBottom: '20px'
-      }}>
-        <style>{`
-          div::-webkit-scrollbar { display: none; }
-        `}</style>
-
-        {TABS.map(tab_key => {
-          const isActive = tab === tab_key;
-          return (
-            <button
-              key={tab_key}
-              onClick={() => setTab(tab_key)}
-              style={{
-                flex: '1 0 auto',
-                textAlign: 'center',
-                padding: '10px 16px',
-                fontSize: '14px',
-                fontWeight: isActive ? '700' : '500',
-                borderRadius: '8px',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                backgroundColor: isActive ? '#2dd4bf' : 'transparent',
-                color: isActive ? '#064e3b' : '#a7f3d0',
-                boxShadow: isActive ? '0 4px 12px rgba(45, 212, 191, 0.3)' : 'none'
-              }}
-            >
-              {t(`finance.tab.${tab_key}`)}
-            </button>
-          );
-        })}
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+        {TABS.map(tab_key => (
+          <button
+            key={tab_key}
+            onClick={() => setTab(tab_key)}
+            className="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap"
+            style={{
+              background: tab === tab_key ? 'var(--mizan-emerald)' : 'var(--mizan-surface)',
+              color: tab === tab_key ? 'white' : 'var(--mizan-text-secondary)',
+              border: `1.5px solid ${tab === tab_key ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}`,
+            }}
+          >
+            {t(`finance.tab.${tab_key}`)}
+          </button>
+        ))}
       </div>
 
       {loading ? (

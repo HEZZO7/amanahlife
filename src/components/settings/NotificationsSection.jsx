@@ -16,23 +16,27 @@ const NOTIFY_KEYS = [
 function ToggleRow({ label, checked, onCheckedChange, bold }) {
   return (
     <div style={{
-      display: 'flex',
+      display: 'grid',
+      gridTemplateColumns: 'auto 1fr',
       alignItems: 'center',
-      justifyContent: 'space-between',
       width: '100%',
+      direction: 'ltr',
       padding: '10px 0',
       borderBottom: '1px solid rgba(0,0,0,0.05)',
     }}>
+      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
       <span style={{
+        justifySelf: 'end',
+        textAlign: 'right',
+        width: '100%',
         fontSize: '15px',
         fontWeight: bold ? '600' : '500',
         color: bold ? 'var(--mizan-text, #111827)' : 'var(--mizan-text-secondary, #6b7280)',
       }}>
         {label}
       </span>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Switch checked={checked} onCheckedChange={onCheckedChange} />
-      </div>
     </div>
   );
 }

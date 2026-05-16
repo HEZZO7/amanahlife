@@ -228,8 +228,32 @@ export default function TimesQibla({ language }) {
 
       {/* Auto-Log Toggle */}
       <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-        <div className="flex items-center justify-between">
-          <div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          alignItems: 'center',
+          width: '100%',
+          direction: 'ltr',
+          gap: '12px'
+        }}>
+          <div style={{ justifySelf: 'start' }}>
+            <button
+              onClick={() => setAutoLogEnabled(!autoLogEnabled)}
+              className="relative h-6 w-11 rounded-full transition-all"
+              style={{
+                background: autoLogEnabled ? 'var(--mizan-emerald)' : 'var(--mizan-border)',
+              }}
+            >
+              <span
+                className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full transition-all"
+                style={{
+                  background: 'white',
+                  transform: autoLogEnabled ? 'translateX(20px)' : 'translateX(0)',
+                }}
+              />
+            </button>
+          </div>
+          <div style={{ justifySelf: 'end', textAlign: 'right' }}>
             <p className="font-semibold text-sm" style={{ color: 'var(--mizan-text)' }}>
               {language === 'ar' ? 'تسجيل تلقائي للصلاة' : 'Auto-Log Prayers'}
             </p>
@@ -239,21 +263,6 @@ export default function TimesQibla({ language }) {
                 : '30 min after prayer time'}
             </p>
           </div>
-          <button
-            onClick={() => setAutoLogEnabled(!autoLogEnabled)}
-            className="relative h-6 w-11 rounded-full transition-all"
-            style={{
-              background: autoLogEnabled ? 'var(--mizan-emerald)' : 'var(--mizan-border)',
-            }}
-          >
-            <span
-              className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full transition-all"
-              style={{
-                background: 'white',
-                transform: autoLogEnabled ? 'translateX(20px)' : 'translateX(0)',
-              }}
-            />
-          </button>
         </div>
       </div>
     </div>

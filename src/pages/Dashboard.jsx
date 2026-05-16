@@ -133,7 +133,7 @@ export default function Dashboard() {
   const isEmpty = prayerCount === 0 && totalTasks === 0 && netBalance === 0 && activeGoals === 0;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-5xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--mizan-text)' }}>

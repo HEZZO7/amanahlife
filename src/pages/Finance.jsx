@@ -37,7 +37,7 @@ export default function Finance() {
   const currSymbol = settings?.currency_symbol || 'ر.س';
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 max-w-5xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
@@ -92,9 +92,9 @@ export default function Finance() {
         overflowX: 'auto', 
         whiteSpace: 'nowrap',
         padding: '6px 4px',
-        backgroundColor: '#111827',
+        backgroundColor: '#022c22',
         borderRadius: '12px',
-        border: '1px solid #1f2937',
+        border: '1px solid rgba(45, 212, 191, 0.15)',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none',
         marginBottom: '20px'
@@ -114,14 +114,14 @@ export default function Finance() {
                 textAlign: 'center',
                 padding: '10px 16px',
                 fontSize: '14px',
-                fontWeight: isActive ? '600' : '500',
+                fontWeight: isActive ? '700' : '500',
                 borderRadius: '8px',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                backgroundColor: isActive ? '#064e3b' : 'transparent',
-                color: isActive ? '#ffffff' : '#9ca3af',
-                boxShadow: isActive ? '0 2px 8px rgba(6,78,59,0.3)' : 'none'
+                backgroundColor: isActive ? '#2dd4bf' : 'transparent',
+                color: isActive ? '#064e3b' : '#a7f3d0',
+                boxShadow: isActive ? '0 4px 12px rgba(45, 212, 191, 0.3)' : 'none'
               }}
             >
               {t(`finance.tab.${tab_key}`)}

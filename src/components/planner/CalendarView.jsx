@@ -29,6 +29,21 @@ export default function CalendarView({ tasks, events, selectedDate, onDateChange
     if (weeks.length >= 6) break;
   }
 
+  // حساب عدد المهام حسب الأولوية
+  const getTasksByDate = (dateStr) => {
+    return tasks.filter(t => t.due_date === dateStr);
+  };
+
+  const getTaskPriorityStats = (dateStr) => {
+    const dayTasks = getTasksByDate(dateStr);
+    return {
+      high: dayTasks.filter(t => t.priority === 'high').length,
+      medium: dayTasks.filter(t => t.priority === 'medium').length,
+      low: dayTasks.filter(t => t.priority === 'low').length,
+      total: dayTasks.length,
+    };
+  };
+
   const prevMonth = () => setMonthDate(d => new Date(d.getFullYear(), d.getMonth() - 1));
   const nextMonth = () => setMonthDate(d => new Date(d.getFullYear(), d.getMonth() + 1));
 
@@ -64,7 +79,7 @@ export default function CalendarView({ tasks, events, selectedDate, onDateChange
         {weeks.flat().map((day, i) => {
           const dateStr = format(day, 'yyyy-MM-dd');
           const inMonth = isSameMonth(day, monthDate);
-          const hasTasks = tasks.some(t => t.due_date === dateStr);
+          const stats = getTaskPriorityStats(dateStr);
           const hasEvents = events.some(e => e.start_datetime?.startsWith(dateStr));
           const selected = dateStr === selectedDate;
           const today = isToday(day);
@@ -74,20 +89,38 @@ export default function CalendarView({ tasks, events, selectedDate, onDateChange
 
           return (
             <button key={i} onClick={() => onDateChange(dateStr)}
-              className="relative flex flex-col items-center py-1.5 rounded-lg transition-all"
+              className="relative flex flex-col items-center py-2 rounded-lg transition-all group"
               style={{ background: selected ? 'var(--mizan-emerald)' : today ? 'var(--mizan-border)' : 'transparent', opacity: inMonth ? 1 : 0.3 }}>
+              
+              {/* Main Date */}
               <span className="text-sm font-medium" style={{ color: selected ? 'white' : 'var(--mizan-text)' }}>
                 {format(day, 'd')}
               </span>
+              
+              {/* Hijri Date */}
               {showHijri && inMonth && hDay && (
                 <span className="text-[8px] leading-none" style={{ color: selected ? 'rgba(255,255,255,0.65)' : '#6B7280' }}>
                   {hDay}
                 </span>
               )}
+
+              {/* Task Count Badge */}
+              {stats.total > 0 && (
+                <div className="mt-1 mb-1 px-1.5 py-0.5 rounded text-xs font-bold" style={{
+                  background: stats.high > 0 ? 'var(--mizan-red)' : stats.medium > 0 ? 'var(--mizan-gold)' : 'var(--mizan-emerald)',
+                  color: 'white'
+                }}>
+                  {stats.total}
+                </div>
+              )}
+              
+              {/* Indicators */}
               <div className="flex gap-0.5 mt-0.5 flex-wrap justify-center">
-                {hasTasks && <div className="w-1 h-1 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-emerald)' }} />}
-                {hasEvents && <div className="w-1 h-1 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-gold)' }} />}
-                {islamicEvents.length > 0 && <div className="w-1.5 h-1.5 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-gold)', border: selected ? 'none' : '1px solid var(--mizan-gold)' }} />}
+                {stats.high > 0 && <div className="w-1.5 h-1.5 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-red)' }} title="High priority" />}
+                {stats.medium > 0 && <div className="w-1.5 h-1.5 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-gold)' }} title="Medium priority" />}
+                {stats.low > 0 && <div className="w-1.5 h-1.5 rounded-full" style={{ background: selected ? 'white' : '#27AE60' }} title="Low priority" />}
+                {hasEvents && <div className="w-1 h-1 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-emerald)' }} />}
+                {islamicEvents.length > 0 && <div className="w-1 h-1 rounded-full" style={{ background: selected ? 'white' : 'var(--mizan-gold)', border: selected ? 'none' : '1px solid var(--mizan-gold)' }} />}
                 {sunnahFasts.length > 0 && <div className="w-1 h-1 rounded-full" style={{ background: selected ? 'white' : '#7C9A7E' }} />}
               </div>
             </button>
@@ -97,9 +130,9 @@ export default function CalendarView({ tasks, events, selectedDate, onDateChange
 
       {/* Selected Day Tasks */}
       {selectedDate && (
-        <div>
-          <div className="mb-3 mizan-section-header pl-3">
-            <p className="text-sm font-semibold" style={{ color: 'var(--mizan-text-secondary)' }}>
+        <div className="rounded-xl p-4" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+          <div className="mb-4 mizan-section-header pl-3">
+            <p className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>
               {format(parseISO(selectedDate), 'EEEE, MMMM d')}
             </p>
             {showHijri && (
@@ -108,15 +141,37 @@ export default function CalendarView({ tasks, events, selectedDate, onDateChange
               </p>
             )}
           </div>
+
           {selectedDayTasks.length === 0 ? (
             <p className="text-sm text-center py-6" style={{ color: 'var(--mizan-text-secondary)' }}>{t('planner.noTasks')}</p>
           ) : (
             <div className="space-y-2">
-              {selectedDayTasks.map(task => (
-                <div key={task.id} className="p-3 rounded-lg" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-                  <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{task.title}</p>
-                </div>
-              ))}
+              {selectedDayTasks.map(task => {
+                const priorityColor = task.priority === 'high' ? 'var(--mizan-red)' : task.priority === 'medium' ? 'var(--mizan-gold)' : '#27AE60';
+                return (
+                  <div key={task.id} className="p-3 rounded-lg flex items-start gap-3" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+                    <div className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ background: priorityColor }} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{task.title}</p>
+                      {task.due_time && (
+                        <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>🕐 {task.due_time}</p>
+                      )}
+                      {task.description && (
+                        <p className="text-xs mt-1 line-clamp-1" style={{ color: 'var(--mizan-text-secondary)' }}>{task.description}</p>
+                      )}
+                    </div>
+                    <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0" style={{
+                      background: task.status === 'completed' ? 'var(--mizan-emerald)20' : task.status === 'in_progress' ? 'var(--mizan-gold)20' : 'var(--mizan-border)',
+                      color: task.status === 'completed' ? 'var(--mizan-emerald)' : task.status === 'in_progress' ? 'var(--mizan-gold)' : 'var(--mizan-text-secondary)'
+                    }}>
+                      {language === 'ar' 
+                        ? (task.status === 'completed' ? 'مكتمل' : task.status === 'in_progress' ? 'جاري' : 'قادم')
+                        : (task.status === 'completed' ? 'Done' : task.status === 'in_progress' ? 'In Progress' : 'Pending')
+                      }
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

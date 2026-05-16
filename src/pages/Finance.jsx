@@ -88,7 +88,7 @@ export default function Finance() {
           <button
             key={tab_key}
             onClick={() => setTab(tab_key)}
-            className="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap"
+            className="flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap"
             style={{
               background: tab === tab_key ? 'var(--mizan-emerald)' : 'var(--mizan-surface)',
               color: tab === tab_key ? 'white' : 'var(--mizan-text-secondary)',

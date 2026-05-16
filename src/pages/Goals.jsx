@@ -87,7 +87,7 @@ export default function Goals() {
           {/* Filter */}
           <div className="flex gap-2 mb-5">
             {['active', 'completed', 'paused', 'all'].map(f => (
-              <button key={f} onClick={() => setFilter(f)} className="px-3 py-1.5 rounded-full text-xs font-medium transition-all" style={{ background: filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-surface)', color: filter === f ? 'white' : 'var(--mizan-text-secondary)', border: `1px solid ${filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}` }}>
+              <button key={f} onClick={() => setFilter(f)} className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all" style={{ background: filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-surface)', color: filter === f ? 'white' : 'var(--mizan-text-secondary)', border: `1px solid ${filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}` }}>
                 {t(`goals.${f}`)}
               </button>
             ))}

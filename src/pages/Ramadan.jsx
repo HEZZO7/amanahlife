@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Moon, Sun, BookOpen, Heart, Calendar, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import RamadanDailySchedule from '@/components/ramadan/RamadanDailySchedule';
 import RamadanCalendarView from '@/components/ramadan/RamadanCalendarView';
+import QuranTracker from '@/components/ramadan/QuranTracker';
 
 // Dynamically compute the next Ramadan date — always in the future
 function getNextRamadan() {
@@ -135,6 +136,17 @@ export default function Ramadan() {
        <div className="space-y-3">{[1,2,3].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
       ) : (
        <div className="space-y-5">
+         {/* Quran Tracker */}
+         <div className="rounded-2xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+           <div className="flex items-center gap-2 mb-4">
+             <BookOpen className="w-5 h-5" style={{ color: 'var(--mizan-emerald)' }} />
+             <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
+               {language === 'ar' ? 'تتبع القرآن' : 'Quran Tracker'}
+             </h2>
+           </div>
+           <QuranTracker />
+         </div>
+
          {/* Weekly Calendar View */}
          <RamadanCalendarView />
 

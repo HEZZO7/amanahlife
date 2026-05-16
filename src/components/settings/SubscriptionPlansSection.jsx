@@ -152,14 +152,16 @@ export default function SubscriptionPlansSection() {
                 style={{ background: isCurrentPlan ? 'var(--mizan-emerald)' : 'var(--mizan-emerald-light)' }}
               >
                 <h4 className="text-lg font-bold">
-                  {planId === 'free' && (isRtl ? 'رفيق الحياة' : 'Life Companion')}
-                  {planId === 'premium' && (isRtl ? 'الحياة المتوازنة' : 'Balanced Life')}
-                  {planId === 'family' && (isRtl ? 'أمانة العائلة' : 'Family Amanah')}
+                  {isRtl 
+                    ? (planId === 'free' ? 'رفيق الحياة' : planId === 'premium' ? 'الحياة المتوازنة' : 'أمانة العائلة')
+                    : (planId === 'free' ? 'Life Companion' : planId === 'premium' ? 'Balanced Life' : 'Family Amanah')
+                  }
                 </h4>
                 <p className="text-xs mt-1 opacity-90">
-                  {planId === 'free' && (isRtl ? 'الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم' : 'The basic plan perfect for individuals starting their journey')}
-                  {planId === 'premium' && (isRtl ? 'باقة مميزة للطموحين الذين يسعون لتعميق التوازن' : 'Premium plan for ambitious individuals seeking deeper balance')}
-                  {planId === 'family' && (isRtl ? 'باقة شاملة للعائلات الراغبة بالتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance')}
+                  {isRtl
+                    ? (planId === 'free' ? 'الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم' : planId === 'premium' ? 'باقة مميزة للطموحين الذين يسعون لتعميق التوازن' : 'باقة شاملة للعائلات الراغبة بالتعاون والتوازن')
+                    : (planId === 'free' ? 'The basic plan perfect for individuals starting their journey' : planId === 'premium' ? 'Premium plan for ambitious individuals seeking deeper balance' : 'Comprehensive plan for families seeking cooperation and balance')
+                  }
                 </p>
               </div>
 
@@ -184,27 +186,44 @@ export default function SubscriptionPlansSection() {
                 </div>
 
                 {/* Features List */}
-                <div className="space-y-2">
-                  {Object.entries(plan.features).map(([featureKey, hasFeature]) => (
-                    <div key={featureKey} className="flex items-start gap-2">
-                      {hasFeature ? (
-                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
-                      ) : (
-                        <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
-                      )}
-                      <span
-                        className="text-sm"
-                        style={{
-                          color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-                          textAlign: isRtl ? 'right' : 'left',
-                        }}
-                      >
-                        {isRtl
-                          ? FEATURE_DESCRIPTIONS[featureKey].ar
-                          : FEATURE_DESCRIPTIONS[featureKey].en}
-                      </span>
-                    </div>
-                  ))}
+                <div className="space-y-2" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
+                   {Object.entries(plan.features).map(([featureKey, hasFeature]) => (
+                     <div key={featureKey} className="flex items-start gap-2" style={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }}>
+                       {isRtl ? (
+                         <>
+                           <span
+                             className="text-sm"
+                             style={{
+                               color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
+                             }}
+                           >
+                             {FEATURE_DESCRIPTIONS[featureKey].ar}
+                           </span>
+                           {hasFeature ? (
+                             <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
+                           ) : (
+                             <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
+                           )}
+                         </>
+                       ) : (
+                         <>
+                           {hasFeature ? (
+                             <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
+                           ) : (
+                             <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
+                           )}
+                           <span
+                             className="text-sm"
+                             style={{
+                               color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
+                             }}
+                           >
+                             {FEATURE_DESCRIPTIONS[featureKey].en}
+                           </span>
+                         </>
+                       )}
+                     </div>
+                   ))}
                 </div>
 
                 {/* Action Button */}

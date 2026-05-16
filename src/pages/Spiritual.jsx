@@ -11,6 +11,7 @@ import SpiritualStreak from '@/components/spiritual/SpiritualStreak';
 import SpiritualCharity from '@/components/spiritual/SpiritualCharity';
 import TimesQibla from '@/components/spiritual/TimesQibla';
 import PrayerReminderSettings from '@/components/spiritual/PrayerReminderSettings';
+import DhikrCounter from '@/components/spiritual/DhikrCounter';
 
 const TABS = [
   { key: 'prayer', en: 'Prayer', ar: 'الصلاة' },
@@ -100,7 +101,7 @@ function SpiritualQuranTab({ score, onReload }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--mizan-text)' }}>
           {language === 'ar' ? 'صفحات القرآن اليوم' : "Today's Qur'an Pages"}
@@ -123,6 +124,14 @@ function SpiritualQuranTab({ score, onReload }) {
           {language === 'ar' ? 'نقاط القرآن اليوم' : "Today's Qur'an Score"}
         </p>
         <p className="text-2xl font-bold" style={{ color: 'var(--mizan-gold)' }}>{score?.quranScore || 0}/20</p>
+      </div>
+
+      {/* Dhikr Counter */}
+      <div>
+        <h3 className="text-sm font-semibold mb-3 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
+          {language === 'ar' ? 'عداد الأذكار' : 'Dhikr Counter'}
+        </h3>
+        <DhikrCounter language={language} />
       </div>
     </div>
   );

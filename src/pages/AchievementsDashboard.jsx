@@ -5,7 +5,8 @@ import { base44 } from '@/api/base44Client';
 import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Trophy, Target, CheckCircle2, Flame, Star, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trophy, Target, CheckCircle2, Flame, Star, TrendingUp } from 'lucide-react';
+import BadgesSection from '@/components/achievements/BadgesSection';
 import {
   BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell,
   LineChart, Line, RadialBarChart, RadialBar, PieChart, Pie
@@ -132,7 +133,7 @@ export default function AchievementsDashboard() {
       });
     });
 
-    setData({ monthlyTasks, goalsByCategory, priorityData, totalCompleted, totalGoals, completedGoals, avgGoalProgress, streak, heatmapWeeks });
+    setData({ monthlyTasks, goalsByCategory, priorityData, totalCompleted, totalGoals, completedGoals, avgGoalProgress, streak, heatmapWeeks, spiritualScore: 0 });
     setLoading(false);
   };
 
@@ -284,6 +285,9 @@ export default function AchievementsDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Badges */}
+      <BadgesSection data={data} language={lang} />
 
       {/* Motivational footer */}
       <div className="rounded-2xl p-4 text-center" style={{ background: 'linear-gradient(135deg, var(--mizan-emerald) 0%, #12897A 100%)' }}>

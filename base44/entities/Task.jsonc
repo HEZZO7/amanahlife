@@ -48,6 +48,10 @@
         "monthly"
       ],
       "default": "none"
+    },
+    "goal_id": {
+      "type": "string",
+      "description": "ID of the parent goal this task belongs to"
     }
   },
   "required": [

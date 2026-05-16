@@ -17,19 +17,26 @@ export default function GoalDetail({ goalId, onBack }) {
   const [addingMs, setAddingMs] = useState(false);
   const [activeTab, setActiveTab] = useState('tasks'); // 'tasks' | 'timeline'
 
+  const [linkedTasks, setLinkedTasks] = useState([]);
+
   const load = async () => {
-    const d = await getProgress(goalId);
+    const [d, tasks] = await Promise.all([
+      getProgress(goalId),
+      base44.entities.Task.filter({ goal_id: goalId }, '-created_date', 50),
+    ]);
     setData(d);
+    setLinkedTasks(tasks || []);
     setLoading(false);
   };
 
   useEffect(() => { load(); }, [goalId]);
 
-  // Auto-compute progress from milestones and sync to Goal entity
-  const computedProgress = (milestones) => {
-    if (!milestones || milestones.length === 0) return null;
-    const completed = milestones.filter(m => m.is_completed).length;
-    return Math.round((completed / milestones.length) * 100);
+  // Compute progress from milestones + linked tasks combined
+  const computedProgress = (milestones, tasks) => {
+    const allItems = [...(milestones || []), ...(tasks || [])];
+    if (allItems.length === 0) return null;
+    const completed = allItems.filter(i => i.is_completed === true || i.status === 'completed').length;
+    return Math.round((completed / allItems.length) * 100);
   };
 
   const handleToggleMilestone = async (ms) => {
@@ -37,14 +44,31 @@ export default function GoalDetail({ goalId, onBack }) {
       is_completed: !ms.is_completed,
       completed_at: !ms.is_completed ? new Date().toISOString() : null,
     });
-    // Re-load then auto-sync progress
-    const d = await getProgress(goalId);
-    const autoProgress = computedProgress(d.milestones);
+    const [d, tasks] = await Promise.all([
+      getProgress(goalId),
+      base44.entities.Task.filter({ goal_id: goalId }, '-created_date', 50),
+    ]);
+    const autoProgress = computedProgress(d.milestones, tasks);
     if (autoProgress !== null) {
       await base44.entities.Goal.update(goalId, { progress: autoProgress });
       d.progress = autoProgress;
     }
     setData(d);
+    setLinkedTasks(tasks || []);
+  };
+
+  const handleToggleTask = async (task) => {
+    const newStatus = task.status === 'completed' ? 'pending' : 'completed';
+    await base44.entities.Task.update(task.id, { status: newStatus });
+    // The automation will handle progress sync, but we also update locally
+    const [d, tasks] = await Promise.all([
+      getProgress(goalId),
+      base44.entities.Task.filter({ goal_id: goalId }, '-created_date', 50),
+    ]);
+    const autoProgress = computedProgress(d.milestones, tasks);
+    if (autoProgress !== null) d.progress = autoProgress;
+    setData(d);
+    setLinkedTasks(tasks || []);
   };
 
   const handleAddMilestone = async () => {
@@ -57,24 +81,32 @@ export default function GoalDetail({ goalId, onBack }) {
     setNewMilestone('');
     setNewDueDate('');
     setAddingMs(false);
-    const d = await getProgress(goalId);
-    const autoProgress = computedProgress(d.milestones);
+    const [d, tasks] = await Promise.all([
+      getProgress(goalId),
+      base44.entities.Task.filter({ goal_id: goalId }, '-created_date', 50),
+    ]);
+    const autoProgress = computedProgress(d.milestones, tasks);
     if (autoProgress !== null) {
       await base44.entities.Goal.update(goalId, { progress: autoProgress });
       d.progress = autoProgress;
     }
     setData(d);
+    setLinkedTasks(tasks || []);
   };
 
   const handleDeleteMilestone = async (id) => {
     await base44.entities.Milestone.delete(id);
-    const d = await getProgress(goalId);
-    const autoProgress = computedProgress(d.milestones);
+    const [d, tasks] = await Promise.all([
+      getProgress(goalId),
+      base44.entities.Task.filter({ goal_id: goalId }, '-created_date', 50),
+    ]);
+    const autoProgress = computedProgress(d.milestones, tasks);
     if (autoProgress !== null) {
       await base44.entities.Goal.update(goalId, { progress: autoProgress });
       d.progress = autoProgress;
     }
     setData(d);
+    setLinkedTasks(tasks || []);
   };
 
   if (loading) return <div className="py-12 text-center" style={{ color: 'var(--mizan-text-secondary)' }}>...</div>;
@@ -83,7 +115,8 @@ export default function GoalDetail({ goalId, onBack }) {
   const goal = data;
   const milestones = data.milestones || [];
   const progress = goal.progress || 0;
-  const completedCount = milestones.filter(m => m.is_completed).length;
+  const allItems = [...milestones, ...linkedTasks];
+  const completedCount = allItems.filter(i => i.is_completed === true || i.status === 'completed').length;
 
   const CAT_COLORS = { personal: '#0B5B50', financial: '#B89A5E', spiritual: '#12897A', family: '#0B5B50', health: '#27AE60' };
   const color = CAT_COLORS[goal.category] || 'var(--mizan-emerald)';
@@ -111,15 +144,11 @@ export default function GoalDetail({ goalId, onBack }) {
             style={{ width: `${Math.min(progress, 100)}%`, background: color }}
           />
         </div>
-        {milestones.length > 0 && (
+        {allItems.length > 0 && (
           <p className="text-xs mt-2" style={{ color: 'var(--mizan-text-secondary)' }}>
-            {completedCount}/{milestones.length} {t('goals.milestones')}
-            {milestones.length > 0 && (
-              <span className="mx-1 opacity-50">·</span>
-            )}
-            {lang === 'ar'
-              ? 'يُحسب التقدم تلقائياً من المهام الفرعية'
-              : 'Progress auto-calculated from sub-tasks'}
+            {completedCount}/{allItems.length} {lang === 'ar' ? 'بند مكتمل' : 'items completed'}
+            <span className="mx-1 opacity-50">·</span>
+            {lang === 'ar' ? 'يُحسب تلقائياً من المراحل والمهام' : 'Auto-calculated from milestones & tasks'}
           </p>
         )}
       </div>
@@ -197,16 +226,11 @@ export default function GoalDetail({ goalId, onBack }) {
                   }
                 </button>
                 <div className="flex-1 min-w-0">
-                  <span
-                    className="text-sm block"
-                    style={{ color: 'var(--mizan-text)', textDecoration: ms.is_completed ? 'line-through' : 'none', opacity: ms.is_completed ? 0.6 : 1 }}
-                  >
+                  <span className="text-sm block" style={{ color: 'var(--mizan-text)', textDecoration: ms.is_completed ? 'line-through' : 'none', opacity: ms.is_completed ? 0.6 : 1 }}>
                     {ms.title}
                   </span>
                   {ms.due_date && (
-                    <span className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
-                      📅 {ms.due_date}
-                    </span>
+                    <span className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>📅 {ms.due_date}</span>
                   )}
                 </div>
                 <button onClick={() => handleDeleteMilestone(ms.id)} className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -214,7 +238,40 @@ export default function GoalDetail({ goalId, onBack }) {
                 </button>
               </div>
             ))}
-            {milestones.length === 0 && !addingMs && (
+
+            {/* Linked Tasks */}
+            {linkedTasks.length > 0 && (
+              <>
+                {(milestones.length > 0) && (
+                  <p className="text-xs font-semibold pt-2 pb-1" style={{ color: 'var(--mizan-text-secondary)' }}>
+                    {lang === 'ar' ? '📌 المهام المرتبطة' : '📌 Linked Tasks'}
+                  </p>
+                )}
+                {linkedTasks.map(task => (
+                  <div key={task.id} className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+                    <button onClick={() => handleToggleTask(task)}>
+                      {task.status === 'completed'
+                        ? <CheckCircle2 className="w-5 h-5" style={{ color }} />
+                        : <Circle className="w-5 h-5" style={{ color: 'var(--mizan-border)' }} />
+                      }
+                    </button>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm block" style={{ color: 'var(--mizan-text)', textDecoration: task.status === 'completed' ? 'line-through' : 'none', opacity: task.status === 'completed' ? 0.6 : 1 }}>
+                        {task.title}
+                      </span>
+                      {task.due_date && (
+                        <span className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>📅 {task.due_date}</span>
+                      )}
+                    </div>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ background: 'var(--mizan-border)', color: 'var(--mizan-text-secondary)' }}>
+                      {lang === 'ar' ? 'مهمة' : 'task'}
+                    </span>
+                  </div>
+                ))}
+              </>
+            )}
+
+            {milestones.length === 0 && linkedTasks.length === 0 && !addingMs && (
               <p className="text-sm text-center py-4" style={{ color: 'var(--mizan-text-secondary)' }}>{t('goals.noMilestones')}</p>
             )}
           </div>

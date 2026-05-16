@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
@@ -6,9 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X } from 'lucide-react';
 
-export default function AddTaskModal({ onClose, onSave, defaultDate }) {
+export default function AddTaskModal({ onClose, onSave, defaultDate, defaultGoalId }) {
   const { language } = useI18n();
-  const [form, setForm] = useState({ title: '', description: '', priority: 'medium', due_date: defaultDate || '', due_time: '', recurring: 'none' });
+  const [form, setForm] = useState({ title: '', description: '', priority: 'medium', due_date: defaultDate || '', due_time: '', recurring: 'none', goal_id: defaultGoalId || '' });
+  const [goals, setGoals] = useState([]);
+
+  useEffect(() => {
+    base44.entities.Goal.filter({ status: 'active' }, '-created_date', 50).then(setGoals).catch(() => {});
+  }, []);
 
   const handleSave = async () => {
     if (!form.title.trim()) return;
@@ -65,6 +70,21 @@ export default function AddTaskModal({ onClose, onSave, defaultDate }) {
             </SelectContent>
           </Select>
         </div>
+
+        {/* Link to Goal */}
+        {goals.length > 0 && (
+          <Select value={form.goal_id || 'none'} onValueChange={v => setForm(f => ({ ...f, goal_id: v === 'none' ? '' : v }))}>
+            <SelectTrigger className="h-10 rounded-xl w-full" style={{ background: 'var(--mizan-surface)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }}>
+              <SelectValue placeholder={language === 'ar' ? 'ربط بهدف (اختياري)' : 'Link to goal (optional)'} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">{language === 'ar' ? 'بدون ربط بهدف' : 'No goal link'}</SelectItem>
+              {goals.map(g => (
+                <SelectItem key={g.id} value={g.id}>{g.title}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
 
         <Button onClick={handleSave} className="w-full h-11 rounded-xl text-white" style={{ background: 'var(--mizan-emerald)' }}>
           {language === 'ar' ? 'حفظ المهمة' : 'Save Task'}

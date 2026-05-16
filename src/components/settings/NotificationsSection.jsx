@@ -13,7 +13,7 @@ const NOTIFY_KEYS = [
 ];
 
 export default function NotificationsSection() {
-  const { t } = useI18n();
+  const { t, isRTL } = useI18n();
   const { settings, updateSettings } = useUserSettings();
 
   return (
@@ -22,7 +22,7 @@ export default function NotificationsSection() {
         {t('settings.notifications')}
       </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px', paddingTop: '4px', paddingBottom: '4px' }}>
+      <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px', paddingTop: '4px', paddingBottom: '4px' }}>
         <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '600' }}>
           {t('settings.notifyAll')}
         </span>
@@ -37,7 +37,7 @@ export default function NotificationsSection() {
       {(settings?.notifications_enabled !== false) && (
         <div className="space-y-3 pt-1">
           {NOTIFY_KEYS.map(({ key, label }) => (
-            <div key={key} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+            <div key={key} style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
               <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text-secondary)', fontSize: '14px' }}>
                 {t(label)}
               </span>

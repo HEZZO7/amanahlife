@@ -18,7 +18,7 @@ const CURRENCIES = [
 ];
 
 export default function RegionalSection() {
-  const { t } = useI18n();
+  const { t, isRTL } = useI18n();
   const { settings, updateSettings } = useUserSettings();
 
   const handleCurrency = async (code) => {
@@ -49,7 +49,7 @@ export default function RegionalSection() {
         </Select>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+      <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
         <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '500' }}>
           {t('settings.easternNumerals')}
         </span>
@@ -61,7 +61,7 @@ export default function RegionalSection() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+      <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
         <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '500' }}>
           {t('settings.ramadanMode')}
         </span>

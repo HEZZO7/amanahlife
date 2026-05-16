@@ -319,7 +319,7 @@ export default function TimesQibla({ language }) {
       )}
 
       {/* Auto-log toggle */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px', padding: '16px', borderRadius: '12px', background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+      <div style={{ display: 'flex', flexDirection: isAr ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px', padding: '16px', borderRadius: '12px', background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--mizan-text)', margin: 0 }}>
             {isAr ? 'تذكير تسجيل الصلاة' : 'Auto-suggest prayer log'}

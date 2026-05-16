@@ -8,10 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import GoalCard from '@/components/goals/GoalCard';
 import GoalDetail from '@/components/goals/GoalDetail';
+import GoalsProgressChart from '@/components/goals/GoalsProgressChart';
 
 export default function Goals() {
   const { t } = useI18n();
   const [summary, setSummary] = useState(null);
+  const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('active');
   const [selectedGoal, setSelectedGoal] = useState(null);
@@ -23,8 +25,11 @@ export default function Goals() {
 
   const load = () => {
     setLoading(true);
-    getUserSummary()
-      .then(s => setSummary(s))
+    Promise.all([
+      getUserSummary(),
+      base44.entities.Task.list('-created_date', 200),
+    ])
+      .then(([s, t]) => { setSummary(s); setTasks(t); })
       .catch(err => console.error('Goals load error:', err))
       .finally(() => setLoading(false));
   };
@@ -74,6 +79,9 @@ export default function Goals() {
               </div>
             ))}
           </div>
+
+          {/* Progress Chart */}
+          {(summary?.goals || []).length > 0 && <GoalsProgressChart goals={summary.goals} tasks={tasks} />}
 
           {/* Filter */}
           <div className="flex gap-2 mb-5">

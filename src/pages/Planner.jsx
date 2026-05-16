@@ -10,6 +10,7 @@ import PlannerAgenda from '@/components/planner/PlannerAgenda';
 import PlannerMonth from '@/components/planner/PlannerMonth';
 import WeeklySummary from '@/components/planner/WeeklySummary';
 import CompletionDashboard from '@/components/planner/CompletionDashboard';
+import OverdueTasksBanner from '@/components/planner/OverdueTasksBanner';
 import AddTaskModal from '@/components/planner/AddTaskModal';
 import TaskFilters from '@/components/planner/TaskFilters';
 import TaskTemplateModal from '@/components/planner/TaskTemplateModal';
@@ -37,6 +38,7 @@ export default function Planner() {
   const [showTemplate, setShowTemplate] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({ priority: 'all', status: 'all', todayOnly: false });
+  const [hideBanner, setHideBanner] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -142,6 +144,9 @@ export default function Planner() {
           </button>
         </div>
       </div>
+
+      {/* Overdue Tasks Banner */}
+      {!hideBanner && <OverdueTasksBanner tasks={tasks} onDismiss={() => setHideBanner(true)} />}
 
       {/* Filters panel */}
       {showFilters && (

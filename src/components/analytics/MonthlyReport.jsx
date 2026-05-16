@@ -195,11 +195,11 @@ export default function MonthlyReport() {
           <h3 className="text-sm font-semibold mb-4 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
             {language === 'ar' ? 'النشاط اليومي' : 'Daily Activity'}
           </h3>
-          <div style={{ height: 200 }}>
+          <div style={{ height: 220, boxSizing: 'border-box', overflow: 'hidden' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={report.chartData}>
-                <XAxis dataKey="day" tick={{ fontSize: 10 }} />
-                <YAxis tick={{ fontSize: 10 }} />
+                <XAxis dataKey="day" tick={{ fontSize: 10, fill: 'var(--mizan-text-secondary)' }} axisLine={{ stroke: 'var(--mizan-border)' }} />
+                <YAxis tick={{ fontSize: 10, fill: 'var(--mizan-text-secondary)' }} axisLine={{ stroke: 'var(--mizan-border)' }} />
                 <Tooltip contentStyle={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)', borderRadius: 8 }} />
                 <Legend />
                 <Bar dataKey="income" fill="var(--mizan-emerald)" name={language === 'ar' ? 'دخل' : 'Income'} />
@@ -216,7 +216,7 @@ export default function MonthlyReport() {
           <h3 className="text-sm font-semibold mb-4 mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
             {language === 'ar' ? 'توزيع المصروفات' : 'Expense Distribution'}
           </h3>
-          <div style={{ height: 200 }} className="flex items-center gap-4">
+          <div style={{ height: 220, boxSizing: 'border-box', overflow: 'hidden' }} className="flex items-center gap-4">
             <ResponsiveContainer width="35%" height="100%">
               <PieChart>
                 <Pie data={report.expensesByCategory} cx="50%" cy="50%" outerRadius={60} dataKey="value">

@@ -20,12 +20,12 @@ export default function AppLayout() {
     : {};
 
   return (
-    <div className="mizan-pattern-bg min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
+    <div className="mizan-pattern-bg min-h-screen" style={{ background: 'var(--mizan-bg)', width: '100vw', maxWidth: '100%', overflowX: 'hidden', margin: 0, padding: 0 }}>
       <Sidebar />
       <BottomTabs />
       <main
         className="relative z-10 pb-20 lg:pb-0 min-h-screen"
-        style={mainStyle}
+        style={{ ...mainStyle, width: '100%', overflowX: 'hidden' }}
       >
         <Outlet />
       </main>

@@ -203,7 +203,7 @@ export default function Dashboard() {
       {/* AI Insights */}
       {insights.length > 0 && (
         <div className="mb-6 space-y-3">
-          <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text-secondary)' }}>
+          <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
             {t('dashboard.aiInsights')}
           </h2>
           {insights.map(i => (
@@ -216,7 +216,7 @@ export default function Dashboard() {
       {data?.tasks?.today?.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text-secondary)' }}>
+            <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
               {t('dashboard.todayTasks')}
             </h2>
             <Link to="/planner" className="text-xs" style={{ color: 'var(--mizan-emerald)' }}>{t('common.viewAll')}</Link>

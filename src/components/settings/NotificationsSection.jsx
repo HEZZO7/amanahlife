@@ -13,37 +13,38 @@ const NOTIFY_KEYS = [
   { key: 'notify_ai', label: 'settings.notifyAI' },
 ];
 
-function ToggleRow({ label, checked, onCheckedChange, bold }) {
+function ToggleRow({ label, checked, onCheckedChange, bold, isRTL }) {
   return (
     <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'auto 1fr',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
-      direction: 'ltr',
-      padding: '10px 0',
-      borderBottom: '1px solid rgba(0,0,0,0.05)',
+      boxSizing: 'border-box',
+      padding: '12px 0',
+      borderBottom: '1px solid var(--mizan-border)',
+      direction: isRTL ? 'rtl' : 'ltr',
     }}>
-      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-        <Switch checked={checked} onCheckedChange={onCheckedChange} />
-      </div>
       <span style={{
-        justifySelf: 'end',
-        textAlign: 'right',
-        width: '100%',
+        textAlign: isRTL ? 'right' : 'left',
         fontSize: '15px',
         fontWeight: bold ? '600' : '500',
-        color: bold ? 'var(--mizan-text, #111827)' : 'var(--mizan-text-secondary, #6b7280)',
+        color: bold ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
       }}>
         {label}
       </span>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
     </div>
   );
 }
 
 export default function NotificationsSection() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const { settings, updateSettings } = useUserSettings();
+  const isRTL = language === 'ar';
 
   return (
     <div style={{ width: '100%' }}>
@@ -56,6 +57,7 @@ export default function NotificationsSection() {
         checked={settings?.notifications_enabled ?? true}
         onCheckedChange={(val) => updateSettings({ notifications_enabled: val })}
         bold
+        isRTL={isRTL}
       />
 
       {(settings?.notifications_enabled !== false) && NOTIFY_KEYS.map(({ key, label }) => (
@@ -64,6 +66,7 @@ export default function NotificationsSection() {
           label={t(label)}
           checked={settings?.[key] ?? true}
           onCheckedChange={(val) => updateSettings({ [key]: val })}
+          isRTL={isRTL}
         />
       ))}
 
@@ -80,6 +83,7 @@ export default function NotificationsSection() {
             label={t('settings.taskDueReminderDesc')}
             checked={settings?.task_due_reminder_enabled ?? true}
             onCheckedChange={(val) => updateSettings({ task_due_reminder_enabled: val })}
+            isRTL={isRTL}
           />
           {settings?.task_due_reminder_enabled !== false && (
             <div style={{ paddingTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

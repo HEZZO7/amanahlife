@@ -45,10 +45,11 @@ export default function GoalsProgressChart({ goals, tasks }) {
 
   return (
     <div className="mb-6 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-      <h3 className="text-sm font-semibold mb-4" style={{ color: '#ffffff' }}>
+      <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--mizan-text)' }}>
         {language === 'ar' ? '📊 تقدم الأهداف طويلة المدى' : '📊 Long-term Goals Progress'}
       </h3>
 
+      <div style={{ width: '100%', height: '280px', boxSizing: 'border-box', overflow: 'hidden' }}>
       <ResponsiveContainer width="100%" height={280}>
         <BarChart
           data={chartData}
@@ -84,6 +85,7 @@ export default function GoalsProgressChart({ goals, tasks }) {
           />
         </BarChart>
       </ResponsiveContainer>
+      </div>
 
       {/* Legend with progress indicators */}
       <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">

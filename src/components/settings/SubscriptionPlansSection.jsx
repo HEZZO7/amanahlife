@@ -36,7 +36,7 @@ export default function SubscriptionPlansSection() {
   return (
     <div style={{ padding: '20px 0', backgroundColor: 'transparent', width: '100%', direction: isArabic ? 'rtl' : 'ltr' }}>
       {/* Billing Period Toggle */}
-      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#022c22', padding: '8px', borderRadius: '12px', border: '1px solid rgba(45, 212, 191, 0.15)' }}>
+      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#0F4438', padding: '8px', borderRadius: '12px', border: '1px solid rgba(45, 212, 191, 0.15)' }}>
         <button
           onClick={() => setBillingPeriod('monthly')}
           style={{
@@ -95,7 +95,7 @@ export default function SubscriptionPlansSection() {
         
         {/* CARD 1: LIFE COMPANION */}
         <div style={{ backgroundColor: '#0F4438', borderRadius: '16px', border: '1px solid rgba(45, 212, 191, 0.15)', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }}>
-          <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
+          <div style={{ backgroundColor: '#0F4438', padding: '24px 16px', textAlign: 'center', color: '#ffffff', borderBottom: '1px solid rgba(45, 212, 191, 0.15)' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'رفيق الحياة' : 'Life Companion'}</h3>
             <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'الخطة الأساسية المثالية للأفراد في بداية رحلتهم' : 'The basic plan perfect for individuals starting their journey'}</p>
           </div>
@@ -139,7 +139,7 @@ export default function SubscriptionPlansSection() {
 
         {/* CARD 2: BALANCED LIFE */}
         <div style={{ backgroundColor: '#0F4438', borderRadius: '16px', border: '2px solid #2dd4bf', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }}>
-          <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
+          <div style={{ backgroundColor: '#0F4438', padding: '24px 16px', textAlign: 'center', color: '#ffffff', borderBottom: '2px solid #2dd4bf' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'الحياة المتوازنة' : 'Balanced Life'}</h3>
             <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة متميزة للأفراد الطموحين الذين يسعون لتوازن أعمق' : 'Premium plan for ambitious individuals seeking deeper balance'}</p>
           </div>
@@ -189,7 +189,7 @@ export default function SubscriptionPlansSection() {
 
         {/* CARD 3: FAMILY AMANAH */}
         <div style={{ backgroundColor: '#0F4438', borderRadius: '16px', border: '1px solid rgba(45, 212, 191, 0.15)', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }}>
-          <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
+          <div style={{ backgroundColor: '#0F4438', padding: '24px 16px', textAlign: 'center', color: '#ffffff', borderBottom: '1px solid rgba(45, 212, 191, 0.15)' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'أمانة العائلة' : 'Family Amanah'}</h3>
             <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة شاملة للعائلات التي تسعى للتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance'}</p>
           </div>

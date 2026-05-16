@@ -36,7 +36,7 @@ export default function SubscriptionPlansSection() {
   return (
     <div style={{ padding: '20px 16px', backgroundColor: '#f9fafb', minHeight: '100vh', direction: isArabic ? 'rtl' : 'ltr' }}>
       {/* Billing Period Toggle */}
-      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#ffffff', padding: '8px', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#1f2937', padding: '8px', borderRadius: '12px', border: '1px solid #374151' }}>
         <button
           onClick={() => setBillingPeriod('monthly')}
           style={{
@@ -94,13 +94,13 @@ export default function SubscriptionPlansSection() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '480px', margin: '0 auto' }}>
         
         {/* CARD 1: LIFE COMPANION */}
-        <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+        <div style={{ backgroundColor: '#111827', borderRadius: '16px', border: '1px solid #1f2937', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }}>
           <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'رفيق الحياة' : 'Life Companion'}</h3>
             <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'الخطة الأساسية المثالية للأفراد في بداية رحلتهم' : 'The basic plan perfect for individuals starting their journey'}</p>
           </div>
           <div style={{ padding: '24px 16px' }}>
-            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#111827' }}>
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#ffffff' }}>
               {isArabic ? 'مجاني' : 'Free'}
             </div>
             {/* Feature List */}
@@ -121,11 +121,11 @@ export default function SubscriptionPlansSection() {
                 { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: false },
                 { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: false }
               ].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6', direction: isArabic ? 'rtl' : 'ltr' }}>
-                  <span style={{ color: f.inc ? '#10b981' : '#d1d5db', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #1f2937', direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#4b5563', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     {f.inc ? '✓' : '✕'}
                   </span>
-                  <span style={{ fontSize: '14px', color: f.inc ? '#374151' : '#9ca3af', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                  <span style={{ fontSize: '14px', color: f.inc ? '#f3f4f6' : '#6b7280', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
                     {isArabic ? f.ar : f.en}
                   </span>
                 </div>
@@ -138,15 +138,15 @@ export default function SubscriptionPlansSection() {
         </div>
 
         {/* CARD 2: BALANCED LIFE */}
-        <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '2px solid #064e3b', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.08)' }}>
+        <div style={{ backgroundColor: '#111827', borderRadius: '16px', border: '2px solid #064e3b', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }}>
           <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'الحياة المتوازنة' : 'Balanced Life'}</h3>
             <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة متميزة للأفراد الطموحين الذين يسعون لتوازن أعمق' : 'Premium plan for ambitious individuals seeking deeper balance'}</p>
           </div>
           <div style={{ padding: '24px 16px' }}>
-            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#064e3b' }}>
-              {getPremiumPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
-              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#ffffff' }}>
+              {getPremiumPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
             </div>
             {billingPeriod === 'yearly' && (
               <div style={{ textAlign: 'center', marginBottom: '12px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
@@ -171,11 +171,11 @@ export default function SubscriptionPlansSection() {
                 { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: false },
                 { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: false }
               ].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6', direction: isArabic ? 'rtl' : 'ltr' }}>
-                  <span style={{ color: f.inc ? '#10b981' : '#d1d5db', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #1f2937', direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#4b5563', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     {f.inc ? '✓' : '✕'}
                   </span>
-                  <span style={{ fontSize: '14px', color: f.inc ? '#374151' : '#9ca3af', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                  <span style={{ fontSize: '14px', color: f.inc ? '#f3f4f6' : '#6b7280', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
                     {isArabic ? f.ar : f.en}
                   </span>
                 </div>
@@ -188,15 +188,15 @@ export default function SubscriptionPlansSection() {
         </div>
 
         {/* CARD 3: FAMILY AMANAH */}
-        <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+        <div style={{ backgroundColor: '#111827', borderRadius: '16px', border: '1px solid #1f2937', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' }}>
           <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'أمانة العائلة' : 'Family Amanah'}</h3>
             <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة شاملة للعائلات التي تسعى للتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance'}</p>
           </div>
           <div style={{ padding: '24px 16px' }}>
-            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#111827' }}>
-              {getFamilyPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
-              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#ffffff' }}>
+              {getFamilyPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
             </div>
             {billingPeriod === 'yearly' && (
               <div style={{ textAlign: 'center', marginBottom: '12px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
@@ -221,11 +221,11 @@ export default function SubscriptionPlansSection() {
                 { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: true },
                 { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: true }
               ].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6', direction: isArabic ? 'rtl' : 'ltr' }}>
-                  <span style={{ color: f.inc ? '#10b981' : '#d1d5db', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #1f2937', direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#4b5563', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     {f.inc ? '✓' : '✕'}
                   </span>
-                  <span style={{ fontSize: '14px', color: f.inc ? '#374151' : '#9ca3af', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                  <span style={{ fontSize: '14px', color: f.inc ? '#f3f4f6' : '#6b7280', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
                     {isArabic ? f.ar : f.en}
                   </span>
                 </div>
@@ -242,6 +242,8 @@ export default function SubscriptionPlansSection() {
       {/* Info Banner */}
       <div style={{
         marginTop: '24px',
+        maxWidth: '480px',
+        margin: '24px auto 0',
         backgroundColor: '#064e3b',
         borderRadius: '12px',
         padding: '16px',

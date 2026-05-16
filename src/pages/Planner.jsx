@@ -28,7 +28,6 @@ export default function Planner() {
   const [view, setView] = useState('day');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 6 }));
-  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +51,7 @@ export default function Planner() {
 
   const navigateDay = (dir) => setSelectedDate(d => { const n = new Date(d); n.setDate(d.getDate() + dir); return n; });
   const navigateWeek = (dir) => setWeekStart(d => dir > 0 ? addWeeks(d, 1) : subWeeks(d, 1));
-  const navigateMonth = (dir) => setCurrentMonth(d => { const n = new Date(d); n.setMonth(d.getMonth() + dir); return n; });
+  const navigateMonth = (dir) => setSelectedDate(d => { const n = new Date(d); n.setMonth(d.getMonth() + dir); return n; });
 
   const applyFilters = (taskList, f, forDate) => {
     let result = [...taskList];
@@ -68,7 +67,7 @@ export default function Planner() {
     : view === 'week'
     ? `${format(weekStart, 'MMM d')} – ${format(endOfWeek(weekStart, { weekStartsOn: 6 }), 'MMM d, yyyy')}`
     : view === 'month'
-    ? format(currentMonth, 'MMMM yyyy')
+    ? format(selectedDate, language === 'ar' ? 'MMMM yyyy' : 'MMMM yyyy')
     : (language === 'ar' ? 'الجدول' : 'Agenda');
 
   return (
@@ -155,7 +154,7 @@ export default function Planner() {
         <>
           {view === 'day' && <PlannerDay date={selectedDate} tasks={applyFilters(tasks, filters, selectedDate)} events={events} onReload={load} />}
           {view === 'week' && <PlannerWeek weekStart={weekStart} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
-          {view === 'month' && <PlannerMonth month={currentMonth} tasks={applyFilters(tasks, filters)} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
+          {view === 'month' && <PlannerMonth month={selectedDate} tasks={tasks} events={events} onSelectDay={d => { setSelectedDate(d); setView('day'); }} />}
           {view === 'agenda' && <PlannerAgenda tasks={applyFilters(tasks, filters)} events={events} onReload={load} />}
         </>
       )}

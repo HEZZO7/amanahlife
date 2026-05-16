@@ -12,21 +12,37 @@ const NOTIFY_KEYS = [
   { key: 'notify_ai', label: 'settings.notifyAI' },
 ];
 
+const toggleRowStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  gap: '16px',
+  padding: '12px 0',
+};
+
+const switchWrapStyle = {
+  flexShrink: 0,
+  display: 'flex',
+  alignItems: 'center',
+};
+
 export default function NotificationsSection() {
-  const { t, isRTL } = useI18n();
+  const { t } = useI18n();
   const { settings, updateSettings } = useUserSettings();
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <h2 className="text-lg font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)', marginBottom: '8px' }}>
         {t('settings.notifications')}
       </h2>
 
-      <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px', paddingTop: '4px', paddingBottom: '4px' }}>
-        <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '600' }}>
+      <div style={toggleRowStyle}>
+        <span style={{ flexGrow: 1, minWidth: 0, fontSize: '15px', fontWeight: '600', color: 'var(--mizan-text)' }}>
           {t('settings.notifyAll')}
         </span>
-        <div style={{ flexShrink: 0 }}>
+        <div style={switchWrapStyle}>
           <Switch
             checked={settings?.notifications_enabled ?? true}
             onCheckedChange={(val) => updateSettings({ notifications_enabled: val })}
@@ -35,13 +51,13 @@ export default function NotificationsSection() {
       </div>
 
       {(settings?.notifications_enabled !== false) && (
-        <div className="space-y-3 pt-1">
+        <>
           {NOTIFY_KEYS.map(({ key, label }) => (
-            <div key={key} style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
-              <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text-secondary)', fontSize: '14px' }}>
+            <div key={key} style={toggleRowStyle}>
+              <span style={{ flexGrow: 1, minWidth: 0, fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text-secondary)' }}>
                 {t(label)}
               </span>
-              <div style={{ flexShrink: 0 }}>
+              <div style={switchWrapStyle}>
                 <Switch
                   checked={settings?.[key] ?? true}
                   onCheckedChange={(val) => updateSettings({ [key]: val })}
@@ -49,7 +65,7 @@ export default function NotificationsSection() {
               </div>
             </div>
           ))}
-        </div>
+        </>
       )}
     </div>
   );

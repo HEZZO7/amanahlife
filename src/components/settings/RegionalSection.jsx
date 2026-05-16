@@ -17,8 +17,31 @@ const CURRENCIES = [
   { code: 'GBP', symbol: '£', label: 'GBP' },
 ];
 
+const toggleRowStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  gap: '16px',
+  padding: '12px 0',
+};
+
+const labelStyle = {
+  flexGrow: 1,
+  minWidth: 0,
+  fontSize: '15px',
+  fontWeight: '500',
+};
+
+const switchWrapStyle = {
+  flexShrink: 0,
+  display: 'flex',
+  alignItems: 'center',
+};
+
 export default function RegionalSection() {
-  const { t, isRTL } = useI18n();
+  const { t } = useI18n();
   const { settings, updateSettings } = useUserSettings();
 
   const handleCurrency = async (code) => {
@@ -49,11 +72,11 @@ export default function RegionalSection() {
         </Select>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
-        <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '500' }}>
+      <div style={toggleRowStyle}>
+        <span style={{ ...labelStyle, color: 'var(--mizan-text)' }}>
           {t('settings.easternNumerals')}
         </span>
-        <div style={{ flexShrink: 0 }}>
+        <div style={switchWrapStyle}>
           <Switch
             checked={settings?.show_eastern_numerals || false}
             onCheckedChange={(val) => updateSettings({ show_eastern_numerals: val })}
@@ -61,11 +84,11 @@ export default function RegionalSection() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
-        <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '500' }}>
+      <div style={toggleRowStyle}>
+        <span style={{ ...labelStyle, color: 'var(--mizan-text)' }}>
           {t('settings.ramadanMode')}
         </span>
-        <div style={{ flexShrink: 0 }}>
+        <div style={switchWrapStyle}>
           <Switch
             checked={settings?.ramadan_mode_active || false}
             onCheckedChange={(val) => updateSettings({ ramadan_mode_active: val })}

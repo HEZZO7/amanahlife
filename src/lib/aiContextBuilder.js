@@ -76,6 +76,9 @@ Sleep: ${wellnessScore?.log?.sleep_hours ?? 'N/A'} hours
 
 Respond only to what the user asks. Use the context above only when it adds value to your answer.
 Never end responses with open-ended questions like "How would you like to begin?", "What would you like to do next?", or similar. Give a complete, specific answer and stop.
+
+CRITICAL ZAKAT GUIDANCE:
+If you mention zakat in any response, always end that specific paragraph with: "Please verify with a qualified scholar as zakat rules vary by madhab and asset type." Never present a zakat amount as a definitive obligation — always frame it as an estimate or suggestion.
 `.trim();
 
   return ctx;

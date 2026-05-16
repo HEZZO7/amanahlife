@@ -6,6 +6,8 @@ import { format, parseISO } from 'date-fns';
 import { Calculator, AlertCircle, CheckCircle2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ZakatDisclaimer from '@/components/finance/ZakatDisclaimer';
+import ZakatRecordNote from '@/components/finance/ZakatRecordNote';
 
 const ZAKAT_RATE = 0.025; // 2.5%
 
@@ -91,6 +93,9 @@ export default function ZakatCalculator() {
 
   return (
     <div className="space-y-5">
+      {/* Disclaimer */}
+      <ZakatDisclaimer />
+
       {/* Main Calculator */}
       <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
         <h3 className="text-sm font-semibold mb-4 mizan-section-header flex items-center gap-2" style={{ color: 'var(--mizan-text)' }}>
@@ -223,13 +228,14 @@ export default function ZakatCalculator() {
               records.map(record => (
                 <div key={record.id} className="p-3 rounded-lg" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
                   <div className="flex items-start justify-between mb-2">
-                    <div>
+                    <div className="flex-1">
                       <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>
                         {format(parseISO(record.calculation_date), 'MMM d, yyyy')}
                       </p>
                       <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
                         {currSymbol} {record.zakat_due.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                       </p>
+                      <ZakatRecordNote />
                     </div>
                     {record.paid_status ? (
                       <span className="px-2 py-1 rounded text-xs font-medium text-white" style={{ background: 'var(--mizan-emerald)' }}>

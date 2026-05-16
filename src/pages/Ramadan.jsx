@@ -8,6 +8,7 @@ import { Moon, Sun, BookOpen, Heart, Calendar, Sparkles, ChevronLeft, ChevronRig
 import RamadanDailySchedule from '@/components/ramadan/RamadanDailySchedule';
 import RamadanCalendarView from '@/components/ramadan/RamadanCalendarView';
 import QuranTracker from '@/components/ramadan/QuranTracker';
+import ZakatFitrInfo from '@/components/ramadan/ZakatFitrInfo';
 
 // Dynamically compute the next Ramadan date — always in the future
 function getNextRamadan() {
@@ -249,6 +250,9 @@ export default function Ramadan() {
               ))}
             </div>
           </div>
+
+          {/* Zakat al-Fitr Info */}
+          <ZakatFitrInfo />
 
           {/* Eid Budget Card */}
           <div className="rounded-2xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>

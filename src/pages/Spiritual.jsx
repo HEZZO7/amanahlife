@@ -56,11 +56,18 @@ export default function Spiritual() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 p-1 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
         {TABS.map(({ key, en, ar }) => (
-          <button key={key} onClick={() => setTab(key)}
-            className="flex-1 py-2 text-sm font-medium rounded-lg transition-all"
-            style={{ background: tab === key ? 'var(--mizan-emerald)' : 'transparent', color: tab === key ? 'white' : 'var(--mizan-text-secondary)' }}>
+          <button
+            key={key}
+            onClick={() => setTab(key)}
+            className="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap"
+            style={{
+              background: tab === key ? 'var(--mizan-emerald)' : 'var(--mizan-surface)',
+              color: tab === key ? 'white' : 'var(--mizan-text-secondary)',
+              border: `1.5px solid ${tab === key ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}`,
+            }}
+          >
             {language === 'ar' ? ar : en}
           </button>
         ))}

@@ -12,61 +12,59 @@ const NOTIFY_KEYS = [
   { key: 'notify_ai', label: 'settings.notifyAI' },
 ];
 
-const toggleRowStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  gap: '16px',
-  padding: '12px 0',
-};
-
-const switchWrapStyle = {
-  flexShrink: 0,
-  display: 'flex',
-  alignItems: 'center',
-};
+function ToggleRow({ label, checked, onCheckedChange, bold }) {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'auto 1fr',
+      alignItems: 'center',
+      width: '100%',
+      direction: 'ltr',
+      padding: '10px 0',
+      borderBottom: '1px solid rgba(0,0,0,0.05)',
+    }}>
+      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
+      <span style={{
+        justifySelf: 'end',
+        textAlign: 'right',
+        width: '100%',
+        fontSize: '15px',
+        fontWeight: bold ? '600' : '500',
+        color: bold ? 'var(--mizan-text, #111827)' : 'var(--mizan-text-secondary, #6b7280)',
+      }}>
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export default function NotificationsSection() {
   const { t } = useI18n();
   const { settings, updateSettings } = useUserSettings();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+    <div style={{ width: '100%' }}>
       <h2 className="text-lg font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)', marginBottom: '8px' }}>
         {t('settings.notifications')}
       </h2>
 
-      <div style={toggleRowStyle}>
-        <span style={{ flexGrow: 1, minWidth: 0, fontSize: '15px', fontWeight: '600', color: 'var(--mizan-text)' }}>
-          {t('settings.notifyAll')}
-        </span>
-        <div style={switchWrapStyle}>
-          <Switch
-            checked={settings?.notifications_enabled ?? true}
-            onCheckedChange={(val) => updateSettings({ notifications_enabled: val })}
-          />
-        </div>
-      </div>
+      <ToggleRow
+        label={t('settings.notifyAll')}
+        checked={settings?.notifications_enabled ?? true}
+        onCheckedChange={(val) => updateSettings({ notifications_enabled: val })}
+        bold
+      />
 
-      {(settings?.notifications_enabled !== false) && (
-        <>
-          {NOTIFY_KEYS.map(({ key, label }) => (
-            <div key={key} style={toggleRowStyle}>
-              <span style={{ flexGrow: 1, minWidth: 0, fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text-secondary)' }}>
-                {t(label)}
-              </span>
-              <div style={switchWrapStyle}>
-                <Switch
-                  checked={settings?.[key] ?? true}
-                  onCheckedChange={(val) => updateSettings({ [key]: val })}
-                />
-              </div>
-            </div>
-          ))}
-        </>
-      )}
+      {(settings?.notifications_enabled !== false) && NOTIFY_KEYS.map(({ key, label }) => (
+        <ToggleRow
+          key={key}
+          label={t(label)}
+          checked={settings?.[key] ?? true}
+          onCheckedChange={(val) => updateSettings({ [key]: val })}
+        />
+      ))}
     </div>
   );
 }

@@ -17,28 +17,33 @@ const CURRENCIES = [
   { code: 'GBP', symbol: '£', label: 'GBP' },
 ];
 
-const toggleRowStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  gap: '16px',
-  padding: '12px 0',
-};
-
-const labelStyle = {
-  flexGrow: 1,
-  minWidth: 0,
-  fontSize: '15px',
-  fontWeight: '500',
-};
-
-const switchWrapStyle = {
-  flexShrink: 0,
-  display: 'flex',
-  alignItems: 'center',
-};
+function ToggleRow({ label, checked, onCheckedChange }) {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'auto 1fr',
+      alignItems: 'center',
+      width: '100%',
+      direction: 'ltr',
+      padding: '10px 0',
+      borderBottom: '1px solid rgba(0,0,0,0.05)',
+    }}>
+      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      </div>
+      <span style={{
+        justifySelf: 'end',
+        textAlign: 'right',
+        width: '100%',
+        fontSize: '15px',
+        fontWeight: '500',
+        color: 'var(--mizan-text, #111827)',
+      }}>
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export default function RegionalSection() {
   const { t } = useI18n();
@@ -51,12 +56,12 @@ export default function RegionalSection() {
   };
 
   return (
-    <div className="space-y-5">
-      <h2 className="text-lg font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
+    <div style={{ width: '100%' }}>
+      <h2 className="text-lg font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)', marginBottom: '16px' }}>
         {t('settings.regional')}
       </h2>
 
-      <div>
+      <div style={{ marginBottom: '8px' }}>
         <p className="text-sm font-medium mb-2" style={{ color: 'var(--mizan-text-secondary)' }}>
           {t('settings.currency')}
         </p>
@@ -72,29 +77,17 @@ export default function RegionalSection() {
         </Select>
       </div>
 
-      <div style={toggleRowStyle}>
-        <span style={{ ...labelStyle, color: 'var(--mizan-text)' }}>
-          {t('settings.easternNumerals')}
-        </span>
-        <div style={switchWrapStyle}>
-          <Switch
-            checked={settings?.show_eastern_numerals || false}
-            onCheckedChange={(val) => updateSettings({ show_eastern_numerals: val })}
-          />
-        </div>
-      </div>
+      <ToggleRow
+        label={t('settings.easternNumerals')}
+        checked={settings?.show_eastern_numerals || false}
+        onCheckedChange={(val) => updateSettings({ show_eastern_numerals: val })}
+      />
 
-      <div style={toggleRowStyle}>
-        <span style={{ ...labelStyle, color: 'var(--mizan-text)' }}>
-          {t('settings.ramadanMode')}
-        </span>
-        <div style={switchWrapStyle}>
-          <Switch
-            checked={settings?.ramadan_mode_active || false}
-            onCheckedChange={(val) => updateSettings({ ramadan_mode_active: val })}
-          />
-        </div>
-      </div>
+      <ToggleRow
+        label={t('settings.ramadanMode')}
+        checked={settings?.ramadan_mode_active || false}
+        onCheckedChange={(val) => updateSettings({ ramadan_mode_active: val })}
+      />
     </div>
   );
 }

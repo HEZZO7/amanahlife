@@ -319,17 +319,25 @@ export default function TimesQibla({ language }) {
       )}
 
       {/* Auto-log toggle */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '16px', padding: '16px', borderRadius: '12px', background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-        <div style={{ flexGrow: 1, minWidth: 0 }}>
-          <p style={{ fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text)', margin: 0 }}>
-            {isAr ? 'تذكير تسجيل الصلاة' : 'Auto-suggest prayer log'}
-          </p>
-          <p style={{ fontSize: '12px', color: 'var(--mizan-text-secondary)', marginTop: '2px', marginBottom: 0 }}>
-            {isAr ? 'يسألك بعد 30 دقيقة من كل صلاة' : 'Prompts 30 min after each prayer time'}
-          </p>
-        </div>
-        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          <Switch checked={autoLog} onCheckedChange={setAutoLog} />
+      <div style={{ padding: '16px', borderRadius: '12px', background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr',
+          alignItems: 'center',
+          width: '100%',
+          direction: 'ltr',
+        }}>
+          <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+            <Switch checked={autoLog} onCheckedChange={setAutoLog} />
+          </div>
+          <div style={{ justifySelf: 'end', textAlign: 'right' }}>
+            <p style={{ fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text)', margin: 0 }}>
+              {isAr ? 'تذكير تسجيل الصلاة' : 'Auto-suggest prayer log'}
+            </p>
+            <p style={{ fontSize: '12px', color: 'var(--mizan-text-secondary)', marginTop: '2px', marginBottom: 0 }}>
+              {isAr ? 'يسألك بعد 30 دقيقة من كل صلاة' : 'Prompts 30 min after each prayer time'}
+            </p>
+          </div>
         </div>
       </div>
 

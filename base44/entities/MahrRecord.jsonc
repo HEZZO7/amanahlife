@@ -1,0 +1,28 @@
+{
+  "name": "MahrRecord",
+  "type": "object",
+  "properties": {
+    "family_id": {
+      "type": "string",
+      "description": "FK to Family"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR"
+    },
+    "is_paid": {
+      "type": "boolean",
+      "default": false
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "family_id",
+    "amount"
+  ]
+}

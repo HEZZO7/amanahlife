@@ -5,12 +5,14 @@ import { format } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Users, CheckSquare, Target, Calendar, Plus, Check } from 'lucide-react';
+import WealthTab from '@/components/family/WealthTab';
 
 const TABS = [
   { key: 'members', en: 'Members', ar: 'الأعضاء' },
   { key: 'tasks', en: 'Tasks', ar: 'المهام' },
   { key: 'goals', en: 'Goals', ar: 'الأهداف' },
   { key: 'calendar', en: 'Calendar', ar: 'التقويم' },
+  { key: 'wealth', en: 'Wealth', ar: 'الثروة' },
 ];
 
 function EmptyState({ label }) {
@@ -175,25 +177,28 @@ export default function Family() {
           )}
 
           {/* Family Calendar */}
-          {tab === 'calendar' && (
-            <div className="space-y-3">
-              {events.length === 0 ? <EmptyState label={language === 'ar' ? 'لا توجد أحداث عائلية' : 'No family events yet'} /> : (
-                events.map(e => (
-                  <div key={e.id} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-                      <Calendar className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{e.title}</p>
-                      <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
-                        {e.start_datetime ? format(new Date(e.start_datetime), 'MMM d, yyyy') : ''}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
+           {tab === 'calendar' && (
+             <div className="space-y-3">
+               {events.length === 0 ? <EmptyState label={language === 'ar' ? 'لا توجد أحداث عائلية' : 'No family events yet'} /> : (
+                 events.map(e => (
+                   <div key={e.id} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+                     <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+                       <Calendar className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
+                     </div>
+                     <div>
+                       <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{e.title}</p>
+                       <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
+                         {e.start_datetime ? format(new Date(e.start_datetime), 'MMM d, yyyy') : ''}
+                       </p>
+                     </div>
+                   </div>
+                 ))
+               )}
+             </div>
+           )}
+
+           {/* Wealth */}
+           {tab === 'wealth' && <WealthTab familyId="shared" members={members} userMap={userMap} />}
         </>
       )}
     </div>

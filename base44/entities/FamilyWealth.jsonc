@@ -1,0 +1,38 @@
+{
+  "name": "FamilyWealth",
+  "type": "object",
+  "properties": {
+    "family_id": {
+      "type": "string",
+      "description": "FK to Family"
+    },
+    "member_id": {
+      "type": "string",
+      "description": "FK to User"
+    },
+    "cash_savings": {
+      "type": "number",
+      "default": 0
+    },
+    "property_value": {
+      "type": "number",
+      "default": 0
+    },
+    "investments": {
+      "type": "number",
+      "default": 0
+    },
+    "other_assets": {
+      "type": "number",
+      "default": 0
+    },
+    "liabilities": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "family_id",
+    "member_id"
+  ]
+}

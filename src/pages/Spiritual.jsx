@@ -12,9 +12,11 @@ import SpiritualCharity from '@/components/spiritual/SpiritualCharity';
 import TimesQibla from '@/components/spiritual/TimesQibla';
 import PrayerReminderSettings from '@/components/spiritual/PrayerReminderSettings';
 import DhikrCounter from '@/components/spiritual/DhikrCounter';
+import AdhkarReader from '@/components/spiritual/AdhkarReader';
 
 const TABS = [
   { key: 'prayer', en: 'Prayer', ar: 'الصلاة' },
+  { key: 'adhkar', en: 'Adhkar', ar: 'الأذكار' },
   { key: 'quran', en: "Qur'an & Dhikr", ar: 'القرآن والذكر' },
   { key: 'charity', en: 'Charity', ar: 'الصدقة' },
   { key: 'times', en: 'Times & Qibla', ar: 'الأوقات والقبلة' },
@@ -72,6 +74,7 @@ export default function Spiritual() {
       ) : (
         <>
            {tab === 'prayer' && <SpiritualPrayerTracker score={score} streakData={streakData} onReload={load} />}
+           {tab === 'adhkar' && <AdhkarReader language={language} />}
            {tab === 'quran' && <SpiritualQuranTab score={score} onReload={load} />}
            {tab === 'charity' && <SpiritualCharity onReload={load} />}
            {tab === 'times' && <TimesQibla language={language} />}
@@ -102,6 +105,28 @@ function SpiritualQuranTab({ score, onReload }) {
 
   return (
     <div className="space-y-6">
+      {/* Mushaf Al-Madinah Link */}
+      <a
+        href="https://quran.com/ar"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 rounded-xl p-4 transition-opacity hover:opacity-80"
+        style={{ background: 'linear-gradient(135deg, var(--mizan-emerald) 0%, #12897A 100%)', textDecoration: 'none' }}
+      >
+        <span className="text-2xl">📖</span>
+        <div className="flex-1">
+          <p className="font-bold text-white text-sm">
+            {language === 'ar' ? 'مصحف المدينة النبوية' : 'Mushaf Al-Madinah'}
+          </p>
+          <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            {language === 'ar' ? 'اضغط للقراءة عبر Quran.com' : 'Tap to read via Quran.com'}
+          </p>
+        </div>
+        <svg className="w-5 h-5 text-white opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+
       <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
         <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--mizan-text)' }}>
           {language === 'ar' ? 'صفحات القرآن اليوم' : "Today's Qur'an Pages"}

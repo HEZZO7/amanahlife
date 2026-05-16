@@ -115,32 +115,106 @@ export default function Planner() {
       </div>
 
       {/* View switcher + nav */}
-      <div className="flex items-center justify-between mb-5 gap-4">
-        <div className="flex gap-1 p-1 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        gap: '16px',
+        width: '100%',
+        boxSizing: 'border-box',
+        flexWrap: 'wrap'
+      }}>
+        <div style={{
+          display: 'flex',
+          gap: '4px',
+          padding: '4px',
+          borderRadius: '12px',
+          background: 'var(--mizan-surface)',
+          border: '1px solid var(--mizan-border)',
+          flexShrink: 0
+        }}>
           {VIEWS.map(({ key, enLabel, arLabel, icon: Icon }) => (
             <button key={key} onClick={() => setView(key)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={{ background: view === key ? 'var(--mizan-emerald)' : 'transparent', color: view === key ? 'white' : 'var(--mizan-text-secondary)' }}>
-              <Icon className="w-3.5 h-3.5" />
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+                background: view === key ? 'var(--mizan-emerald)' : 'transparent',
+                color: view === key ? 'white' : 'var(--mizan-text-secondary)',
+                border: 'none',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}>
+              <Icon style={{ width: '14px', height: '14px' }} />
               {language === 'ar' ? arLabel : enLabel}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          justifyContent: 'center',
+          flex: '1 1 auto',
+          minWidth: '200px'
+        }}>
           <button onClick={() => view === 'week' ? navigateWeek(-1) : view === 'month' ? navigateMonth(-1) : navigateDay(-1)}
-            className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-            <ChevronLeft className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'var(--mizan-surface)',
+              border: '1px solid var(--mizan-border)',
+              cursor: 'pointer',
+              flexShrink: 0
+            }}>
+            <ChevronLeft style={{ width: '16px', height: '16px', color: 'var(--mizan-text-secondary)' }} />
           </button>
-          <div className="text-center">
-            <span className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{headerLabel}</span>
+          <div style={{
+            textAlign: 'center',
+            minWidth: '150px',
+            flex: '1 1 auto'
+          }}>
+            <span style={{
+              fontSize: '14px',
+              fontWeight: '500',
+              color: 'var(--mizan-text)',
+              display: 'block',
+              wordBreak: 'break-word'
+            }}>{headerLabel}</span>
             {view === 'day' && settings?.show_hijri_calendar !== false && (
-              <p className="text-xs" style={{ color: '#6B7280' }}>{formatHijriDate(selectedDate, language)}</p>
+              <p style={{
+                fontSize: '12px',
+                color: '#6B7280',
+                margin: '2px 0 0 0',
+                wordBreak: 'break-word'
+              }}>{formatHijriDate(selectedDate, language)}</p>
             )}
           </div>
           <button onClick={() => view === 'week' ? navigateWeek(1) : view === 'month' ? navigateMonth(1) : navigateDay(1)}
-            className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-            <ChevronRight className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'var(--mizan-surface)',
+              border: '1px solid var(--mizan-border)',
+              cursor: 'pointer',
+              flexShrink: 0
+            }}>
+            <ChevronRight style={{ width: '16px', height: '16px', color: 'var(--mizan-text-secondary)' }} />
           </button>
         </div>
       </div>

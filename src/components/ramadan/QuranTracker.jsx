@@ -143,25 +143,49 @@ export default function QuranTracker() {
         </div>
 
         {/* Input & Button */}
-        <div className="flex gap-2">
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          width: '100%',
+          boxSizing: 'border-box',
+          flexWrap: 'wrap'
+        }}>
           <input
             type="number"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={language === 'ar' ? 'أدخل العدد' : 'Enter amount'}
-            className="flex-1 px-3 py-2 rounded-lg text-sm"
             style={{
+              flex: '1 1 auto',
+              minWidth: '100px',
+              padding: '12px',
+              borderRadius: '8px',
+              fontSize: '14px',
               background: 'var(--mizan-elevated)',
               border: '1px solid var(--mizan-border)',
               color: 'var(--mizan-text)',
+              boxSizing: 'border-box',
+              width: '100%'
             }}
             min="0"
           />
           <button
             onClick={trackingMode === 'pages' ? handleAddPages : handleAddParts}
             disabled={saving || !input}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-white transition-all disabled:opacity-50"
-            style={{ background: 'var(--mizan-emerald)' }}
+            style={{
+              padding: '12px 16px',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: 'white',
+              background: 'var(--mizan-emerald)',
+              border: 'none',
+              cursor: 'pointer',
+              opacity: saving || !input ? 0.5 : 1,
+              transition: 'all 0.2s',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
+            }}
           >
             {saving ? '...' : (language === 'ar' ? 'إضافة' : 'Add')}
           </button>

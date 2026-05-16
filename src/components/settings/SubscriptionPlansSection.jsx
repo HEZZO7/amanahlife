@@ -152,16 +152,10 @@ export default function SubscriptionPlansSection() {
                 style={{ background: isCurrentPlan ? 'var(--mizan-emerald)' : 'var(--mizan-emerald-light)' }}
               >
                 <h4 className="text-lg font-bold">
-                  {isRtl 
-                    ? (planId === 'free' ? 'رفيق الحياة' : planId === 'premium' ? 'الحياة المتوازنة' : 'أمانة العائلة')
-                    : (planId === 'free' ? 'Life Companion' : planId === 'premium' ? 'Balanced Life' : 'Family Amanah')
-                  }
+                  {isRtl ? plan.nameAr : plan.nameEn}
                 </h4>
                 <p className="text-xs mt-1 opacity-90">
-                  {isRtl
-                    ? (planId === 'free' ? 'الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم' : planId === 'premium' ? 'باقة مميزة للطموحين الذين يسعون لتعميق التوازن' : 'باقة شاملة للعائلات الراغبة بالتعاون والتوازن')
-                    : (planId === 'free' ? 'The basic plan perfect for individuals starting their journey' : planId === 'premium' ? 'Premium plan for ambitious individuals seeking deeper balance' : 'Comprehensive plan for families seeking cooperation and balance')
-                  }
+                  {isRtl ? plan.descriptionAr : plan.descriptionEn}
                 </p>
               </div>
 
@@ -186,42 +180,49 @@ export default function SubscriptionPlansSection() {
                 </div>
 
                 {/* Features List */}
-                <div className="space-y-2" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
                    {Object.entries(plan.features).map(([featureKey, hasFeature]) => (
-                     <div key={featureKey} className="flex items-start gap-2" style={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }}>
-                       {isRtl ? (
-                         <>
-                           <span
-                             className="text-sm"
-                             style={{
-                               color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-                             }}
-                           >
-                             {FEATURE_DESCRIPTIONS[featureKey].ar}
-                           </span>
-                           {hasFeature ? (
-                             <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
-                           ) : (
-                             <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
-                           )}
-                         </>
-                       ) : (
-                         <>
-                           {hasFeature ? (
-                             <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
-                           ) : (
-                             <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
-                           )}
-                           <span
-                             className="text-sm"
-                             style={{
-                               color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-                             }}
-                           >
-                             {FEATURE_DESCRIPTIONS[featureKey].en}
-                           </span>
-                         </>
-                       )}
+                     <div
+                       key={featureKey}
+                       style={{
+                         display: 'flex',
+                         flexDirection: 'row',
+                         alignItems: 'center',
+                         justifyContent: isRtl ? 'flex-end' : 'flex-start',
+                         gap: '12px',
+                         width: '100%',
+                         padding: '10px 4px',
+                         direction: isRtl ? 'rtl' : 'ltr',
+                         textAlign: isRtl ? 'right' : 'left',
+                         borderBottom: '1px solid var(--mizan-border)',
+                       }}
+                     >
+                       {/* Status Icon */}
+                       <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+                         {hasFeature ? (
+                           <svg style={{ color: '#10b981', width: '18px', height: '18px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                           </svg>
+                         ) : (
+                           <svg style={{ color: '#d1d5db', width: '16px', height: '16px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                           </svg>
+                         )}
+                       </div>
+
+                       {/* Feature Label */}
+                       <span
+                         style={{
+                           fontSize: '14px',
+                           color: hasFeature ? 'var(--mizan-text)' : '#9ca3af',
+                           fontWeight: hasFeature ? '500' : '400',
+                           flexGrow: 1,
+                         }}
+                       >
+                         {isRtl
+                           ? FEATURE_DESCRIPTIONS[featureKey].ar
+                           : FEATURE_DESCRIPTIONS[featureKey].en}
+                       </span>
                      </div>
                    ))}
                 </div>
@@ -239,6 +240,7 @@ export default function SubscriptionPlansSection() {
                   {isCurrentPlan
                     ? (isRtl ? 'الخطة الحالية' : 'Current Plan')
                     : (isRtl ? 'اختر الخطة' : 'Select Plan')}
+                
                 </Button>
               </div>
             </div>

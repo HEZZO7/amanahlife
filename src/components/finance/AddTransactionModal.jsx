@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
-import { X } from 'lucide-react';
+import { X, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,14 +11,67 @@ const EXPENSE_CATS = ['food', 'transport', 'housing', 'health', 'education', 'en
 const INCOME_CATS = ['salary', 'freelance', 'investment', 'gift', 'other'];
 
 export default function AddTransactionModal({ type, onClose, onSaved }) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [saving, setSaving] = useState(false);
+  const [budgetWarning, setBudgetWarning] = useState(null);
 
   const cats = type === 'income' ? INCOME_CATS : EXPENSE_CATS;
+
+  // التحقق من حدود الميزانية عند تغيير المبلغ أو الفئة
+  useEffect(() => {
+    const checkBudget = async () => {
+      if (type !== 'expense' || !amount || !category) {
+        setBudgetWarning(null);
+        return;
+      }
+
+      try {
+        const month = format(new Date(date), 'yyyy-MM');
+        const budgets = await base44.entities.Budget.filter({ month, category });
+        const budget = budgets[0];
+
+        if (!budget) {
+          setBudgetWarning(null);
+          return;
+        }
+
+        // حساب إجمالي المصاريف الحالية في هذه الفئة هذا الشهر
+        const transactions = await base44.entities.Transaction.filter({
+          type: 'expense',
+          category,
+          date: { $gte: `${month}-01`, $lte: `${month}-31` }
+        });
+
+        const currentSpent = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+        const newTotal = currentSpent + parseFloat(amount);
+        const limit = budget.limit_amount;
+        const percentage = Math.round((newTotal / limit) * 100);
+
+        if (newTotal > limit) {
+          setBudgetWarning({
+            type: 'exceeded',
+            amount: newTotal - limit,
+            percentage
+          });
+        } else if (percentage >= 80) {
+          setBudgetWarning({
+            type: 'warning',
+            percentage
+          });
+        } else {
+          setBudgetWarning(null);
+        }
+      } catch (e) {
+        console.error('Budget check error:', e);
+      }
+    };
+
+    checkBudget();
+  }, [amount, category, date, type]);
 
   const handleSave = async () => {
     if (!amount || !category) return;
@@ -60,10 +113,45 @@ export default function AddTransactionModal({ type, onClose, onSaved }) {
             <Label style={{ color: 'var(--mizan-text-secondary)' }}>{t('finance.date')}</Label>
             <Input type="date" value={date} onChange={e => setDate(e.target.value)} className="mt-1 h-10 rounded-lg" style={{ background: 'var(--mizan-elevated)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }} />
           </div>
-        </div>
-        <Button disabled={saving || !amount || !category} onClick={handleSave} className="w-full mt-5 h-12 rounded-xl text-white font-semibold" style={{ background: 'var(--mizan-emerald)' }}>
+
+          {/* Budget Alert */}
+          {budgetWarning && (
+            <div className="p-3 rounded-lg flex gap-3" style={{ 
+              background: budgetWarning.type === 'exceeded' ? '#C0392B15' : '#B89A5E15',
+              border: `1px solid ${budgetWarning.type === 'exceeded' ? '#C0392B40' : '#B89A5E40'}`
+            }}>
+              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: budgetWarning.type === 'exceeded' ? '#C0392B' : 'var(--mizan-gold)' }} />
+              <div className="flex-1 text-sm" style={{ color: budgetWarning.type === 'exceeded' ? '#C0392B' : 'var(--mizan-gold)' }}>
+                {budgetWarning.type === 'exceeded' ? (
+                  <>
+                    <p className="font-semibold mb-0.5">
+                      {language === 'ar' ? '⚠️ تجاوز الحد الأقصى للميزانية' : '⚠️ Budget Exceeded'}
+                    </p>
+                    <p className="text-xs opacity-90">
+                      {language === 'ar' 
+                        ? `سيتجاوز هذا المبلغ الحد بمقدار ${budgetWarning.amount.toLocaleString()}`
+                        : `This will exceed budget by ${budgetWarning.amount.toLocaleString()}`}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="font-semibold mb-0.5">
+                      {language === 'ar' ? '⚠️ اقترب من الحد الأقصى' : '⚠️ Approaching Limit'}
+                    </p>
+                    <p className="text-xs opacity-90">
+                      {language === 'ar' 
+                        ? `استهلكت ${budgetWarning.percentage}% من الميزانية`
+                        : `${budgetWarning.percentage}% of budget used`}
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+          </div>
+          <Button disabled={saving || !amount || !category} onClick={handleSave} className="w-full mt-5 h-12 rounded-xl text-white font-semibold" style={{ background: 'var(--mizan-emerald)' }}>
           {saving ? t('common.loading') : t('settings.save')}
-        </Button>
+          </Button>
       </div>
     </div>
   );

@@ -68,8 +68,10 @@ export default function SubscriptionPlansSection() {
       {/* Country & Currency Selector */}
       <div className="rounded-lg p-4" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
         <label className="block text-sm font-medium mb-3" style={{ color: 'var(--mizan-text)' }}>
-          {t('settings.regional.country')} {isRtl && '(يؤثر على السعر والعملة)'}
-          {!isRtl && '(Affects price and currency)'}
+          {t('settings.regional.country')}
+          <span style={{ color: 'var(--mizan-text-secondary)', fontSize: '0.875rem' }}>
+            {isRtl ? ' (يؤثر على السعر والعملة)' : ' (Affects price and currency)'}
+          </span>
         </label>
         <select
           value={country}
@@ -107,7 +109,7 @@ export default function SubscriptionPlansSection() {
             color: billingPeriod === 'monthly' ? 'white' : 'var(--mizan-text)',
           }}
         >
-          {t('settings.subscription.monthly')}
+          {isRtl ? 'شهري' : t('settings.subscription.monthly')}
         </button>
         <button
           onClick={() => setBillingPeriod('yearly')}
@@ -121,7 +123,7 @@ export default function SubscriptionPlansSection() {
             color: billingPeriod === 'yearly' ? 'white' : 'var(--mizan-text)',
           }}
         >
-          {t('settings.subscription.yearly')} {billingPeriod === 'yearly' && <span className="text-xs">(توفير شهرين)</span>}
+          {isRtl ? 'سنوي' : t('settings.subscription.yearly')} {billingPeriod === 'yearly' && <span className="text-xs">{isRtl ? '(توفير شهرين)' : '(Save 2 months)'}</span>}
         </button>
       </div>
 
@@ -150,10 +152,14 @@ export default function SubscriptionPlansSection() {
                 style={{ background: isCurrentPlan ? 'var(--mizan-emerald)' : 'var(--mizan-emerald-light)' }}
               >
                 <h4 className="text-lg font-bold">
-                  {isRtl ? plan.nameAr : plan.nameEn}
+                  {planId === 'free' && (isRtl ? 'رفيق الحياة' : 'Life Companion')}
+                  {planId === 'premium' && (isRtl ? 'الحياة المتوازنة' : 'Balanced Life')}
+                  {planId === 'family' && (isRtl ? 'أمانة العائلة' : 'Family Amanah')}
                 </h4>
                 <p className="text-xs mt-1 opacity-90">
-                  {isRtl ? plan.descriptionAr : plan.descriptionEn}
+                  {planId === 'free' && (isRtl ? 'الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم' : 'The basic plan perfect for individuals starting their journey')}
+                  {planId === 'premium' && (isRtl ? 'باقة مميزة للطموحين الذين يسعون لتعميق التوازن' : 'Premium plan for ambitious individuals seeking deeper balance')}
+                  {planId === 'family' && (isRtl ? 'باقة شاملة للعائلات الراغبة بالتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance')}
                 </p>
               </div>
 
@@ -171,7 +177,7 @@ export default function SubscriptionPlansSection() {
                         {countryData?.symbol}{planPricing.toFixed(2)}
                       </p>
                       <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
-                        {billingPeriod === 'monthly' ? t('settings.subscription.per_month') : t('settings.subscription.per_year')}
+                        {billingPeriod === 'monthly' ? (isRtl ? 'لكل شهر' : 'per month') : (isRtl ? 'لكل سنة' : 'per year')}
                       </p>
                     </>
                   )}
@@ -190,6 +196,7 @@ export default function SubscriptionPlansSection() {
                         className="text-sm"
                         style={{
                           color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
+                          textAlign: isRtl ? 'right' : 'left',
                         }}
                       >
                         {isRtl
@@ -204,15 +211,15 @@ export default function SubscriptionPlansSection() {
                 <Button
                   onClick={() => handleSelectPlan(planId)}
                   disabled={isCurrentPlan || loading}
-                  className="w-full mt-4 text-white"
+                  className="w-full mt-4 text-white font-semibold"
                   style={{
                     background: isCurrentPlan ? 'var(--mizan-text-secondary)' : 'var(--mizan-emerald)',
                     opacity: isCurrentPlan ? 0.6 : 1,
                   }}
                 >
                   {isCurrentPlan
-                    ? t('settings.subscription.current_plan')
-                    : t('settings.subscription.select_plan')}
+                    ? (isRtl ? 'الخطة الحالية' : 'Current Plan')
+                    : (isRtl ? 'اختر الخطة' : 'Select Plan')}
                 </Button>
               </div>
             </div>
@@ -221,18 +228,17 @@ export default function SubscriptionPlansSection() {
       </div>
 
       {/* Info Note */}
-      <div
-        className="p-4 rounded-lg text-sm"
-        style={{
-          background: 'var(--mizan-emerald)',
-          color: 'white',
-          opacity: 0.9,
-        }}
-      >
-        💡 {isRtl
-          ? 'يمكنك تغيير الباقة أو البلد في أي وقت. سيتم تحديث الأسعار والعملة تلقائيًا.'
-          : 'You can change your plan or country anytime. Prices and currency will update automatically.'}
-      </div>
+       <div
+         className="p-4 rounded-lg text-sm text-center"
+         style={{
+           background: 'var(--mizan-emerald)',
+           color: 'white',
+         }}
+       >
+         💡 {isRtl
+           ? 'يمكنك تغيير الباقة أو البلد في أي وقت. سيتم تحديث الأسعار والعملة تلقائيًا.'
+           : 'You can change your plan or country anytime. Prices and currency will update automatically.'}
+       </div>
     </div>
   );
 }

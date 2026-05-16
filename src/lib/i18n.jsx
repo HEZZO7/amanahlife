@@ -285,6 +285,30 @@ const translations = {
   "settings.subscription.current_plan": { en: "Current Plan", ar: "الخطة الحالية" },
   "settings.subscription.select_plan": { en: "Select Plan", ar: "اختر الخطة" },
   "settings.regional.country": { en: "Country", ar: "البلد" },
+
+  // Subscription Plans - Arabic Full Names & Descriptions
+  "subscription.lifeCo.name": { en: "Life Companion", ar: "رفيق الحياة" },
+  "subscription.lifeCo.desc": { en: "The basic plan perfect for individuals starting their journey", ar: "الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم" },
+  "subscription.balanced.name": { en: "Balanced Life", ar: "الحياة المتوازنة" },
+  "subscription.balanced.desc": { en: "Premium plan for ambitious individuals seeking deeper balance", ar: "باقة مميزة للطموحين الذين يسعون لتعميق التوازن" },
+  "subscription.family.name": { en: "Family Amanah", ar: "أمانة العائلة" },
+  "subscription.family.desc": { en: "Comprehensive plan for families seeking cooperation and balance", ar: "باقة شاملة للعائلات الراغبة بالتعاون والتوازن" },
+
+  // Features Arabic
+  "feature.taskMgmt": { en: "Basic Task Management", ar: "إدارة المهام الأساسية" },
+  "feature.goals": { en: "Goal Tracking", ar: "تتبع الأهداف" },
+  "feature.prayer": { en: "Daily Prayer Tracker", ar: "متتبع الصلاة اليومي" },
+  "feature.basicReminders": { en: "Basic Task Reminders", ar: "تذكيرات مهام أساسية" },
+  "feature.zakat": { en: "Zakat Calculator", ar: "حاسبة الزكاة" },
+  "feature.wellness": { en: "Basic Wellness Tracking", ar: "تتبع الرفاهية الأساسي" },
+  "feature.learning": { en: "Basic Learning Log", ar: "سجل التعلم الأساسي" },
+  "feature.advReminders": { en: "Advanced Reminders (1hr or 1day)", ar: "تذكيرات متقدمة (قبل ساعة أو يوم)" },
+  "feature.budget": { en: "Personal Budget Tracking", ar: "إدارة الميزانية الشخصية" },
+  "feature.ai": { en: "AI Insights & Recommendations", ar: "رؤى الذكاء الاصطناعي والتوصيات" },
+  "feature.reviews": { en: "Monthly & Annual Life Reviews", ar: "تقارير الحياة الشهرية والسنوية" },
+  "feature.family": { en: "Family Sharing", ar: "مشاركة عائلية" },
+  "feature.sharedBudget": { en: "Shared Family Budget", ar: "الميزانية العائلية المشتركة" },
+  "feature.vault": { en: "Amana Vault - Secure Document Storage", ar: "أمانة فالت - تخزين آمن للمستندات" },
   };
 
   const I18nContext = createContext();

@@ -1,46 +1,15 @@
 import React, { useState } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
-import { base44 } from '@/api/base44Client';
-import { Button } from '@/components/ui/button';
-import { Check, X } from 'lucide-react';
-import {
-  SUBSCRIPTION_PLANS,
-  SUBSCRIPTION_PLANS_PRICING,
-  COUNTRIES_AND_CURRENCIES,
-  FEATURE_DESCRIPTIONS,
-} from '@/lib/subscriptionPlans';
 
 export default function SubscriptionPlansSection() {
-  const { t, isRtl } = useI18n();
+  const { language } = useI18n();
+  const isArabic = language === 'ar';
   const { settings, updateSettings } = useUserSettings();
-  const [billingPeriod, setBillingPeriod] = useState('monthly');
-  const [country, setCountry] = useState(settings?.country || 'SA');
   const [loading, setLoading] = useState(false);
 
-  const countryData = COUNTRIES_AND_CURRENCIES[country];
-  const pricing = SUBSCRIPTION_PLANS_PRICING[countryData?.code];
-  const currentPlan = settings?.subscription_tier || 'free';
-
-  const handleCountryChange = async (newCountry) => {
-    setLoading(true);
-    try {
-      const newCountryData = COUNTRIES_AND_CURRENCIES[newCountry];
-      await updateSettings({
-        country: newCountry,
-        currency: newCountryData.code,
-        currency_symbol: newCountryData.symbol,
-      });
-      setCountry(newCountry);
-    } catch (error) {
-      console.error('Error updating country:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSelectPlan = async (planId) => {
-    if (planId === currentPlan) return;
+    if (planId === settings?.subscription_tier) return;
     setLoading(true);
     try {
       await updateSettings({ subscription_tier: planId });
@@ -51,213 +20,162 @@ export default function SubscriptionPlansSection() {
     }
   };
 
-  const plans = ['free', 'premium', 'family'];
+  const currentPlan = settings?.subscription_tier || 'free';
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--mizan-text)' }}>
-          {t('settings.subscription.plans')}
-        </h3>
-        <p className="text-sm" style={{ color: 'var(--mizan-text-secondary)' }}>
-          {t('settings.subscription.choose_plan')}
-        </p>
-      </div>
-
-      {/* Country & Currency Selector */}
-      <div className="rounded-lg p-4" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-        <label className="block text-sm font-medium mb-3" style={{ color: 'var(--mizan-text)' }}>
-          {t('settings.regional.country')}
-          <span style={{ color: 'var(--mizan-text-secondary)', fontSize: '0.875rem' }}>
-            {isRtl ? ' (يؤثر على السعر والعملة)' : ' (Affects price and currency)'}
-          </span>
-        </label>
-        <select
-          value={country}
-          onChange={(e) => handleCountryChange(e.target.value)}
-          disabled={loading}
-          className="w-full p-2 rounded-md text-sm"
-          style={{
-            background: 'var(--mizan-bg)',
-            color: 'var(--mizan-text)',
-            border: '1px solid var(--mizan-border)',
-          }}
-        >
-          {Object.entries(COUNTRIES_AND_CURRENCIES).map(([code, data]) => (
-            <option key={code} value={code}>
-              {isRtl ? data.name : data.nameEn} ({data.symbol})
-            </option>
-          ))}
-        </select>
-        <p className="text-xs mt-2" style={{ color: 'var(--mizan-text-secondary)' }}>
-          {t('settings.subscription.current_currency')}: {countryData?.currency} ({countryData?.symbol})
-        </p>
-      </div>
-
-      {/* Billing Period Toggle */}
-      <div className="flex gap-2 p-2 rounded-lg" style={{ background: 'var(--mizan-bg)', border: '1px solid var(--mizan-border)' }}>
-        <button
-          onClick={() => setBillingPeriod('monthly')}
-          className={`flex-1 py-2 rounded-md text-sm font-medium transition-all ${
-            billingPeriod === 'monthly'
-              ? 'text-white'
-              : ''
-          }`}
-          style={{
-            background: billingPeriod === 'monthly' ? 'var(--mizan-emerald)' : 'transparent',
-            color: billingPeriod === 'monthly' ? 'white' : 'var(--mizan-text)',
-          }}
-        >
-          {isRtl ? 'شهري' : t('settings.subscription.monthly')}
-        </button>
-        <button
-          onClick={() => setBillingPeriod('yearly')}
-          className={`flex-1 py-2 rounded-md text-sm font-medium transition-all ${
-            billingPeriod === 'yearly'
-              ? 'text-white'
-              : ''
-          }`}
-          style={{
-            background: billingPeriod === 'yearly' ? 'var(--mizan-emerald)' : 'transparent',
-            color: billingPeriod === 'yearly' ? 'white' : 'var(--mizan-text)',
-          }}
-        >
-          {isRtl ? 'سنوي' : t('settings.subscription.yearly')} {billingPeriod === 'yearly' && <span className="text-xs">{isRtl ? '(توفير شهرين)' : '(Save 2 months)'}</span>}
-        </button>
-      </div>
-
-      {/* Plans Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {plans.map((planId) => {
-          const plan = SUBSCRIPTION_PLANS[planId];
-          const planPricing = billingPeriod === 'monthly' 
-            ? pricing[planId].monthlyPrice 
-            : pricing[planId].yearlyPrice;
-          const isCurrentPlan = currentPlan === planId;
-
-          return (
-            <div
-              key={planId}
-              className="rounded-xl overflow-hidden transition-all border-2"
-              style={{
-                background: 'var(--mizan-surface)',
-                borderColor: isCurrentPlan ? 'var(--mizan-emerald)' : 'var(--mizan-border)',
-                boxShadow: isCurrentPlan ? '0 0 20px rgba(11, 91, 80, 0.2)' : 'none',
-              }}
-            >
-              {/* Plan Header */}
-              <div
-                className="p-4 text-center text-white"
-                style={{ background: isCurrentPlan ? 'var(--mizan-emerald)' : 'var(--mizan-emerald-light)' }}
-              >
-                <h4 className="text-lg font-bold">
-                  {isRtl 
-                    ? (planId === 'free' ? 'رفيق الحياة' : planId === 'premium' ? 'الحياة المتوازنة' : 'أمانة العائلة')
-                    : (planId === 'free' ? 'Life Companion' : planId === 'premium' ? 'Balanced Life' : 'Family Amanah')
-                  }
-                </h4>
-                <p className="text-xs mt-1 opacity-90">
-                  {isRtl
-                    ? (planId === 'free' ? 'الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم' : planId === 'premium' ? 'باقة مميزة للطموحين الذين يسعون لتعميق التوازن' : 'باقة شاملة للعائلات الراغبة بالتعاون والتوازن')
-                    : (planId === 'free' ? 'The basic plan perfect for individuals starting their journey' : planId === 'premium' ? 'Premium plan for ambitious individuals seeking deeper balance' : 'Comprehensive plan for families seeking cooperation and balance')
-                  }
-                </p>
-              </div>
-
-              {/* Plan Content */}
-              <div className="p-4 space-y-4">
-                {/* Price */}
-                <div className="text-center border-b pb-4" style={{ borderColor: 'var(--mizan-border)' }}>
-                  {planPricing === 0 ? (
-                    <p className="text-2xl font-bold" style={{ color: 'var(--mizan-emerald)' }}>
-                      {t('settings.subscription.free')}
-                    </p>
-                  ) : (
-                    <>
-                      <p className="text-3xl font-bold" style={{ color: 'var(--mizan-emerald)' }}>
-                        {countryData?.symbol}{planPricing.toFixed(2)}
-                      </p>
-                      <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
-                        {billingPeriod === 'monthly' ? (isRtl ? 'لكل شهر' : 'per month') : (isRtl ? 'لكل سنة' : 'per year')}
-                      </p>
-                    </>
-                  )}
-                </div>
-
-                {/* Features List */}
-                <div className="space-y-2" style={{ direction: isRtl ? 'rtl' : 'ltr' }}>
-                   {Object.entries(plan.features).map(([featureKey, hasFeature]) => (
-                     <div key={featureKey} className="flex items-start gap-2" style={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }}>
-                       {isRtl ? (
-                         <>
-                           <span
-                             className="text-sm"
-                             style={{
-                               color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-                             }}
-                           >
-                             {FEATURE_DESCRIPTIONS[featureKey].ar}
-                           </span>
-                           {hasFeature ? (
-                             <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
-                           ) : (
-                             <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
-                           )}
-                         </>
-                       ) : (
-                         <>
-                           {hasFeature ? (
-                             <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-green)' }} />
-                           ) : (
-                             <X className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }} />
-                           )}
-                           <span
-                             className="text-sm"
-                             style={{
-                               color: hasFeature ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-                             }}
-                           >
-                             {FEATURE_DESCRIPTIONS[featureKey].en}
-                           </span>
-                         </>
-                       )}
-                     </div>
-                   ))}
-                </div>
-
-                {/* Action Button */}
-                <Button
-                  onClick={() => handleSelectPlan(planId)}
-                  disabled={isCurrentPlan || loading}
-                  className="w-full mt-4 text-white font-semibold"
-                  style={{
-                    background: isCurrentPlan ? 'var(--mizan-text-secondary)' : 'var(--mizan-emerald)',
-                    opacity: isCurrentPlan ? 0.6 : 1,
-                  }}
-                >
-                  {isCurrentPlan
-                    ? (isRtl ? 'الخطة الحالية' : 'Current Plan')
-                    : (isRtl ? 'اختر الخطة' : 'Select Plan')}
-                </Button>
-              </div>
+    <div style={{ padding: '20px 16px', backgroundColor: '#f9fafb', minHeight: '100vh', direction: isArabic ? 'rtl' : 'ltr' }}>
+      {/* Plan Cards Container */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '480px', margin: '0 auto' }}>
+        
+        {/* CARD 1: LIFE COMPANION */}
+        <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+          <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'رفيق الحياة' : 'Life Companion'}</h3>
+            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'الخطة الأساسية المثالية للأفراد في بداية رحلتهم' : 'The basic plan perfect for individuals starting their journey'}</p>
+          </div>
+          <div style={{ padding: '24px 16px' }}>
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#111827' }}>
+              {isArabic ? 'مجاني' : 'Free'}
             </div>
-          );
-        })}
+            {/* Feature List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {[
+                { ar: 'إدارة المهام الأساسية', en: 'Basic Task Management', inc: true },
+                { ar: 'تتبع الأهداف', en: 'Goal Tracking', inc: true },
+                { ar: 'متابع الصلوات اليومية', en: 'Daily Prayer Tracker', inc: true },
+                { ar: 'تذكيرات المهام الأساسية', en: 'Basic Task Reminders', inc: true },
+                { ar: 'حاسبة الزكاة', en: 'Zakat Calculator', inc: true },
+                { ar: 'التتبع الصحي الأساسي', en: 'Basic Wellness Tracking', inc: true },
+                { ar: 'سجل التعلم الأساسي', en: 'Basic Learning Log', inc: true },
+                { ar: 'تذكيرات متقدمة (قبل ساعة أو يوم)', en: 'Advanced Reminders (1hr or 1day)', inc: false },
+                { ar: 'تتبع الميزانية الشخصية', en: 'Personal Budget Tracking', inc: false },
+                { ar: 'رؤى وتوصيات الذكاء الاصطناعي', en: 'AI Insights & Recommendations', inc: false },
+                { ar: 'مراجعات الحياة الشهرية والسنوية', en: 'Monthly & Annual Life Reviews', inc: false },
+                { ar: 'المشاركة العائلية', en: 'Family Sharing', inc: false },
+                { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: false },
+                { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: false }
+              ].map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6', direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#d1d5db', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                    {f.inc ? '✓' : '✕'}
+                  </span>
+                  <span style={{ fontSize: '14px', color: f.inc ? '#374151' : '#9ca3af', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                    {isArabic ? f.ar : f.en}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => handleSelectPlan('free')} disabled={currentPlan === 'free' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'free' ? '#e5e7eb' : '#064e3b', color: currentPlan === 'free' ? '#374151' : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'free' ? 0.6 : 1 }}>
+              {isArabic ? (currentPlan === 'free' ? 'الخطة الحالية' : 'اختر الخطة') : (currentPlan === 'free' ? 'Current Plan' : 'Select Plan')}
+            </button>
+          </div>
+        </div>
+
+        {/* CARD 2: BALANCED LIFE */}
+        <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '2px solid #064e3b', overflow: 'hidden', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.08)' }}>
+          <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'الحياة المتوازنة' : 'Balanced Life'}</h3>
+            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة متميزة للأفراد الطموحين الذين يسعون لتوازن أعمق' : 'Premium plan for ambitious individuals seeking deeper balance'}</p>
+          </div>
+          <div style={{ padding: '24px 16px' }}>
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#064e3b' }}>
+              24.99 {isArabic ? 'ر.س' : 'SAR'}<span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>
+            </div>
+            {/* Feature List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {[
+                { ar: 'إدارة المهام الأساسية', en: 'Basic Task Management', inc: true },
+                { ar: 'تتبع الأهداف', en: 'Goal Tracking', inc: true },
+                { ar: 'متابع الصلوات اليومية', en: 'Daily Prayer Tracker', inc: true },
+                { ar: 'تذكيرات المهام الأساسية', en: 'Basic Task Reminders', inc: true },
+                { ar: 'حاسبة الزكاة', en: 'Zakat Calculator', inc: true },
+                { ar: 'التتبع الصحي الأساسي', en: 'Basic Wellness Tracking', inc: true },
+                { ar: 'سجل التعلم الأساسي', en: 'Basic Learning Log', inc: true },
+                { ar: 'تذكيرات متقدمة (قبل ساعة أو يوم)', en: 'Advanced Reminders (1hr or 1day)', inc: true },
+                { ar: 'تتبع الميزانية الشخصية', en: 'Personal Budget Tracking', inc: true },
+                { ar: 'رؤى وتوصيات الذكاء الاصطناعي', en: 'AI Insights & Recommendations', inc: true },
+                { ar: 'مراجعات الحياة الشهرية والسنوية', en: 'Monthly & Annual Life Reviews', inc: true },
+                { ar: 'المشاركة العائلية', en: 'Family Sharing', inc: false },
+                { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: false },
+                { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: false }
+              ].map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6', direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#d1d5db', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                    {f.inc ? '✓' : '✕'}
+                  </span>
+                  <span style={{ fontSize: '14px', color: f.inc ? '#374151' : '#9ca3af', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                    {isArabic ? f.ar : f.en}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => handleSelectPlan('premium')} disabled={currentPlan === 'premium' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: '#064e3b', color: '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', boxShadow: '0 4px 12px rgba(6, 78, 59, 0.25)', cursor: 'pointer', opacity: currentPlan === 'premium' ? 0.6 : 1 }}>
+              {isArabic ? (currentPlan === 'premium' ? 'الخطة الحالية' : 'اختر الخطة') : (currentPlan === 'premium' ? 'Current Plan' : 'Select Plan')}
+            </button>
+          </div>
+        </div>
+
+        {/* CARD 3: FAMILY AMANAH */}
+        <div style={{ backgroundColor: '#ffffff', borderRadius: '16px', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+          <div style={{ backgroundColor: '#064e3b', padding: '24px 16px', textAlign: 'center', color: '#ffffff' }}>
+            <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'أمانة العائلة' : 'Family Amanah'}</h3>
+            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة شاملة للعائلات التي تسعى للتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance'}</p>
+          </div>
+          <div style={{ padding: '24px 16px' }}>
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#111827' }}>
+              49.99 {isArabic ? 'ر.س' : 'SAR'}<span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>
+            </div>
+            {/* Feature List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {[
+                { ar: 'إدارة المهام الأساسية', en: 'Basic Task Management', inc: true },
+                { ar: 'تتبع الأهداف', en: 'Goal Tracking', inc: true },
+                { ar: 'متابع الصلوات اليومية', en: 'Daily Prayer Tracker', inc: true },
+                { ar: 'تذكيرات المهام الأساسية', en: 'Basic Task Reminders', inc: true },
+                { ar: 'حاسبة الزكاة', en: 'Zakat Calculator', inc: true },
+                { ar: 'التتبع الصحي الأساسي', en: 'Basic Wellness Tracking', inc: true },
+                { ar: 'سجل التعلم الأساسي', en: 'Basic Learning Log', inc: true },
+                { ar: 'تذكيرات متقدمة (قبل ساعة أو يوم)', en: 'Advanced Reminders (1hr or 1day)', inc: true },
+                { ar: 'تتبع الميزانية الشخصية', en: 'Personal Budget Tracking', inc: true },
+                { ar: 'رؤى وتوصيات الذكاء الاصطناعي', en: 'AI Insights & Recommendations', inc: true },
+                { ar: 'مراجعات الحياة الشهرية والسنوية', en: 'Monthly & Annual Life Reviews', inc: true },
+                { ar: 'المشاركة العائلية', en: 'Family Sharing', inc: true },
+                { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: true },
+                { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: true }
+              ].map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6', direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#d1d5db', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                    {f.inc ? '✓' : '✕'}
+                  </span>
+                  <span style={{ fontSize: '14px', color: f.inc ? '#374151' : '#9ca3af', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                    {isArabic ? f.ar : f.en}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => handleSelectPlan('family')} disabled={currentPlan === 'family' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: '#064e3b', color: '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'family' ? 0.6 : 1 }}>
+              {isArabic ? (currentPlan === 'family' ? 'الخطة الحالية' : 'اختر الخطة') : (currentPlan === 'family' ? 'Current Plan' : 'Select Plan')}
+            </button>
+          </div>
+        </div>
+
       </div>
 
-      {/* Info Note */}
-       <div
-         className="p-4 rounded-lg text-sm text-center"
-         style={{
-           background: 'var(--mizan-emerald)',
-           color: 'white',
-         }}
-       >
-         💡 {isRtl
-           ? 'يمكنك تغيير الباقة أو البلد في أي وقت. سيتم تحديث الأسعار والعملة تلقائيًا.'
-           : 'You can change your plan or country anytime. Prices and currency will update automatically.'}
-       </div>
+      {/* Info Banner */}
+      <div style={{
+        marginTop: '24px',
+        backgroundColor: '#064e3b',
+        borderRadius: '12px',
+        padding: '16px',
+        color: '#ffffff',
+        fontSize: '13px',
+        textAlign: 'center',
+        lineHeight: '1.6'
+      }}>
+        {isArabic 
+          ? 'يمكنك تغيير خطتك أو بلدك في أي وقت. سيتم تحديث الأسعار والعملة تلقائيًا.' 
+          : 'You can change your plan or country anytime. Prices and currency will update automatically.'}
+      </div>
     </div>
   );
 }

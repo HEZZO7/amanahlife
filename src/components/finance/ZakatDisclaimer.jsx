@@ -29,14 +29,14 @@ export default function ZakatDisclaimer() {
           <div className="flex-1">
             <p
               className="text-sm font-semibold mb-1"
-              style={{ color: '#1F2937' }}
+              style={{ color: 'var(--mizan-text)' }}
             >
               {isArabic ? 'تقدير الزكاة — ليس فتوى شرعية' : 'Zakat Estimate — Not a Religious Ruling'}
             </p>
             {!expanded && (
               <p
                 className="text-xs line-clamp-2"
-                style={{ color: '#6B7280' }}
+                style={{ color: 'var(--mizan-text-secondary)' }}
               >
                 {isArabic
                   ? 'يوفر هذا الحاسب تقديراً استناداً إلى نصاب الحنفية...'
@@ -54,7 +54,7 @@ export default function ZakatDisclaimer() {
           <div className="mt-3 pt-3 border-t border-current border-opacity-10">
             <p
               className="text-xs leading-relaxed"
-              style={{ color: '#6B7280' }}
+              style={{ color: 'var(--mizan-text-secondary)' }}
             >
               {isArabic
                 ? 'يوفر هذا الحاسب تقديراً استناداً إلى نصاب الحنفية (قيمة ٨٧٫٤٨ جرام ذهب أو ٦١٢٫٣٦ جرام فضة، أيهما أقل) ومعدل ٢٫٥٪ على صافي الأموال الزكوية التي مضى عليها حول كامل. تختلف أحكام الزكاة بين المذاهب وأنواع الأصول والآراء الفقهية. يُرجى استشارة عالم شرعي متخصص أو مؤسسة زكاة معتمدة لحالتك الخاصة.'
@@ -130,7 +130,7 @@ export default function ZakatDisclaimer() {
           <div className="flex-1">
             <p
               className="text-sm font-semibold mb-1"
-              style={{ color: '#1F2937' }}
+              style={{ color: 'var(--mizan-text)' }}
             >
               {isArabic ? 'أي النصاب ينطبق عليّ؟' : 'Which nisab applies to me?'}
             </p>
@@ -145,7 +145,7 @@ export default function ZakatDisclaimer() {
           <div className="mt-3 pt-3 border-t border-current border-opacity-10">
             <p
               className="text-xs leading-relaxed"
-              style={{ color: '#6B7280' }}
+              style={{ color: 'var(--mizan-text-secondary)' }}
             >
               {isArabic
                 ? 'يختلف الفقهاء في أي النصاب يجب استخدامه. يوصي العديد من الفقهاء المعاصرين باستخدام نصاب الفضة لأنه أقل وبالتالي أكثر شمولاً، مما يضمن أن يقوم بالالتزام عدد أكبر من الناس. يستخدم البعض الآخر نصاب الذهب. استشر عالماً محلياً لديك للحصول على التوجيه.'

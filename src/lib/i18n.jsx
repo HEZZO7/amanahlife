@@ -210,6 +210,7 @@ const translations = {
   "analytics.finance": { en: "Finance Trend", ar: "الاتجاه المالي" },
   "analytics.mood": { en: "Mood Trend", ar: "اتجاه المزاج" },
   "analytics.prayers": { en: "Prayer Completion", ar: "الصلوات" },
+  "nav.achievements": { en: "Achievements", ar: "الإنجازات" },
 
   // Spiritual
   "spiritual.dailyScore": { en: "Today's Prayers", ar: "صلوات اليوم" },

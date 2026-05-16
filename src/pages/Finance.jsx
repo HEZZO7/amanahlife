@@ -83,20 +83,50 @@ export default function Finance() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 rounded-lg mb-6" style={{ background: 'var(--mizan-surface)' }}>
-        {TABS.map(tab_key => (
-          <button
-            key={tab_key}
-            onClick={() => setTab(tab_key)}
-            className="flex-1 py-2 text-sm font-medium rounded-md transition-all"
-            style={{
-              background: tab === tab_key ? 'var(--mizan-emerald)' : 'transparent',
-              color: tab === tab_key ? 'white' : 'var(--mizan-text-secondary)',
-            }}
-          >
-            {t(`finance.tab.${tab_key}`)}
-          </button>
-        ))}
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: '8px', 
+        width: '100%', 
+        overflowX: 'auto', 
+        whiteSpace: 'nowrap',
+        padding: '6px 4px',
+        backgroundColor: '#f3f4f6',
+        borderRadius: '12px',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+        marginBottom: '20px'
+      }}>
+        <style>{`
+          div::-webkit-scrollbar { display: none; }
+        `}</style>
+
+        {TABS.map(tab_key => {
+          const isActive = tab === tab_key;
+          return (
+            <button
+              key={tab_key}
+              onClick={() => setTab(tab_key)}
+              style={{
+                flex: '1 0 auto',
+                textAlign: 'center',
+                padding: '10px 16px',
+                fontSize: '14px',
+                fontWeight: isActive ? '600' : '500',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                backgroundColor: isActive ? '#ffffff' : 'transparent',
+                color: isActive ? '#064e3b' : '#6b7280',
+                boxShadow: isActive ? '0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)' : 'none'
+              }}
+            >
+              {t(`finance.tab.${tab_key}`)}
+            </button>
+          );
+        })}
       </div>
 
       {loading && tab !== 'scanner' ? (

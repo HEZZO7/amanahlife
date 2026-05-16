@@ -319,16 +319,18 @@ export default function TimesQibla({ language }) {
       )}
 
       {/* Auto-log toggle */}
-      <div className="flex items-center justify-between p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-        <div>
-          <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px', padding: '16px', borderRadius: '12px', background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--mizan-text)', margin: 0 }}>
             {isAr ? 'تذكير تسجيل الصلاة' : 'Auto-suggest prayer log'}
           </p>
-          <p className="text-xs mt-0.5" style={{ color: 'var(--mizan-text-secondary)' }}>
+          <p style={{ fontSize: '12px', color: 'var(--mizan-text-secondary)', marginTop: '2px', marginBottom: 0 }}>
             {isAr ? 'يسألك بعد 30 دقيقة من كل صلاة' : 'Prompts 30 min after each prayer time'}
           </p>
         </div>
-        <Switch checked={autoLog} onCheckedChange={setAutoLog} />
+        <div style={{ flexShrink: 0 }}>
+          <Switch checked={autoLog} onCheckedChange={setAutoLog} />
+        </div>
       </div>
 
       {/* Auto-log prompt */}

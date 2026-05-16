@@ -49,24 +49,28 @@ export default function RegionalSection() {
         </Select>
       </div>
 
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+        <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '500' }}>
           {t('settings.easternNumerals')}
         </span>
-        <Switch
-          checked={settings?.show_eastern_numerals || false}
-          onCheckedChange={(val) => updateSettings({ show_eastern_numerals: val })}
-        />
+        <div style={{ flexShrink: 0 }}>
+          <Switch
+            checked={settings?.show_eastern_numerals || false}
+            onCheckedChange={(val) => updateSettings({ show_eastern_numerals: val })}
+          />
+        </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+        <span style={{ flex: 1, minWidth: 0, color: 'var(--mizan-text)', fontSize: '14px', fontWeight: '500' }}>
           {t('settings.ramadanMode')}
         </span>
-        <Switch
-          checked={settings?.ramadan_mode_active || false}
-          onCheckedChange={(val) => updateSettings({ ramadan_mode_active: val })}
-        />
+        <div style={{ flexShrink: 0 }}>
+          <Switch
+            checked={settings?.ramadan_mode_active || false}
+            onCheckedChange={(val) => updateSettings({ ramadan_mode_active: val })}
+          />
+        </div>
       </div>
     </div>
   );

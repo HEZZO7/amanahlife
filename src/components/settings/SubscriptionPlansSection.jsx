@@ -34,7 +34,7 @@ export default function SubscriptionPlansSection() {
   const getFamilyYearlyTotal = () => familyYearly.toFixed(2);
 
   return (
-    <div style={{ padding: '20px 16px', backgroundColor: '#f9fafb', minHeight: '100vh', direction: isArabic ? 'rtl' : 'ltr' }}>
+    <div style={{ padding: '20px 0', backgroundColor: 'transparent', width: '100%', direction: isArabic ? 'rtl' : 'ltr' }}>
       {/* Billing Period Toggle */}
       <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#1f2937', padding: '8px', borderRadius: '12px', border: '1px solid #374151' }}>
         <button

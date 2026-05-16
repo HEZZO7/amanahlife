@@ -1,0 +1,58 @@
+{
+  "name": "LifeReview",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "annual"
+      ]
+    },
+    "period": {
+      "type": "string",
+      "description": "e.g. '2026-04' for monthly or '2026' for annual"
+    },
+    "spiritual_score": {
+      "type": "number"
+    },
+    "financial_grade": {
+      "type": "string"
+    },
+    "goals_summary": {
+      "type": "object"
+    },
+    "wellness_summary": {
+      "type": "object"
+    },
+    "ai_narrative_ar": {
+      "type": "string"
+    },
+    "ai_narrative_en": {
+      "type": "string"
+    },
+    "focus_recommendation_ar": {
+      "type": "string"
+    },
+    "focus_recommendation_en": {
+      "type": "string"
+    },
+    "word_of_year": {
+      "type": "string"
+    },
+    "top_achievement": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "object"
+    },
+    "is_archived": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "type",
+    "period"
+  ]
+}

@@ -24,6 +24,7 @@ import Work from '@/pages/Work';
 import Wellness from '@/pages/Wellness';
 import Analytics from '@/pages/Analytics';
 import AIAssistant from '@/pages/AIAssistant';
+import LifeReviews from '@/pages/LifeReviews';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -64,6 +65,7 @@ const AppRoutes = () => {
         <Route path="/wellness" element={<Wellness />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/ai" element={<AIAssistant />} />
+        <Route path="/reviews" element={<LifeReviews />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

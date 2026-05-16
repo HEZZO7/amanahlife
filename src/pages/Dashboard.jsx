@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
 import { build as buildDashboard } from '@/lib/dashboardService';
-import { Target, Wallet, Heart, CheckSquare, Plus, TrendingUp, TrendingDown, Sparkles, X, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Target, Wallet, Heart, CheckSquare, Plus, TrendingUp, TrendingDown, Sparkles, X, ThumbsUp, ThumbsDown, BookOpen } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
@@ -232,6 +232,31 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Life Review CTA */}
+      {['premium', 'family'].includes(settings?.subscription_tier) && (
+        <div className="mb-6">
+          <Link to="/reviews">
+            <div className="p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity"
+              style={{ background: 'linear-gradient(135deg, var(--mizan-emerald) 0%, #0E7A6C 100%)', border: '1px solid var(--mizan-emerald)' }}>
+              <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-white">
+                  {settings?.language === 'ar' ? 'مراجعة الحياة الشهرية' : 'Monthly Life Review'}
+                </p>
+                <p className="text-xs text-white/70">
+                  {settings?.language === 'ar' ? 'تقرير ذكي لأداء الشهر الماضي' : 'AI-powered report of last month'}
+                </p>
+              </div>
+              <div className="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center">
+                <Sparkles className="w-3.5 h-3.5 text-white" />
+              </div>
+            </div>
+          </Link>
         </div>
       )}
 

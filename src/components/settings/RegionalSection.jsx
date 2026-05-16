@@ -4,18 +4,7 @@ import { useUserSettings } from '@/lib/UserSettingsContext';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-
-const CURRENCIES = [
-  { code: 'SAR', symbol: 'ر.س', label: 'SAR' },
-  { code: 'AED', symbol: 'د.إ', label: 'AED' },
-  { code: 'KWD', symbol: 'د.ك', label: 'KWD' },
-  { code: 'QAR', symbol: 'ر.ق', label: 'QAR' },
-  { code: 'BHD', symbol: 'د.ب', label: 'BHD' },
-  { code: 'EGP', symbol: 'ج.م', label: 'EGP' },
-  { code: 'USD', symbol: '$', label: 'USD' },
-  { code: 'EUR', symbol: '€', label: 'EUR' },
-  { code: 'GBP', symbol: '£', label: 'GBP' },
-];
+import { COUNTRIES_AND_CURRENCIES } from '@/lib/subscriptionPlans';
 
 function ToggleRow({ label, checked, onCheckedChange }) {
   return (
@@ -46,13 +35,31 @@ function ToggleRow({ label, checked, onCheckedChange }) {
 }
 
 export default function RegionalSection() {
-  const { t } = useI18n();
+  const { t, isRTL } = useI18n();
   const { settings, updateSettings } = useUserSettings();
 
+  const handleCountry = async (countryCode) => {
+    const country = COUNTRIES_AND_CURRENCIES[countryCode];
+    if (country) {
+      await updateSettings({
+        country: countryCode,
+        currency: country.code,
+        currency_symbol: country.symbol,
+      });
+      toast.success(t('settings.saved'));
+    }
+  };
+
   const handleCurrency = async (code) => {
-    const c = CURRENCIES.find(c => c.code === code);
-    await updateSettings({ currency: code, currency_symbol: c?.symbol || code });
-    toast.success(t('settings.saved'));
+    // Find which country uses this currency and update accordingly
+    const country = Object.values(COUNTRIES_AND_CURRENCIES).find(c => c.code === code);
+    if (country) {
+      const countryCode = Object.keys(COUNTRIES_AND_CURRENCIES).find(k => COUNTRIES_AND_CURRENCIES[k].code === code);
+      await handleCountry(countryCode);
+    } else {
+      await updateSettings({ currency: code });
+      toast.success(t('settings.saved'));
+    }
   };
 
   return (
@@ -61,20 +68,36 @@ export default function RegionalSection() {
         {t('settings.regional')}
       </h2>
 
-      <div style={{ marginBottom: '8px' }}>
+      {/* Country Selection */}
+      <div style={{ marginBottom: '16px' }}>
         <p className="text-sm font-medium mb-2" style={{ color: 'var(--mizan-text-secondary)' }}>
-          {t('settings.currency')}
+          {t('settings.regional.country')}
         </p>
-        <Select value={settings?.currency || 'SAR'} onValueChange={handleCurrency}>
+        <Select value={settings?.country || 'SA'} onValueChange={handleCountry}>
           <SelectTrigger className="h-11 rounded-lg" style={{ background: 'var(--mizan-surface)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {CURRENCIES.map(c => (
-              <SelectItem key={c.code} value={c.code}>{c.symbol} {c.label}</SelectItem>
+            {Object.entries(COUNTRIES_AND_CURRENCIES).map(([code, data]) => (
+              <SelectItem key={code} value={code}>
+                {isRTL ? data.name : data.nameEn} ({data.symbol})
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Currency Display (Auto-updated with Country) */}
+      <div style={{ marginBottom: '8px', padding: '12px', backgroundColor: 'var(--mizan-bg)', borderRadius: '8px' }}>
+        <p className="text-sm font-medium mb-1" style={{ color: 'var(--mizan-text-secondary)' }}>
+          {t('settings.currency')}
+        </p>
+        <p className="text-lg font-semibold" style={{ color: 'var(--mizan-text)' }}>
+          {settings?.currency_symbol} {settings?.currency}
+        </p>
+        <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
+          {isRTL ? 'يتم تحديثها تلقائيًا عند تغيير البلد' : 'Auto-updated when you change country'}
+        </p>
       </div>
 
       <ToggleRow

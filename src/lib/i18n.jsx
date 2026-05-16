@@ -272,9 +272,22 @@ const translations = {
   "family.totalSpent": { en: "Spent", ar: "المصروف" },
   "family.remaining": { en: "Remaining", ar: "المتبقي" },
   "family.noBudgets": { en: "No budgets yet", ar: "لا توجد ميزانيات" },
+
+  // Subscription
+  "settings.subscription.plans": { en: "Subscription Plans", ar: "خطط الاشتراك" },
+  "settings.subscription.choose_plan": { en: "Choose the plan that best suits your needs", ar: "اختر الخطة التي تناسب احتياجاتك" },
+  "settings.subscription.current_currency": { en: "Current Currency", ar: "العملة الحالية" },
+  "settings.subscription.monthly": { en: "Monthly", ar: "شهري" },
+  "settings.subscription.yearly": { en: "Yearly", ar: "سنوي" },
+  "settings.subscription.per_month": { en: "per month", ar: "لكل شهر" },
+  "settings.subscription.per_year": { en: "per year", ar: "لكل سنة" },
+  "settings.subscription.free": { en: "Free", ar: "مجاني" },
+  "settings.subscription.current_plan": { en: "Current Plan", ar: "الخطة الحالية" },
+  "settings.subscription.select_plan": { en: "Select Plan", ar: "اختر الخطة" },
+  "settings.regional.country": { en: "Country", ar: "البلد" },
   };
 
-const I18nContext = createContext();
+  const I18nContext = createContext();
 
 export function I18nProvider({ children }) {
   const [language, setLanguage] = useState('ar');

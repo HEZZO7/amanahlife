@@ -1,0 +1,81 @@
+{
+  "name": "Subscription",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the subscriber"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "free",
+        "premium",
+        "family"
+      ],
+      "default": "free",
+      "description": "Current subscription tier"
+    },
+    "billing_period": {
+      "type": "string",
+      "enum": [
+        "monthly",
+        "yearly"
+      ],
+      "default": "monthly",
+      "description": "Billing period type"
+    },
+    "country": {
+      "type": "string",
+      "default": "SA",
+      "description": "Country code (e.g., SA, AE, US)"
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR",
+      "description": "Currency code"
+    },
+    "amount_paid": {
+      "type": "number",
+      "description": "Amount paid in the subscription's currency"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "expired",
+        "paused"
+      ],
+      "default": "active",
+      "description": "Subscription status"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Subscription start date"
+    },
+    "renewal_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Next renewal date"
+    },
+    "auto_renew": {
+      "type": "boolean",
+      "default": true,
+      "description": "Auto-renew subscription"
+    },
+    "payment_method": {
+      "type": "string",
+      "description": "Payment method used"
+    },
+    "stripe_subscription_id": {
+      "type": "string",
+      "description": "Stripe subscription ID (if using Stripe)"
+    }
+  },
+  "required": [
+    "user_email",
+    "tier"
+  ]
+}

@@ -18,6 +18,21 @@
       ],
       "default": "dark"
     },
+    "country": {
+      "type": "string",
+      "default": "SA",
+      "description": "Country code (SA, AE, US, etc.)"
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR",
+      "description": "Currency code"
+    },
+    "currency_symbol": {
+      "type": "string",
+      "default": "\u0631.\u0633",
+      "description": "Currency symbol"
+    },
     "notifications_enabled": {
       "type": "boolean",
       "default": true
@@ -96,14 +111,6 @@
     "prayer_location_name": {
       "type": "string",
       "description": "Saved prayer location name (city/place)"
-    },
-    "currency": {
-      "type": "string",
-      "default": "SAR"
-    },
-    "currency_symbol": {
-      "type": "string",
-      "default": "\u0631.\u0633"
     },
     "show_eastern_numerals": {
       "type": "boolean",

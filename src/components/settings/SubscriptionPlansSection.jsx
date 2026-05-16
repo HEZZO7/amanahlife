@@ -7,6 +7,7 @@ export default function SubscriptionPlansSection() {
   const isArabic = language === 'ar';
   const { settings, updateSettings } = useUserSettings();
   const [loading, setLoading] = useState(false);
+  const [billingPeriod, setBillingPeriod] = useState('monthly');
 
   const handleSelectPlan = async (planId) => {
     if (planId === settings?.subscription_tier) return;
@@ -22,8 +23,73 @@ export default function SubscriptionPlansSection() {
 
   const currentPlan = settings?.subscription_tier || 'free';
 
+  const premiumMonthly = 24.99;
+  const premiumYearly = premiumMonthly * 12 * 0.8; // 20% discount
+  const familyMonthly = 49.99;
+  const familyYearly = familyMonthly * 12 * 0.8; // 20% discount
+
+  const getPremiumPrice = () => billingPeriod === 'monthly' ? premiumMonthly : (premiumYearly / 12).toFixed(2);
+  const getFamilyPrice = () => billingPeriod === 'monthly' ? familyMonthly : (familyYearly / 12).toFixed(2);
+  const getPremiumYearlyTotal = () => premiumYearly.toFixed(2);
+  const getFamilyYearlyTotal = () => familyYearly.toFixed(2);
+
   return (
     <div style={{ padding: '20px 16px', backgroundColor: '#f9fafb', minHeight: '100vh', direction: isArabic ? 'rtl' : 'ltr' }}>
+      {/* Billing Period Toggle */}
+      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#ffffff', padding: '8px', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+        <button
+          onClick={() => setBillingPeriod('monthly')}
+          style={{
+            flex: 1,
+            padding: '10px 16px',
+            borderRadius: '8px',
+            border: 'none',
+            backgroundColor: billingPeriod === 'monthly' ? '#064e3b' : 'transparent',
+            color: billingPeriod === 'monthly' ? '#ffffff' : '#6b7280',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+        >
+          {isArabic ? 'شهري' : 'Monthly'}
+        </button>
+        <button
+          onClick={() => setBillingPeriod('yearly')}
+          style={{
+            flex: 1,
+            padding: '10px 16px',
+            borderRadius: '8px',
+            border: 'none',
+            backgroundColor: billingPeriod === 'yearly' ? '#064e3b' : 'transparent',
+            color: billingPeriod === 'yearly' ? '#ffffff' : '#6b7280',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            position: 'relative'
+          }}
+        >
+          {isArabic ? 'سنوي' : 'Yearly'}
+          {billingPeriod === 'yearly' && (
+            <span style={{
+              position: 'absolute',
+              top: '-8px',
+              right: isArabic ? 'auto' : '8px',
+              left: isArabic ? '8px' : 'auto',
+              backgroundColor: '#10b981',
+              color: 'white',
+              fontSize: '10px',
+              padding: '2px 8px',
+              borderRadius: '4px',
+              fontWeight: '700'
+            }}>
+              {isArabic ? '-20%' : 'Save 20%'}
+            </span>
+          )}
+        </button>
+      </div>
+
       {/* Plan Cards Container */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '480px', margin: '0 auto' }}>
         
@@ -79,8 +145,14 @@ export default function SubscriptionPlansSection() {
           </div>
           <div style={{ padding: '24px 16px' }}>
             <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#064e3b' }}>
-              24.99 {isArabic ? 'ر.س' : 'SAR'}<span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>
+              {getPremiumPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
             </div>
+            {billingPeriod === 'yearly' && (
+              <div style={{ textAlign: 'center', marginBottom: '12px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+                {isArabic ? `إجمالي السنة: ${getPremiumYearlyTotal()} ر.س` : `Total per year: ${getPremiumYearlyTotal()} SAR`}
+              </div>
+            )}
             {/* Feature List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {[
@@ -123,8 +195,14 @@ export default function SubscriptionPlansSection() {
           </div>
           <div style={{ padding: '24px 16px' }}>
             <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#111827' }}>
-              49.99 {isArabic ? 'ر.س' : 'SAR'}<span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>
+              {getFamilyPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#6b7280' }}> / {isArabic ? 'شهر' : 'month'}</span>}
             </div>
+            {billingPeriod === 'yearly' && (
+              <div style={{ textAlign: 'center', marginBottom: '12px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+                {isArabic ? `إجمالي السنة: ${getFamilyYearlyTotal()} ر.س` : `Total per year: ${getFamilyYearlyTotal()} SAR`}
+              </div>
+            )}
             {/* Feature List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {[

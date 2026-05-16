@@ -97,9 +97,9 @@ export const SUBSCRIPTION_PLANS_PRICING = {
 export const SUBSCRIPTION_PLANS = {
   free: {
     id: 'free',
-    nameAr: 'شريك الحياة',
+    nameAr: 'رفيق الحياة',
     nameEn: 'Life Companion',
-    descriptionAr: 'الخطة الأساسية المثالية للأفراد في بداية رحلتهم',
+    descriptionAr: 'الباقة الأساسية والمثالية للأفراد الذين يبدأون رحلتهم',
     descriptionEn: 'The basic plan perfect for individuals starting their journey',
     features: {
       taskManagement: true,
@@ -120,9 +120,9 @@ export const SUBSCRIPTION_PLANS = {
   },
   premium: {
     id: 'premium',
-    nameAr: 'حياة متوازنة',
+    nameAr: 'الحياة المتوازنة',
     nameEn: 'Balanced Life',
-    descriptionAr: 'خطة متميزة للأفراد الطموحين الذين يسعون لتوازن أعمق',
+    descriptionAr: 'باقة مميزة للطموحين الذين يسعون لتعميق التوازن',
     descriptionEn: 'Premium plan for ambitious individuals seeking deeper balance',
     features: {
       taskManagement: true,
@@ -145,7 +145,7 @@ export const SUBSCRIPTION_PLANS = {
     id: 'family',
     nameAr: 'أمانة العائلة',
     nameEn: 'Family Amanah',
-    descriptionAr: 'خطة شاملة للعائلات التي تسعى للتعاون والتوازن',
+    descriptionAr: 'باقة شاملة للعائلات الراغبة بالتعاون والتوازن',
     descriptionEn: 'Comprehensive plan for families seeking cooperation and balance',
     features: {
       taskManagement: true,

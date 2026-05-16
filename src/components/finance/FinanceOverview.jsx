@@ -2,7 +2,7 @@ import React from 'react';
 import { useI18n } from '@/lib/i18n';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis } from 'recharts';
 
-const COLORS = ['#0B5B50','#B89A5E','#12897A','#C0392B','#27AE60','#8A9B97','#16302B','#F5F1E8'];
+const COLORS = ['#2EAA96','#D4A853','#25917F','#C0392B','#27AE60','#5FB3A8','#134E42','#EDF5F4'];
 
 export default function FinanceOverview({ snapshot, currSymbol }) {
   const { t } = useI18n();

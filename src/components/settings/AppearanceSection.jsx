@@ -13,8 +13,8 @@ function ToggleRow({ label, checked, onCheckedChange }) {
       alignItems: 'center',
       width: '100%',
       direction: 'ltr',
-      padding: '10px 0',
-      borderBottom: '1px solid rgba(0,0,0,0.05)',
+      padding: '12px 0',
+      borderBottom: '1px solid var(--mizan-border)',
     }}>
       <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
         <Switch checked={checked} onCheckedChange={onCheckedChange} />

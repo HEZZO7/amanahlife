@@ -234,9 +234,9 @@ export default function TimesQibla({ language }) {
           alignItems: 'center',
           width: '100%',
           direction: 'ltr',
-          gap: '12px'
+          padding: '12px 0'
         }}>
-          <div style={{ justifySelf: 'start' }}>
+          <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
             <button
               onClick={() => setAutoLogEnabled(!autoLogEnabled)}
               className="relative h-6 w-11 rounded-full transition-all"
@@ -253,7 +253,7 @@ export default function TimesQibla({ language }) {
               />
             </button>
           </div>
-          <div style={{ justifySelf: 'end', textAlign: 'right' }}>
+          <div style={{ justifySelf: 'end', textAlign: 'right', width: '100%' }}>
             <p className="font-semibold text-sm" style={{ color: 'var(--mizan-text)' }}>
               {language === 'ar' ? 'تسجيل تلقائي للصلاة' : 'Auto-Log Prayers'}
             </p>

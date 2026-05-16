@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '@/lib/i18n';
 import {
   LayoutDashboard, Wallet, Target, CalendarDays, Heart,
-  Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, Sparkles, Trophy
+  Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, Sparkles, Trophy, Archive
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -20,6 +20,7 @@ const NAV_ITEMS = [
   { key: 'wellness', path: '/wellness', icon: Activity },
   { key: 'analytics', path: '/analytics', icon: BarChart3 },
   { key: 'achievements', path: '/achievements', icon: Trophy },
+  { key: 'archive', path: '/archive', icon: Archive },
 ];
 
 export default function Sidebar() {

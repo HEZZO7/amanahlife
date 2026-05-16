@@ -52,6 +52,21 @@
     "goal_id": {
       "type": "string",
       "description": "ID of the parent goal this task belongs to"
+    },
+    "is_archived": {
+      "type": "boolean",
+      "default": false,
+      "description": "Task has been archived"
+    },
+    "archived_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the task was archived"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the task was marked as completed"
     }
   },
   "required": [

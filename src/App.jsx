@@ -26,6 +26,7 @@ import Analytics from '@/pages/Analytics';
 import AIAssistant from '@/pages/AIAssistant';
 import LifeReviews from '@/pages/LifeReviews';
 import AchievementsDashboard from '@/pages/AchievementsDashboard';
+import Archive from '@/pages/Archive';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -68,6 +69,7 @@ const AppRoutes = () => {
         <Route path="/ai" element={<AIAssistant />} />
         <Route path="/reviews" element={<LifeReviews />} />
         <Route path="/achievements" element={<AchievementsDashboard />} />
+        <Route path="/archive" element={<Archive />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

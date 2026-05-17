@@ -6,20 +6,20 @@ import { Droplet, Activity, Heart, Zap, X } from 'lucide-react';
 
 const REMINDERS = {
   hydration: {
-    ar: ['اشرب كوب ماء الآن ✨', 'جسدك يحتاج للماء - اشرب معك!', 'رطّب جسدك الآن 💧'],
-    en: ['Time for water! 💧', 'Stay hydrated! Drink some water.', 'Hydration boost time! 💧'],
+    ar: ['اشرب كوب ماء الآن', 'جسدك يحتاج للماء - اشرب الآن!', 'رطّب جسدك الآن'],
+    en: ['Time to drink water.', 'Stay hydrated. Drink some water.', 'Hydration check — drink water now.'],
   },
   activity: {
-    ar: ['وقت الحركة! 🏃', 'انهض وتحرك قليلاً', 'جرب تمرين سريع!'],
-    en: ['Time to move! 🏃', 'Get up and stretch!', 'Quick activity boost! 🏃'],
+    ar: ['وقت الحركة!', 'انهض وتحرك قليلاً', 'جرب تمرين سريع!'],
+    en: ['Time to move.', 'Get up and stretch.', 'Quick activity break.'],
   },
   sleep: {
-    ar: ['تذكر: النوم مهم لصحتك 😴', 'حان وقت الراحة!', 'استعد للنوم المبكر ✨'],
-    en: ['Sleep is health! 😴', 'Time to rest well!', 'Sleep matters! ✨'],
+    ar: ['تذكر: النوم مهم لصحتك', 'حان وقت الراحة!', 'استعد للنوم المبكر'],
+    en: ['Sleep is essential for health.', 'Time to rest well.', 'Prepare for early sleep.'],
   },
   stress: {
-    ar: ['خذ نفساً عميقاً 🧘', 'استرخ قليلاً', 'لحظة هدوء الآن'],
-    en: ['Take a deep breath! 🧘', 'Relax for a moment.', 'Stress relief moment! 🧘'],
+    ar: ['خذ نفساً عميقاً', 'استرخ قليلاً', 'لحظة هدوء الآن'],
+    en: ['Take a deep breath.', 'Relax for a moment.', 'Take a short mindfulness break.'],
   },
 };
 

@@ -6,10 +6,23 @@ import {
   Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, MoreHorizontal, X, Sparkles, Search
 } from 'lucide-react';
 
+// AI-powered search composite icon
+function AISearchIcon({ size = 24, color = 'currentColor' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Magnifier */}
+      <circle cx="10.5" cy="10.5" r="5.5" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+      <line x1="14.8" y1="14.8" x2="19" y2="19" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+      {/* Subtle sparkle top-right */}
+      <path d="M18.5 4.5 L19 3 L19.5 4.5 L21 5 L19.5 5.5 L19 7 L18.5 5.5 L17 5 Z" fill={color} opacity="0.85" />
+    </svg>
+  );
+}
+
 const MAIN_TABS = [
   { key: 'dashboard', path: '/', icon: LayoutDashboard },
   { key: 'finance', path: '/finance', icon: Wallet },
-  { key: 'search', path: '/search', icon: Search },
+  { key: 'search', path: '/search', icon: null, CustomIcon: AISearchIcon },
   { key: 'planner', path: '/planner', icon: CalendarDays },
   { key: 'more', path: null, icon: MoreHorizontal },
 ];
@@ -78,7 +91,7 @@ export default function BottomTabs() {
         style={{ background: 'var(--mizan-surface)', borderColor: 'var(--mizan-border)' }}
       >
         <div className="flex items-center justify-around py-2 px-1 pb-[env(safe-area-inset-bottom,8px)]">
-          {MAIN_TABS.map(({ key, path, icon: Icon }) => {
+          {MAIN_TABS.map(({ key, path, icon: Icon, CustomIcon }) => {
             const active = path ? location.pathname === path : showMore;
             const isMore = key === 'more';
 
@@ -96,14 +109,18 @@ export default function BottomTabs() {
               );
             }
 
+            const color = active ? 'var(--mizan-emerald)' : '#6B7280';
             return (
               <Link
                 key={key}
                 to={path}
                 className="flex flex-col items-center gap-0.5 py-1 px-3 min-w-[56px]"
-                style={{ color: active ? 'var(--mizan-emerald)' : '#6B7280' }}
+                style={{ color }}
               >
-                <Icon className="w-6 h-6" />
+                {CustomIcon
+                  ? <CustomIcon size={24} color={color} />
+                  : <Icon className="w-6 h-6" />
+                }
                 <span className="text-[10px] font-medium">{t(`nav.${key}`)}</span>
               </Link>
             );

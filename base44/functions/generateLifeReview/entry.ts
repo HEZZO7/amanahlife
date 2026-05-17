@@ -153,6 +153,7 @@ Deno.serve(async (req) => {
     const contextPrompt = `
 You are AmanahLife — a compassionate Islamic life companion AI.
 Generate a structured life review for this user.
+STRICT RULE: Never use emojis or emoticons anywhere in your response.
 
 Period: ${period} (${type})
 Language: ${lang}
@@ -222,8 +223,8 @@ Respond with a JSON object (no markdown):
     if (notifyOnComplete && user?.email) {
       const periodLabel = type === 'monthly' ? period : `${period} (Annual)`;
       const subject = lang === 'ar'
-        ? `✅ تقريرك لـ ${periodLabel} جاهز!`
-        : `✅ Your ${periodLabel} review is ready!`;
+        ? `تقريرك لـ ${periodLabel} جاهز`
+        : `Your ${periodLabel} review is ready`;
       const body = lang === 'ar'
         ? `السلام عليكم،\n\nتقريرك الذكي لـ ${periodLabel} جاهز الآن. افتح التطبيق لمطالعة تحليلك الشامل وتوصيات الفترة القادمة.\n\nبارك الله فيك.`
         : `Hello,\n\nYour AmanahLife review for ${periodLabel} is ready. Open the app to read your full analysis and recommendations.\n\nMay Allah bless you.`;

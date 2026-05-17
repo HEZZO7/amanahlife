@@ -163,8 +163,8 @@ Deno.serve(async (req) => {
     if (body?.goal_completed) {
       addInsight(
         'suggestion',
-        `Congratulations! You completed your goal: "${body.goal_completed}". This is a real achievement — celebrate it and set your next goal with the same determination! 🎉`,
-        `تهانينا! لقد أكملت هدفك: "${body.goal_completed}". هذا إنجاز حقيقي — احتفل به وضع هدفك التالي بنفس العزيمة! 🎉`
+        `Congratulations! You completed your goal: "${body.goal_completed}". This is a real achievement — celebrate it and set your next goal with the same determination.`,
+        `تهانينا! لقد أكملت هدفك: "${body.goal_completed}". هذا إنجاز حقيقي — احتفل به وضع هدفك التالي بنفس العزيمة.`
       );
     }
 

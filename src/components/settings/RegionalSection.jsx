@@ -6,27 +6,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import { COUNTRIES_AND_CURRENCIES } from '@/lib/subscriptionPlans';
 
-function ToggleRow({ label, checked, onCheckedChange }) {
+function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
   return (
     <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'auto 1fr',
+      display: 'flex',
+      flexDirection: isRTL ? 'row' : 'row-reverse',
       alignItems: 'center',
+      justifyContent: 'space-between',
       width: '100%',
-      direction: 'ltr',
       padding: '12px 0',
       borderBottom: '1px solid var(--mizan-border)',
+      gap: '12px',
     }}>
-      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-        <Switch checked={checked} onCheckedChange={onCheckedChange} />
-      </div>
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
       <span style={{
-        justifySelf: 'end',
-        textAlign: 'right',
-        width: '100%',
+        flex: 1,
         fontSize: '15px',
         fontWeight: '500',
         color: 'var(--mizan-text)',
+        textAlign: isRTL ? 'right' : 'left',
       }}>
         {label}
       </span>
@@ -104,12 +102,14 @@ export default function RegionalSection() {
         label={t('settings.easternNumerals')}
         checked={settings?.show_eastern_numerals || false}
         onCheckedChange={(val) => updateSettings({ show_eastern_numerals: val })}
+        isRTL={isRTL}
       />
 
       <ToggleRow
         label={t('settings.ramadanMode')}
         checked={settings?.ramadan_mode_active || false}
         onCheckedChange={(val) => updateSettings({ ramadan_mode_active: val })}
+        isRTL={isRTL}
       />
     </div>
   );

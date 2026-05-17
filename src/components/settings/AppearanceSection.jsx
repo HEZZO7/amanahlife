@@ -5,27 +5,25 @@ import { useUserSettings } from '@/lib/UserSettingsContext';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 
-function ToggleRow({ label, checked, onCheckedChange }) {
+function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
   return (
     <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'auto 1fr',
+      display: 'flex',
+      flexDirection: isRTL ? 'row' : 'row-reverse',
       alignItems: 'center',
+      justifyContent: 'space-between',
       width: '100%',
-      direction: 'ltr',
       padding: '12px 0',
       borderBottom: '1px solid var(--mizan-border)',
+      gap: '12px',
     }}>
-      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-        <Switch checked={checked} onCheckedChange={onCheckedChange} />
-      </div>
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
       <span style={{
-        justifySelf: 'end',
-        textAlign: 'right',
-        width: '100%',
+        flex: 1,
         fontSize: '15px',
         fontWeight: '500',
         color: 'var(--mizan-text)',
+        textAlign: isRTL ? 'right' : 'left',
       }}>
         {label}
       </span>
@@ -34,7 +32,7 @@ function ToggleRow({ label, checked, onCheckedChange }) {
 }
 
 export default function AppearanceSection() {
-  const { t, language, setLanguage } = useI18n();
+  const { t, language, setLanguage, isRTL } = useI18n();
   const { theme, setTheme } = useTheme();
   const { settings, updateSettings } = useUserSettings();
 
@@ -115,11 +113,13 @@ export default function AppearanceSection() {
           label={language === 'ar' ? 'عرض التاريخ الهجري' : 'Show Hijri Calendar'}
           checked={settings?.show_hijri_calendar !== false}
           onCheckedChange={val => updateSettings({ show_hijri_calendar: val })}
+          isRTL={isRTL}
         />
         <ToggleRow
           label={language === 'ar' ? 'عرض المناسبات الإسلامية' : 'Show Islamic Events'}
           checked={settings?.show_islamic_events !== false}
           onCheckedChange={val => updateSettings({ show_islamic_events: val })}
+          isRTL={isRTL}
         />
       </div>
     </div>

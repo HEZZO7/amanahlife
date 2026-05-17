@@ -1,13 +1,37 @@
 import React, { useState } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
+import { useTheme } from '@/lib/ThemeContext';
 
 export default function SubscriptionPlansSection() {
   const { language } = useI18n();
   const isArabic = language === 'ar';
   const { settings, updateSettings } = useUserSettings();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [loading, setLoading] = useState(false);
   const [billingPeriod, setBillingPeriod] = useState('monthly');
+
+  // Theme-aware color helpers
+  const cardBg = isDark ? '#111827' : '#ffffff';
+  const cardBgSelected = isDark ? '#064e3b' : '#f0fdf9';
+  const cardHeaderBg = isDark ? '#1f2937' : '#f3f4f6';
+  const cardHeaderBgSelected = isDark ? '#047857' : '#d1fae5';
+  const cardHeaderColor = isDark ? '#ffffff' : '#111827';
+  const cardBorder = isDark ? '#1f2937' : '#e5e7eb';
+  const cardBorderSelected = '#2dd4bf';
+  const featureDivider = isDark ? '#1f2937' : '#f3f4f6';
+  const featureTextIncluded = isDark ? '#f3f4f6' : '#111827';
+  const featureTextExcluded = isDark ? '#6b7280' : '#9ca3af';
+  const priceColor = isDark ? '#ffffff' : '#111827';
+  const priceColorSelected = '#0d9488';
+  const subTextColor = isDark ? '#9ca3af' : '#6b7280';
+  const toggleBg = isDark ? '#0F4438' : '#f3f4f6';
+  const toggleActiveBg = '#2dd4bf';
+  const toggleActiveColor = '#064e3b';
+  const toggleInactiveColor = isDark ? '#a7f3d0' : '#374151';
+  const infoBannerBg = isDark ? '#0F4438' : '#f0fdf9';
+  const infoBannerColor = isDark ? '#d1fae5' : '#065f46';
 
   const handleSelectPlan = async (planId) => {
     if (planId === settings?.subscription_tier) return;
@@ -36,7 +60,7 @@ export default function SubscriptionPlansSection() {
   return (
     <div style={{ padding: '20px 0', backgroundColor: 'transparent', width: '100%', direction: isArabic ? 'rtl' : 'ltr' }}>
       {/* Billing Period Toggle */}
-      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: '#0F4438', padding: '8px', borderRadius: '12px', border: '1px solid rgba(45, 212, 191, 0.15)' }}>
+      <div style={{ maxWidth: '480px', margin: '0 auto', marginBottom: '24px', display: 'flex', gap: '8px', backgroundColor: toggleBg, padding: '8px', borderRadius: '12px', border: '1px solid rgba(45, 212, 191, 0.15)' }}>
         <button
           onClick={() => setBillingPeriod('monthly')}
           style={{
@@ -44,8 +68,8 @@ export default function SubscriptionPlansSection() {
             padding: '10px 16px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: billingPeriod === 'monthly' ? '#2dd4bf' : 'transparent',
-            color: billingPeriod === 'monthly' ? '#064e3b' : '#a7f3d0',
+            backgroundColor: billingPeriod === 'monthly' ? toggleActiveBg : 'transparent',
+            color: billingPeriod === 'monthly' ? toggleActiveColor : toggleInactiveColor,
             fontSize: '14px',
             fontWeight: '600',
             cursor: 'pointer',
@@ -61,8 +85,8 @@ export default function SubscriptionPlansSection() {
             padding: '10px 16px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: billingPeriod === 'yearly' ? '#2dd4bf' : 'transparent',
-            color: billingPeriod === 'yearly' ? '#064e3b' : '#a7f3d0',
+            backgroundColor: billingPeriod === 'yearly' ? toggleActiveBg : 'transparent',
+            color: billingPeriod === 'yearly' ? toggleActiveColor : toggleInactiveColor,
             fontSize: '14px',
             fontWeight: '600',
             cursor: 'pointer',
@@ -98,21 +122,21 @@ export default function SubscriptionPlansSection() {
           const isSelected = currentPlan === 'free';
           return (
         <div onClick={() => handleSelectPlan('free')} style={{
-          backgroundColor: isSelected ? '#064e3b' : '#111827',
+          backgroundColor: isSelected ? cardBgSelected : cardBg,
           borderRadius: '16px',
-          border: isSelected ? '2.5px solid #2dd4bf' : '1px solid #1f2937',
+          border: isSelected ? `2.5px solid ${cardBorderSelected}` : `1px solid ${cardBorder}`,
           overflow: 'hidden',
           transition: 'all 0.25s ease-in-out',
           cursor: 'pointer',
           transform: isSelected ? 'scale(1.02)' : 'scale(1)',
           boxShadow: isSelected ? '0 10px 25px -5px rgba(45, 212, 191, 0.2)' : 'none'
         }}>
-          <div style={{ backgroundColor: isSelected ? '#047857' : '#1f2937', padding: '24px 16px', textAlign: 'center', color: '#ffffff', borderBottom: isSelected ? '2px solid #2dd4bf' : '1px solid #1f2937', transition: 'all 0.25s' }}>
+          <div style={{ backgroundColor: isSelected ? cardHeaderBgSelected : cardHeaderBg, padding: '24px 16px', textAlign: 'center', color: cardHeaderColor, borderBottom: isSelected ? `2px solid ${cardBorderSelected}` : `1px solid ${cardBorder}`, transition: 'all 0.25s' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'رفيق الحياة' : 'Life Companion'}</h3>
-            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'الخطة الأساسية المثالية للأفراد في بداية رحلتهم' : 'The basic plan perfect for individuals starting their journey'}</p>
+            <p style={{ fontSize: '13px', opacity: 0.75, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'الخطة الأساسية المثالية للأفراد في بداية رحلتهم' : 'The basic plan perfect for individuals starting their journey'}</p>
           </div>
           <div style={{ padding: '24px 16px' }}>
-            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: isSelected ? '#2dd4bf' : '#ffffff', transition: 'color 0.25s' }}>
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: isSelected ? priceColorSelected : priceColor, transition: 'color 0.25s' }}>
               {isArabic ? 'مجاني' : 'Free'}
             </div>
             {/* Feature List */}
@@ -133,17 +157,17 @@ export default function SubscriptionPlansSection() {
                 { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: false },
                 { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: false }
               ].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid rgba(45, 212, 191, 0.15)', direction: isArabic ? 'rtl' : 'ltr' }}>
-                  <span style={{ color: f.inc ? '#10b981' : '#4b5563', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: `1px solid ${featureDivider}`, direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#9ca3af', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     {f.inc ? '✓' : '✕'}
                   </span>
-                  <span style={{ fontSize: '14px', color: f.inc ? '#d1fae5' : '#a7f3d0', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                  <span style={{ fontSize: '14px', color: f.inc ? featureTextIncluded : featureTextExcluded, fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
                     {isArabic ? f.ar : f.en}
                   </span>
                 </div>
               ))}
             </div>
-            <button onClick={() => handleSelectPlan('free')} disabled={currentPlan === 'free' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'free' ? '#e5e7eb' : '#064e3b', color: currentPlan === 'free' ? '#374151' : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'free' ? 0.6 : 1 }}>
+            <button onClick={() => handleSelectPlan('free')} disabled={currentPlan === 'free' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'free' ? (isDark ? '#374151' : '#e5e7eb') : '#064e3b', color: currentPlan === 'free' ? (isDark ? '#9ca3af' : '#374151') : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'free' ? 0.6 : 1 }}>
               {isArabic ? (currentPlan === 'free' ? 'الخطة الحالية' : 'اختر الخطة') : (currentPlan === 'free' ? 'Current Plan' : 'Select Plan')}
             </button>
           </div>
@@ -156,23 +180,23 @@ export default function SubscriptionPlansSection() {
           const isSelected = currentPlan === 'premium';
           return (
         <div onClick={() => handleSelectPlan('premium')} style={{
-          backgroundColor: isSelected ? '#064e3b' : '#111827',
+          backgroundColor: isSelected ? cardBgSelected : cardBg,
           borderRadius: '16px',
-          border: isSelected ? '2.5px solid #2dd4bf' : '1px solid #1f2937',
+          border: isSelected ? `2.5px solid ${cardBorderSelected}` : `1px solid ${cardBorder}`,
           overflow: 'hidden',
           transition: 'all 0.25s ease-in-out',
           cursor: 'pointer',
           transform: isSelected ? 'scale(1.02)' : 'scale(1)',
           boxShadow: isSelected ? '0 10px 25px -5px rgba(45, 212, 191, 0.2)' : 'none'
         }}>
-          <div style={{ backgroundColor: isSelected ? '#047857' : '#1f2937', padding: '24px 16px', textAlign: 'center', color: '#ffffff', borderBottom: isSelected ? '2px solid #2dd4bf' : '1px solid #1f2937', transition: 'all 0.25s' }}>
+          <div style={{ backgroundColor: isSelected ? cardHeaderBgSelected : cardHeaderBg, padding: '24px 16px', textAlign: 'center', color: cardHeaderColor, borderBottom: isSelected ? `2px solid ${cardBorderSelected}` : `1px solid ${cardBorder}`, transition: 'all 0.25s' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'الحياة المتوازنة' : 'Balanced Life'}</h3>
-            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة متميزة للأفراد الطموحين الذين يسعون لتوازن أعمق' : 'Premium plan for ambitious individuals seeking deeper balance'}</p>
+            <p style={{ fontSize: '13px', opacity: 0.75, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة متميزة للأفراد الطموحين الذين يسعون لتوازن أعمق' : 'Premium plan for ambitious individuals seeking deeper balance'}</p>
           </div>
           <div style={{ padding: '24px 16px' }}>
-            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: isSelected ? '#2dd4bf' : '#ffffff', transition: 'color 0.25s' }}>
-              {getPremiumPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
-              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: isSelected ? priceColorSelected : priceColor, transition: 'color 0.25s' }}>
+              {getPremiumPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: subTextColor }}> / {isArabic ? 'شهر' : 'month'}</span>}
+              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: subTextColor }}> / {isArabic ? 'شهر' : 'month'}</span>}
             </div>
             {billingPeriod === 'yearly' && (
               <div style={{ textAlign: 'center', marginBottom: '12px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
@@ -197,17 +221,17 @@ export default function SubscriptionPlansSection() {
                 { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: false },
                 { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: false }
               ].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #1f2937', direction: isArabic ? 'rtl' : 'ltr' }}>
-                  <span style={{ color: f.inc ? '#10b981' : '#4b5563', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: `1px solid ${featureDivider}`, direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#9ca3af', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     {f.inc ? '✓' : '✕'}
                   </span>
-                  <span style={{ fontSize: '14px', color: f.inc ? '#f3f4f6' : '#6b7280', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                  <span style={{ fontSize: '14px', color: f.inc ? featureTextIncluded : featureTextExcluded, fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
                     {isArabic ? f.ar : f.en}
                   </span>
                 </div>
               ))}
             </div>
-            <button onClick={() => handleSelectPlan('premium')} disabled={currentPlan === 'premium' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'premium' ? '#e5e7eb' : '#064e3b', color: currentPlan === 'premium' ? '#374151' : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'premium' ? 0.6 : 1 }}>
+            <button onClick={() => handleSelectPlan('premium')} disabled={currentPlan === 'premium' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'premium' ? (isDark ? '#374151' : '#e5e7eb') : '#064e3b', color: currentPlan === 'premium' ? (isDark ? '#9ca3af' : '#374151') : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'premium' ? 0.6 : 1 }}>
               {isArabic ? (currentPlan === 'premium' ? 'الخطة الحالية' : 'اختر الخطة') : (currentPlan === 'premium' ? 'Current Plan' : 'Select Plan')}
             </button>
           </div>
@@ -220,23 +244,23 @@ export default function SubscriptionPlansSection() {
           const isSelected = currentPlan === 'family';
           return (
         <div onClick={() => handleSelectPlan('family')} style={{
-          backgroundColor: isSelected ? '#064e3b' : '#111827',
+          backgroundColor: isSelected ? cardBgSelected : cardBg,
           borderRadius: '16px',
-          border: isSelected ? '2.5px solid #2dd4bf' : '1px solid #1f2937',
+          border: isSelected ? `2.5px solid ${cardBorderSelected}` : `1px solid ${cardBorder}`,
           overflow: 'hidden',
           transition: 'all 0.25s ease-in-out',
           cursor: 'pointer',
           transform: isSelected ? 'scale(1.02)' : 'scale(1)',
           boxShadow: isSelected ? '0 10px 25px -5px rgba(45, 212, 191, 0.2)' : 'none'
         }}>
-          <div style={{ backgroundColor: isSelected ? '#047857' : '#1f2937', padding: '24px 16px', textAlign: 'center', color: '#ffffff', borderBottom: isSelected ? '2px solid #2dd4bf' : '1px solid #1f2937', transition: 'all 0.25s' }}>
+          <div style={{ backgroundColor: isSelected ? cardHeaderBgSelected : cardHeaderBg, padding: '24px 16px', textAlign: 'center', color: cardHeaderColor, borderBottom: isSelected ? `2px solid ${cardBorderSelected}` : `1px solid ${cardBorder}`, transition: 'all 0.25s' }}>
             <h3 style={{ fontSize: '22px', fontWeight: '700', margin: 0 }}>{isArabic ? 'أمانة العائلة' : 'Family Amanah'}</h3>
-            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة شاملة للعائلات التي تسعى للتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance'}</p>
+            <p style={{ fontSize: '13px', opacity: 0.75, marginTop: '8px', marginBottom: 0 }}>{isArabic ? 'خطة شاملة للعائلات التي تسعى للتعاون والتوازن' : 'Comprehensive plan for families seeking cooperation and balance'}</p>
           </div>
           <div style={{ padding: '24px 16px' }}>
-            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: '#ffffff' }}>
-              {getFamilyPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
-              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: '#9ca3af' }}> / {isArabic ? 'شهر' : 'month'}</span>}
+            <div style={{ fontSize: '32px', fontWeight: '800', textAlign: 'center', marginBottom: '24px', color: isSelected ? priceColorSelected : priceColor }}>
+              {getFamilyPrice()} {isArabic ? 'ر.س' : 'SAR'}{billingPeriod === 'yearly' && <span style={{ fontSize: '14px', fontWeight: '400', color: subTextColor }}> / {isArabic ? 'شهر' : 'month'}</span>}
+              {billingPeriod === 'monthly' && <span style={{ fontSize: '14px', fontWeight: '400', color: subTextColor }}> / {isArabic ? 'شهر' : 'month'}</span>}
             </div>
             {billingPeriod === 'yearly' && (
               <div style={{ textAlign: 'center', marginBottom: '12px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
@@ -261,17 +285,17 @@ export default function SubscriptionPlansSection() {
                 { ar: 'الميزانية العائلية المشتركة', en: 'Shared Family Budget', inc: true },
                 { ar: 'خزنة أمانة - حفظ المستندات الآمن', en: 'Amana Vault - Secure Document Storage', inc: true }
               ].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: '1px solid #1f2937', direction: isArabic ? 'rtl' : 'ltr' }}>
-                  <span style={{ color: f.inc ? '#10b981' : '#4b5563', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: `1px solid ${featureDivider}`, direction: isArabic ? 'rtl' : 'ltr' }}>
+                  <span style={{ color: f.inc ? '#10b981' : '#9ca3af', fontSize: '16px', fontWeight: 'bold', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     {f.inc ? '✓' : '✕'}
                   </span>
-                  <span style={{ fontSize: '14px', color: f.inc ? '#f3f4f6' : '#6b7280', fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
+                  <span style={{ fontSize: '14px', color: f.inc ? featureTextIncluded : featureTextExcluded, fontWeight: f.inc ? '500' : '400', textAlign: isArabic ? 'right' : 'left', flexGrow: 1 }}>
                     {isArabic ? f.ar : f.en}
                   </span>
                 </div>
               ))}
             </div>
-            <button onClick={() => handleSelectPlan('family')} disabled={currentPlan === 'family' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'family' ? '#e5e7eb' : '#064e3b', color: currentPlan === 'family' ? '#374151' : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'family' ? 0.6 : 1 }}>
+            <button onClick={() => handleSelectPlan('family')} disabled={currentPlan === 'family' || loading} style={{ width: '100%', marginTop: '24px', padding: '14px', backgroundColor: currentPlan === 'family' ? (isDark ? '#374151' : '#e5e7eb') : '#064e3b', color: currentPlan === 'family' ? (isDark ? '#9ca3af' : '#374151') : '#ffffff', border: 'none', borderRadius: '12px', fontWeight: '600', fontSize: '15px', cursor: 'pointer', opacity: currentPlan === 'family' ? 0.6 : 1 }}>
               {isArabic ? (currentPlan === 'family' ? 'الخطة الحالية' : 'اختر الخطة') : (currentPlan === 'family' ? 'Current Plan' : 'Select Plan')}
             </button>
           </div>
@@ -286,10 +310,10 @@ export default function SubscriptionPlansSection() {
         marginTop: '24px',
         maxWidth: '480px',
         margin: '24px auto 0',
-        backgroundColor: '#0F4438',
+        backgroundColor: infoBannerBg,
         borderRadius: '12px',
         padding: '16px',
-        color: '#d1fae5',
+        color: infoBannerColor,
         fontSize: '13px',
         textAlign: 'center',
         lineHeight: '1.6'

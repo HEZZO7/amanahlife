@@ -39,9 +39,23 @@ export function DashboardCustomizer({ widgets, onChange }) {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.5)' }}>
-          <div className="w-full max-w-sm rounded-2xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-            <div className="flex items-center justify-between mb-4">
+        <div
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setOpen(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl flex flex-col"
+            style={{
+              background: 'var(--mizan-surface)',
+              border: '1px solid var(--mizan-border)',
+              maxHeight: '85vh',
+              paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header — fixed inside modal */}
+            <div className="flex items-center justify-between p-5 pb-3 flex-shrink-0">
               <h3 className="font-bold text-sm" style={{ color: 'var(--mizan-text)' }}>
                 {language === 'ar' ? 'تخصيص لوحة التحكم' : 'Customize Dashboard'}
               </h3>
@@ -50,11 +64,12 @@ export function DashboardCustomizer({ widgets, onChange }) {
               </button>
             </div>
 
-            <p className="text-xs mb-4" style={{ color: 'var(--mizan-text-secondary)' }}>
+            <p className="text-xs px-5 pb-3 flex-shrink-0" style={{ color: 'var(--mizan-text-secondary)' }}>
               {language === 'ar' ? 'اختر البطاقات التي تريد إظهارها' : 'Choose which cards to display'}
             </p>
 
-            <div className="space-y-2">
+            {/* Scrollable list */}
+            <div className="overflow-y-auto flex-1 px-5 space-y-2">
               {Object.entries(WIDGET_LABELS).map(([key, label]) => (
                 <div
                   key={key}
@@ -81,13 +96,16 @@ export function DashboardCustomizer({ widgets, onChange }) {
               ))}
             </div>
 
-            <Button
-              onClick={() => setOpen(false)}
-              className="w-full mt-4 h-10 rounded-xl text-white"
-              style={{ background: 'var(--mizan-emerald)' }}
-            >
-              {language === 'ar' ? 'تم' : 'Done'}
-            </Button>
+            {/* Done button — pinned at bottom of sheet */}
+            <div className="flex-shrink-0 px-5 pt-4 pb-5">
+              <Button
+                onClick={() => setOpen(false)}
+                className="w-full h-10 rounded-xl text-white"
+                style={{ background: 'var(--mizan-emerald)' }}
+              >
+                {language === 'ar' ? 'تم' : 'Done'}
+              </Button>
+            </div>
           </div>
         </div>
       )}

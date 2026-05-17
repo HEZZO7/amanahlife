@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
-import { Search, Target, CheckSquare, Wallet, BookOpen, Activity, X, ChevronRight } from 'lucide-react';
+import { Search, Target, CheckSquare, Wallet, BookOpen, Activity, X, ChevronRight, Sparkles, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
@@ -38,6 +38,108 @@ function ResultItem({ item, language, onClick }) {
         <ChevronRight className="w-3.5 h-3.5" style={{ color: 'var(--mizan-text-secondary)' }} />
       </div>
     </button>
+  );
+}
+
+const QUICK_CATEGORIES = [
+  { labelAr: 'المهام',  labelEn: 'Tasks',    query: 'task',   icon: CheckSquare, color: 'var(--mizan-emerald)', path: '/planner' },
+  { labelAr: 'الأهداف', labelEn: 'Goals',    query: 'goal',   icon: Target,      color: 'var(--mizan-gold)',    path: '/goals'   },
+  { labelAr: 'المالية', labelEn: 'Finance',  query: 'SAR',    icon: Wallet,      color: '#12897A',              path: '/finance' },
+  { labelAr: 'الصحة',  labelEn: 'Wellness', query: 'wellness',icon: Activity,   color: '#27AE60',              path: '/wellness'},
+  { labelAr: 'التعلم', labelEn: 'Learning', query: 'course', icon: BookOpen,    color: 'var(--mizan-red)',     path: '/learning'},
+];
+
+function EmptyState({ language, allData, onSuggestion, navigate }) {
+  const isAr = language === 'ar';
+
+  const smartSuggestions = useMemo(() => {
+    if (!allData) return [];
+    const today = new Date().toISOString().slice(0, 10);
+    const suggestions = [];
+
+    const overdue = allData.tasks.filter(t => t.status !== 'completed' && t.due_date && t.due_date < today);
+    if (overdue.length > 0)
+      suggestions.push({ ar: `المهام المتأخرة (${overdue.length})`, en: `Overdue tasks (${overdue.length})`, query: overdue[0].title });
+
+    const currentMonth = today.slice(0, 7);
+    const monthGoals = allData.goals.filter(g => g.status === 'active');
+    if (monthGoals.length > 0)
+      suggestions.push({ ar: `أهدافك النشطة (${monthGoals.length})`, en: `Active goals (${monthGoals.length})`, query: monthGoals[0].title });
+
+    const recentTx = allData.transactions.slice(0, 3);
+    if (recentTx.length > 0)
+      suggestions.push({ ar: 'آخر المعاملات المالية', en: 'Recent transactions', query: recentTx[0].description || recentTx[0].category || '' });
+
+    const activeCourses = allData.courses.filter(c => !c.is_completed);
+    if (activeCourses.length > 0)
+      suggestions.push({ ar: `دوراتك الجارية (${activeCourses.length})`, en: `Active courses (${activeCourses.length})`, query: activeCourses[0].course_name });
+
+    return suggestions.slice(0, 4);
+  }, [allData]);
+
+  return (
+    <div className="space-y-6 pt-2" dir={isAr ? 'rtl' : 'ltr'}>
+      {/* Smart Suggestions */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
+          <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>
+            {isAr ? 'اقتراحات ذكية' : 'Smart Suggestions'}
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {smartSuggestions.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => onSuggestion(s.query)}
+              className="px-3 py-2 rounded-xl text-sm font-medium transition-all hover:opacity-80"
+              style={{
+                background: 'var(--mizan-surface)',
+                border: '1px solid var(--mizan-emerald)',
+                color: 'var(--mizan-emerald)',
+              }}
+            >
+              {isAr ? s.ar : s.en}
+            </button>
+          ))}
+          {smartSuggestions.length === 0 && (
+            <p className="text-sm" style={{ color: 'var(--mizan-text-secondary)' }}>
+              {isAr ? 'ابدأ بإضافة بيانات لتظهر الاقتراحات' : 'Add some data to see smart suggestions'}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Quick Category Filter */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <Zap className="w-4 h-4" style={{ color: 'var(--mizan-gold)' }} />
+          <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>
+            {isAr ? 'بحث سريع' : 'Quick Search'}
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {QUICK_CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.query}
+                onClick={() => navigate(cat.path)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:opacity-80"
+                style={{
+                  background: cat.color + '18',
+                  border: `1px solid ${cat.color}44`,
+                  color: cat.color,
+                }}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {isAr ? cat.labelAr : cat.labelEn}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -125,12 +227,7 @@ export default function SearchPage() {
       )}
 
       {!loading && !query && (
-        <div className="text-center py-16">
-          <Search className="w-12 h-12 mx-auto mb-4 opacity-20" style={{ color: 'var(--mizan-emerald)' }} />
-          <p className="text-sm" style={{ color: 'var(--mizan-text-secondary)' }}>
-            {language === 'ar' ? 'ابدأ الكتابة للبحث في المهام والأهداف والمعاملات...' : 'Start typing to search tasks, goals, transactions...'}
-          </p>
-        </div>
+        <EmptyState language={language} allData={allData} onSuggestion={setQuery} onCategory={setQuery} navigate={navigate} />
       )}
 
       {!loading && query && results.length === 0 && (

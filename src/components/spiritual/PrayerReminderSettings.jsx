@@ -77,30 +77,34 @@ export default function PrayerReminderSettings() {
   return (
     <div className="space-y-6 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
       {/* Enable Prayer Reminders */}
-       <div style={{
-         display: 'flex',
-         flexDirection: isRTL ? 'row-reverse' : 'row',
-         alignItems: 'center',
-         justifyContent: 'space-between',
-         width: '100%',
-         padding: '12px 0',
-         borderBottom: '1px solid var(--mizan-border)',
-         gap: '12px',
-       }}>
-         <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
-           <div className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-             <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
-             <div>
-               <p className="font-medium text-sm" style={{ color: 'var(--mizan-text)' }}>
-                 {language === 'ar' ? 'تنبيهات الصلاة' : 'Prayer Reminders'}
-               </p>
-               <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
-                 {language === 'ar' ? 'احصل على تذكيرات قبل دخول وقت الصلاة' : 'Get reminded before prayer time'}
-               </p>
+       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '12px 0', borderBottom: '1px solid var(--mizan-border)', gap: '12px' }}>
+         {isRTL ? (
+           <>
+             <Switch checked={settings.prayer_reminder_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_reminder_enabled', value)} disabled={isSaving} />
+             <div style={{ flex: 1, textAlign: 'right' }}>
+               <div className="flex items-center gap-3 justify-end">
+                 <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
+                 <div>
+                   <p className="font-medium text-sm" style={{ color: 'var(--mizan-text)' }}>تنبيهات الصلاة</p>
+                   <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>احصل على تذكيرات قبل دخول وقت الصلاة</p>
+                 </div>
+               </div>
              </div>
-           </div>
-         </div>
-         <Switch checked={settings.prayer_reminder_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_reminder_enabled', value)} disabled={isSaving} />
+           </>
+         ) : (
+           <>
+             <div style={{ flex: 1, textAlign: 'left' }}>
+               <div className="flex items-center gap-3 justify-start">
+                 <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
+                 <div>
+                   <p className="font-medium text-sm" style={{ color: 'var(--mizan-text)' }}>Prayer Reminders</p>
+                   <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>Get reminded before prayer time</p>
+                 </div>
+               </div>
+             </div>
+             <Switch checked={settings.prayer_reminder_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_reminder_enabled', value)} disabled={isSaving} />
+           </>
+         )}
        </div>
 
       {/* Reminder Time Before Prayer */}
@@ -132,30 +136,34 @@ export default function PrayerReminderSettings() {
           </div>
 
           {/* Silent Hours Toggle */}
-          <div style={{
-            display: 'flex',
-            flexDirection: isRTL ? 'row-reverse' : 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            padding: '12px 0',
-            borderBottom: '1px solid var(--mizan-border)',
-            gap: '12px',
-          }}>
-            <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
-              <div className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-                <Moon className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-gold)' }} />
-                <div>
-                  <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>
-                    {language === 'ar' ? 'ساعات الصمت' : 'Silent Hours'}
-                  </p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>
-                    {language === 'ar' ? 'عدم إرسال التنبيهات في أوقات معينة' : 'No reminders during these times'}
-                  </p>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '12px 0', borderBottom: '1px solid var(--mizan-border)', gap: '12px' }}>
+            {isRTL ? (
+              <>
+                <Switch checked={settings.prayer_silent_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_silent_enabled', value)} disabled={isSaving} />
+                <div style={{ flex: 1, textAlign: 'right' }}>
+                  <div className="flex items-center gap-3 justify-end">
+                    <Moon className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-gold)' }} />
+                    <div>
+                      <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>ساعات الصمت</p>
+                      <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>عدم إرسال التنبيهات في أوقات معينة</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <Switch checked={settings.prayer_silent_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_silent_enabled', value)} disabled={isSaving} />
+              </>
+            ) : (
+              <>
+                <div style={{ flex: 1, textAlign: 'left' }}>
+                  <div className="flex items-center gap-3 justify-start">
+                    <Moon className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-gold)' }} />
+                    <div>
+                      <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>Silent Hours</p>
+                      <p className="text-xs mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>No reminders during these times</p>
+                    </div>
+                  </div>
+                </div>
+                <Switch checked={settings.prayer_silent_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_silent_enabled', value)} disabled={isSaving} />
+              </>
+            )}
           </div>
 
           {/* Silent Hours Configuration */}
@@ -209,26 +217,28 @@ export default function PrayerReminderSettings() {
       )}
 
       {/* General Prayer Notifications Toggle */}
-      <div style={{
-        display: 'flex',
-        flexDirection: isRTL ? 'row-reverse' : 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        padding: '12px 0',
-        borderTop: '1px solid var(--mizan-border)',
-        marginTop: '12px',
-        gap: '12px',
-      }}>
-        <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
-          <div className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-            <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
-            <p className="font-medium" style={{ color: 'var(--mizan-text)' }}>
-              {language === 'ar' ? 'إشعارات الصلاة العامة' : 'General Prayer Notifications'}
-            </p>
-          </div>
-        </div>
-        <Switch checked={settings.notify_prayer !== false} onCheckedChange={(value) => handleToggle('notify_prayer', value)} disabled={isSaving} />
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '12px 0', borderTop: '1px solid var(--mizan-border)', marginTop: '12px', gap: '12px' }}>
+        {isRTL ? (
+          <>
+            <Switch checked={settings.notify_prayer !== false} onCheckedChange={(value) => handleToggle('notify_prayer', value)} disabled={isSaving} />
+            <div style={{ flex: 1, textAlign: 'right' }}>
+              <div className="flex items-center gap-3 justify-end">
+                <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
+                <p className="font-medium" style={{ color: 'var(--mizan-text)' }}>إشعارات الصلاة العامة</p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ flex: 1, textAlign: 'left' }}>
+              <div className="flex items-center gap-3 justify-start">
+                <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
+                <p className="font-medium" style={{ color: 'var(--mizan-text)' }}>General Prayer Notifications</p>
+              </div>
+            </div>
+            <Switch checked={settings.notify_prayer !== false} onCheckedChange={(value) => handleToggle('notify_prayer', value)} disabled={isSaving} />
+          </>
+        )}
       </div>
     </div>
   );

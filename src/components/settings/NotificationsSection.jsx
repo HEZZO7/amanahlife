@@ -15,7 +15,7 @@ const NOTIFY_KEYS = [
 
 function ToggleRow({ label, checked, onCheckedChange, bold, isRTL }) {
   return (
-    <div style={{
+    <div dir="ltr" style={{
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -25,33 +25,16 @@ function ToggleRow({ label, checked, onCheckedChange, bold, isRTL }) {
       borderBottom: '1px solid var(--mizan-border)',
       gap: '12px',
     }}>
-      {isRTL ? (
-        <>
-          <Switch checked={checked} onCheckedChange={onCheckedChange} />
-          <span style={{
-            flex: 1,
-            fontSize: '15px',
-            fontWeight: bold ? '600' : '500',
-            color: bold ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-            textAlign: 'right',
-          }}>
-            {label}
-          </span>
-        </>
-      ) : (
-        <>
-          <span style={{
-            flex: 1,
-            fontSize: '15px',
-            fontWeight: bold ? '600' : '500',
-            color: bold ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
-            textAlign: 'left',
-          }}>
-            {label}
-          </span>
-          <Switch checked={checked} onCheckedChange={onCheckedChange} />
-        </>
-      )}
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      <span style={{
+        flex: 1,
+        fontSize: '15px',
+        fontWeight: bold ? '600' : '500',
+        color: bold ? 'var(--mizan-text)' : 'var(--mizan-text-secondary)',
+        textAlign: isRTL ? 'right' : 'left',
+      }}>
+        {label}
+      </span>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { COUNTRIES_AND_CURRENCIES } from '@/lib/subscriptionPlans';
 
 function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
   return (
-    <div style={{
+    <div dir="ltr" style={{
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -18,21 +18,10 @@ function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
       borderBottom: '1px solid var(--mizan-border)',
       gap: '12px',
     }}>
-      {isRTL ? (
-        <>
-          <Switch checked={checked} onCheckedChange={onCheckedChange} />
-          <span style={{ flex: 1, fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text)', textAlign: 'right' }}>
-            {label}
-          </span>
-        </>
-      ) : (
-        <>
-          <span style={{ flex: 1, fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text)', textAlign: 'left' }}>
-            {label}
-          </span>
-          <Switch checked={checked} onCheckedChange={onCheckedChange} />
-        </>
-      )}
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
+      <span style={{ flex: 1, fontSize: '15px', fontWeight: '500', color: 'var(--mizan-text)', textAlign: isRTL ? 'right' : 'left' }}>
+        {label}
+      </span>
     </div>
   );
 }

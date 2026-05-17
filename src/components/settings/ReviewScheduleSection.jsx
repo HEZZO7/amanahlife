@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 function ToggleRow({ labelAr, labelEn, descAr, descEn, checked, onChange, lang }) {
   const isRTL = lang === 'ar';
   return (
-    <div style={{
+    <div dir="ltr" style={{
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -18,23 +18,11 @@ function ToggleRow({ labelAr, labelEn, descAr, descEn, checked, onChange, lang }
       borderBottom: '1px solid var(--mizan-border)',
       gap: '12px'
     }}>
-      {isRTL ? (
-        <>
-          <Switch checked={checked} onCheckedChange={onChange} />
-          <div style={{ flex: 1, textAlign: 'right' }}>
-            <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)', margin: 0 }}>{labelAr}</p>
-            {descAr && <p className="text-xs mt-0.5" style={{ color: 'var(--mizan-text-secondary)', margin: 0 }}>{descAr}</p>}
-          </div>
-        </>
-      ) : (
-        <>
-          <div style={{ flex: 1, textAlign: 'left' }}>
-            <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)', margin: 0 }}>{labelEn}</p>
-            {descEn && <p className="text-xs mt-0.5" style={{ color: 'var(--mizan-text-secondary)', margin: 0 }}>{descEn}</p>}
-          </div>
-          <Switch checked={checked} onCheckedChange={onChange} />
-        </>
-      )}
+      <Switch checked={checked} onCheckedChange={onChange} />
+      <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
+        <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)', margin: 0 }}>{lang === 'ar' ? labelAr : labelEn}</p>
+        {(lang === 'ar' ? descAr : descEn) && <p className="text-xs mt-0.5" style={{ color: 'var(--mizan-text-secondary)', margin: 0 }}>{lang === 'ar' ? descAr : descEn}</p>}
+      </div>
     </div>
   );
 }
@@ -108,7 +96,7 @@ export default function ReviewScheduleSection() {
       <div style={{ opacity: isPremium ? 1 : 0.5, pointerEvents: isPremium ? 'auto' : 'none' }}>
         {/* Monthly Report */}
         <div className="mb-5 p-4 rounded-xl" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-          <div style={{
+          <div dir="ltr" style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -117,23 +105,11 @@ export default function ReviewScheduleSection() {
             marginBottom: '12px',
             gap: '12px'
           }}>
-            {lang === 'ar' ? (
-              <>
-                <Switch checked={settings?.review_monthly_enabled !== false} onCheckedChange={v => update({ review_monthly_enabled: v })} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'flex-end' }}>
-                  <Clock className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
-                  <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>التقرير الشهري</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'flex-start' }}>
-                  <Clock className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
-                  <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>Monthly Report</span>
-                </div>
-                <Switch checked={settings?.review_monthly_enabled !== false} onCheckedChange={v => update({ review_monthly_enabled: v })} />
-              </>
-            )}
+            <Switch checked={settings?.review_monthly_enabled !== false} onCheckedChange={v => update({ review_monthly_enabled: v })} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: lang === 'ar' ? 'flex-end' : 'flex-start' }}>
+              <Clock className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
+              <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>{lang === 'ar' ? 'التقرير الشهري' : 'Monthly Report'}</span>
+            </div>
           </div>
           <p className="text-xs mb-3" style={{ color: 'var(--mizan-text-secondary)' }}>
             {lang === 'ar'
@@ -152,7 +128,7 @@ export default function ReviewScheduleSection() {
 
         {/* Annual Report */}
         <div className="mb-5 p-4 rounded-xl" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-          <div style={{
+          <div dir="ltr" style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -161,23 +137,11 @@ export default function ReviewScheduleSection() {
             marginBottom: '12px',
             gap: '12px'
           }}>
-            {lang === 'ar' ? (
-              <>
-                <Switch checked={settings?.review_annual_enabled !== false} onCheckedChange={v => update({ review_annual_enabled: v })} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'flex-end' }}>
-                  <CalendarCheck className="w-4 h-4" style={{ color: 'var(--mizan-gold)' }} />
-                  <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>التقرير السنوي</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: 'flex-start' }}>
-                  <CalendarCheck className="w-4 h-4" style={{ color: 'var(--mizan-gold)' }} />
-                  <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>Annual Report</span>
-                </div>
-                <Switch checked={settings?.review_annual_enabled !== false} onCheckedChange={v => update({ review_annual_enabled: v })} />
-              </>
-            )}
+            <Switch checked={settings?.review_annual_enabled !== false} onCheckedChange={v => update({ review_annual_enabled: v })} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: lang === 'ar' ? 'flex-end' : 'flex-start' }}>
+              <CalendarCheck className="w-4 h-4" style={{ color: 'var(--mizan-gold)' }} />
+              <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>{lang === 'ar' ? 'التقرير السنوي' : 'Annual Report'}</span>
+            </div>
           </div>
           <p className="text-xs mb-3" style={{ color: 'var(--mizan-text-secondary)' }}>
             {lang === 'ar'

@@ -79,7 +79,7 @@ export default function PrayerReminderSettings() {
       {/* Enable Prayer Reminders */}
        <div style={{
          display: 'flex',
-         flexDirection: isRTL ? 'row-reverse' : 'row',
+         flexDirection: 'row',
          alignItems: 'center',
          justifyContent: 'space-between',
          width: '100%',
@@ -87,6 +87,7 @@ export default function PrayerReminderSettings() {
          borderBottom: '1px solid var(--mizan-border)',
          gap: '12px',
        }}>
+         {isRTL && <Switch checked={settings.prayer_reminder_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_reminder_enabled', value)} disabled={isSaving} />}
          <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
            <div className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
              <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
@@ -100,11 +101,7 @@ export default function PrayerReminderSettings() {
              </div>
            </div>
          </div>
-         <Switch
-           checked={settings.prayer_reminder_enabled !== false}
-           onCheckedChange={(value) => handleToggle('prayer_reminder_enabled', value)}
-           disabled={isSaving}
-         />
+         {!isRTL && <Switch checked={settings.prayer_reminder_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_reminder_enabled', value)} disabled={isSaving} />}
        </div>
 
       {/* Reminder Time Before Prayer */}
@@ -138,7 +135,7 @@ export default function PrayerReminderSettings() {
           {/* Silent Hours Toggle */}
           <div style={{
             display: 'flex',
-            flexDirection: isRTL ? 'row-reverse' : 'row',
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
@@ -146,6 +143,7 @@ export default function PrayerReminderSettings() {
             borderBottom: '1px solid var(--mizan-border)',
             gap: '12px',
           }}>
+            {isRTL && <Switch checked={settings.prayer_silent_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_silent_enabled', value)} disabled={isSaving} />}
             <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
               <div className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
                 <Moon className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-gold)' }} />
@@ -159,11 +157,7 @@ export default function PrayerReminderSettings() {
                 </div>
               </div>
             </div>
-            <Switch
-              checked={settings.prayer_silent_enabled !== false}
-              onCheckedChange={(value) => handleToggle('prayer_silent_enabled', value)}
-              disabled={isSaving}
-            />
+            {!isRTL && <Switch checked={settings.prayer_silent_enabled !== false} onCheckedChange={(value) => handleToggle('prayer_silent_enabled', value)} disabled={isSaving} />}
           </div>
 
           {/* Silent Hours Configuration */}
@@ -219,7 +213,7 @@ export default function PrayerReminderSettings() {
       {/* General Prayer Notifications Toggle */}
       <div style={{
         display: 'flex',
-        flexDirection: isRTL ? 'row-reverse' : 'row',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
@@ -228,6 +222,7 @@ export default function PrayerReminderSettings() {
         marginTop: '12px',
         gap: '12px',
       }}>
+        {isRTL && <Switch checked={settings.notify_prayer !== false} onCheckedChange={(value) => handleToggle('notify_prayer', value)} disabled={isSaving} />}
         <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
           <div className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
             <Bell className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--mizan-emerald)' }} />
@@ -236,11 +231,7 @@ export default function PrayerReminderSettings() {
             </p>
           </div>
         </div>
-        <Switch
-          checked={settings.notify_prayer !== false}
-          onCheckedChange={(value) => handleToggle('notify_prayer', value)}
-          disabled={isSaving}
-        />
+        {!isRTL && <Switch checked={settings.notify_prayer !== false} onCheckedChange={(value) => handleToggle('notify_prayer', value)} disabled={isSaving} />}
       </div>
     </div>
   );

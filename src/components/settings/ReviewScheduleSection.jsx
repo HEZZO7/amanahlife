@@ -10,7 +10,7 @@ function ToggleRow({ labelAr, labelEn, descAr, descEn, checked, onChange, lang }
   return (
     <div style={{
       display: 'flex',
-      flexDirection: isRTL ? 'row-reverse' : 'row',
+      flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
@@ -18,6 +18,7 @@ function ToggleRow({ labelAr, labelEn, descAr, descEn, checked, onChange, lang }
       borderBottom: '1px solid var(--mizan-border)',
       gap: '12px'
     }}>
+      {isRTL && <Switch checked={checked} onCheckedChange={onChange} />}
       <div style={{ flex: 1, textAlign: isRTL ? 'right' : 'left' }}>
         <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)', margin: 0 }}>
           {lang === 'ar' ? labelAr : labelEn}
@@ -28,7 +29,7 @@ function ToggleRow({ labelAr, labelEn, descAr, descEn, checked, onChange, lang }
           </p>
         )}
       </div>
-      <Switch checked={checked} onCheckedChange={onChange} />
+      {!isRTL && <Switch checked={checked} onCheckedChange={onChange} />}
     </div>
   );
 }
@@ -104,23 +105,21 @@ export default function ReviewScheduleSection() {
         <div className="mb-5 p-4 rounded-xl" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
           <div style={{
             display: 'flex',
-            flexDirection: lang === 'ar' ? 'row-reverse' : 'row',
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
             marginBottom: '12px',
             gap: '12px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {lang === 'ar' && <Switch checked={settings?.review_monthly_enabled !== false} onCheckedChange={v => update({ review_monthly_enabled: v })} />}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: lang === 'ar' ? 'flex-end' : 'flex-start' }}>
               <Clock className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
               <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>
                 {lang === 'ar' ? 'التقرير الشهري' : 'Monthly Report'}
               </span>
             </div>
-            <Switch
-              checked={settings?.review_monthly_enabled !== false}
-              onCheckedChange={v => update({ review_monthly_enabled: v })}
-            />
+            {lang !== 'ar' && <Switch checked={settings?.review_monthly_enabled !== false} onCheckedChange={v => update({ review_monthly_enabled: v })} />}
           </div>
           <p className="text-xs mb-3" style={{ color: 'var(--mizan-text-secondary)' }}>
             {lang === 'ar'
@@ -141,23 +140,21 @@ export default function ReviewScheduleSection() {
         <div className="mb-5 p-4 rounded-xl" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
           <div style={{
             display: 'flex',
-            flexDirection: lang === 'ar' ? 'row-reverse' : 'row',
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
             marginBottom: '12px',
             gap: '12px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {lang === 'ar' && <Switch checked={settings?.review_annual_enabled !== false} onCheckedChange={v => update({ review_annual_enabled: v })} />}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, justifyContent: lang === 'ar' ? 'flex-end' : 'flex-start' }}>
               <CalendarCheck className="w-4 h-4" style={{ color: 'var(--mizan-gold)' }} />
               <span className="text-sm font-semibold" style={{ color: 'var(--mizan-text)' }}>
                 {lang === 'ar' ? 'التقرير السنوي' : 'Annual Report'}
               </span>
             </div>
-            <Switch
-              checked={settings?.review_annual_enabled !== false}
-              onCheckedChange={v => update({ review_annual_enabled: v })}
-            />
+            {lang !== 'ar' && <Switch checked={settings?.review_annual_enabled !== false} onCheckedChange={v => update({ review_annual_enabled: v })} />}
           </div>
           <p className="text-xs mb-3" style={{ color: 'var(--mizan-text-secondary)' }}>
             {lang === 'ar'

@@ -9,7 +9,7 @@ function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
   return (
     <div style={{
       display: 'flex',
-      flexDirection: 'row',
+      flexDirection: isRTL ? 'row-reverse' : 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
@@ -17,7 +17,6 @@ function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
       borderBottom: '1px solid var(--mizan-border)',
       gap: '12px',
     }}>
-      {isRTL && <Switch checked={checked} onCheckedChange={onCheckedChange} />}
       <span style={{
         flex: 1,
         fontSize: '15px',
@@ -27,7 +26,7 @@ function ToggleRow({ label, checked, onCheckedChange, isRTL }) {
       }}>
         {label}
       </span>
-      {!isRTL && <Switch checked={checked} onCheckedChange={onCheckedChange} />}
+      <Switch checked={checked} onCheckedChange={onCheckedChange} />
     </div>
   );
 }

@@ -42,39 +42,36 @@ function ResultItem({ item, language, onClick }) {
 }
 
 const QUICK_CATEGORIES = [
-  { labelAr: 'المهام',  labelEn: 'Tasks',    query: 'task',   icon: CheckSquare, color: 'var(--mizan-emerald)', path: '/planner' },
-  { labelAr: 'الأهداف', labelEn: 'Goals',    query: 'goal',   icon: Target,      color: 'var(--mizan-gold)',    path: '/goals'   },
-  { labelAr: 'المالية', labelEn: 'Finance',  query: 'SAR',    icon: Wallet,      color: '#12897A',              path: '/finance' },
-  { labelAr: 'الصحة',  labelEn: 'Wellness', query: 'wellness',icon: Activity,   color: '#27AE60',              path: '/wellness'},
-  { labelAr: 'التعلم', labelEn: 'Learning', query: 'course', icon: BookOpen,    color: 'var(--mizan-red)',     path: '/learning'},
+  { labelAr: 'المهام',  labelEn: 'Tasks',    icon: CheckSquare, path: '/planner'  },
+  { labelAr: 'الأهداف', labelEn: 'Goals',    icon: Target,      path: '/goals'    },
+  { labelAr: 'المالية', labelEn: 'Finance',  icon: Wallet,      path: '/finance'  },
+  { labelAr: 'الصحة',  labelEn: 'Wellness', icon: Activity,    path: '/wellness' },
+  { labelAr: 'التعلم', labelEn: 'Learning', icon: BookOpen,    path: '/learning' },
 ];
 
 function EmptyState({ language, allData, onSuggestion, navigate }) {
   const isAr = language === 'ar';
 
   const smartSuggestions = useMemo(() => {
-    if (!allData) return [];
     const today = new Date().toISOString().slice(0, 10);
-    const suggestions = [];
+    // Always show static base suggestions
+    const suggestions = [
+      { ar: 'مهامك اليوم', en: "Today's tasks", query: today },
+      { ar: 'أهدافك النشطة', en: 'Active goals', query: 'active' },
+      { ar: 'آخر المعاملات', en: 'Recent transactions', query: '' },
+    ];
+
+    if (!allData) return suggestions;
 
     const overdue = allData.tasks.filter(t => t.status !== 'completed' && t.due_date && t.due_date < today);
     if (overdue.length > 0)
-      suggestions.push({ ar: `المهام المتأخرة (${overdue.length})`, en: `Overdue tasks (${overdue.length})`, query: overdue[0].title });
-
-    const currentMonth = today.slice(0, 7);
-    const monthGoals = allData.goals.filter(g => g.status === 'active');
-    if (monthGoals.length > 0)
-      suggestions.push({ ar: `أهدافك النشطة (${monthGoals.length})`, en: `Active goals (${monthGoals.length})`, query: monthGoals[0].title });
-
-    const recentTx = allData.transactions.slice(0, 3);
-    if (recentTx.length > 0)
-      suggestions.push({ ar: 'آخر المعاملات المالية', en: 'Recent transactions', query: recentTx[0].description || recentTx[0].category || '' });
+      suggestions.push({ ar: `المهام المتأخرة (${overdue.length})`, en: `Overdue (${overdue.length})`, query: overdue[0].title });
 
     const activeCourses = allData.courses.filter(c => !c.is_completed);
     if (activeCourses.length > 0)
-      suggestions.push({ ar: `دوراتك الجارية (${activeCourses.length})`, en: `Active courses (${activeCourses.length})`, query: activeCourses[0].course_name });
+      suggestions.push({ ar: `دوراتك الجارية (${activeCourses.length})`, en: `Courses (${activeCourses.length})`, query: activeCourses[0].course_name });
 
-    return suggestions.slice(0, 4);
+    return suggestions.slice(0, 5);
   }, [allData]);
 
   return (
@@ -118,18 +115,18 @@ function EmptyState({ language, allData, onSuggestion, navigate }) {
             {isAr ? 'بحث سريع' : 'Quick Search'}
           </span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
           {QUICK_CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             return (
               <button
-                key={cat.query}
+                key={cat.path}
                 onClick={() => navigate(cat.path)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:opacity-80"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:opacity-80 flex-shrink-0"
                 style={{
-                  background: cat.color + '18',
-                  border: `1px solid ${cat.color}44`,
-                  color: cat.color,
+                  background: 'var(--mizan-emerald)18',
+                  border: '1px solid var(--mizan-emerald)44',
+                  color: 'var(--mizan-emerald)',
                 }}
               >
                 <Icon className="w-3.5 h-3.5" />

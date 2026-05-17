@@ -124,8 +124,8 @@ function EmptyState({ language, allData, onSuggestion, navigate }) {
                 onClick={() => navigate(cat.path)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:opacity-80 flex-shrink-0"
                 style={{
-                  background: 'var(--mizan-emerald)18',
-                  border: '1px solid var(--mizan-emerald)44',
+                  background: 'rgba(11,91,80,0.09)',
+                  border: '1px solid rgba(11,91,80,0.27)',
                   color: 'var(--mizan-emerald)',
                 }}
               >

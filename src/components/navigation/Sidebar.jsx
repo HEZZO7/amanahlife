@@ -5,6 +5,7 @@ import {
   LayoutDashboard, Wallet, Target, CalendarDays, Heart,
   Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, Sparkles, Trophy, Archive, Vault
 } from 'lucide-react';
+import GlobalSearchBar from '@/components/search/GlobalSearchBar';
 
 const NAV_ITEMS = [
   { key: 'dashboard', path: '/', icon: LayoutDashboard },
@@ -49,6 +50,11 @@ export default function Sidebar() {
         <span className="text-lg font-bold" style={{ color: 'var(--mizan-text)' }}>
           {t('app.name')}
         </span>
+      </div>
+
+      {/* Search */}
+      <div className="px-3 pb-3">
+        <GlobalSearchBar />
       </div>
 
       {/* Nav Items */}

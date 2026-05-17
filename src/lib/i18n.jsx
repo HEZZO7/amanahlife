@@ -221,6 +221,7 @@ const translations = {
   "analytics.prayers": { en: "Prayer Completion", ar: "الصلوات" },
   "nav.achievements": { en: "Achievements", ar: "الإنجازات" },
   "nav.archive": { en: "Archive", ar: "الأرشيف" },
+  "nav.search": { en: "Search", ar: "بحث" },
 
   // Spiritual
   "spiritual.dailyScore": { en: "Today's Prayers", ar: "صلوات اليوم" },

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
 import { build as buildDashboard } from '@/lib/dashboardService';
-import { Target, Wallet, Heart, CheckSquare, Plus, TrendingUp, TrendingDown, Sparkles, X, ThumbsUp, ThumbsDown, BookOpen } from 'lucide-react';
+import { Target, Wallet, Heart, CheckSquare, Plus, TrendingUp, TrendingDown, Sparkles, X, ThumbsUp, ThumbsDown, BookOpen, Search } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUserSettings } from '@/lib/UserSettingsContext';
+import { DashboardCustomizer, DEFAULT_WIDGETS } from '@/components/dashboard/DashboardCustomizer';
 
 function getGreeting(t) {
   const h = new Date().getHours();
@@ -74,10 +75,18 @@ function PrayerDots({ prayers }) {
 export default function Dashboard() {
   const { t } = useI18n();
   const { settings } = useUserSettings();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [insights, setInsights] = useState([]);
+  const [widgets, setWidgets] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('dashboard_widgets')) || DEFAULT_WIDGETS; }
+    catch { return DEFAULT_WIDGETS; }
+  });
+
+  const saveWidgets = (w) => { setWidgets(w); localStorage.setItem('dashboard_widgets', JSON.stringify(w)); };
+  const show = (key) => widgets.includes(key);
 
   useEffect(() => {
     const triggerKey = `ai_insights_triggered_${format(new Date(), 'yyyy-MM-dd')}`;
@@ -135,16 +144,30 @@ export default function Dashboard() {
   return (
     <div className="p-6 max-w-5xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold" style={{ color: 'var(--mizan-text)' }}>
-          {greeting}{displayName ? `, ${displayName}` : ''}
-        </h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>{dateStr}</p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--mizan-text)' }}>
+            {greeting}{displayName ? `, ${displayName}` : ''}
+          </h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--mizan-text-secondary)' }}>{dateStr}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/search')}
+            className="h-8 w-8 rounded-lg flex items-center justify-center hover:opacity-80 transition-all"
+            style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}
+          >
+            <Search className="w-4 h-4" style={{ color: 'var(--mizan-text-secondary)' }} />
+          </button>
+          <DashboardCustomizer widgets={widgets} onChange={saveWidgets} />
+        </div>
       </div>
 
       {/* Stats Grid */}
+      {show('prayers') || show('tasks') || show('finance') || show('goals') ? (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {/* Prayers */}
+        {show('prayers') && (
         <div className="p-5 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
           <div className="flex items-center gap-2 mb-2">
             <Heart className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
@@ -153,8 +176,10 @@ export default function Dashboard() {
           <span className="text-2xl font-bold" style={{ color: 'var(--mizan-text)' }}>{prayerCount}/5</span>
           <PrayerDots prayers={prayers} />
         </div>
+        )}
 
         {/* Tasks */}
+        {show('tasks') && (
         <div className="p-5 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
           <div className="flex items-center gap-2 mb-2">
             <CheckSquare className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
@@ -169,8 +194,10 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+        )}
 
         {/* Net Balance */}
+        {show('finance') && (
         <div className="p-5 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
           <div className="flex items-center gap-2 mb-2">
             <Wallet className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
@@ -184,8 +211,10 @@ export default function Dashboard() {
           </div>
           <span className="text-xs mt-1 block" style={{ color: 'var(--mizan-text-secondary)' }}>{currSymbol}</span>
         </div>
+        )}
 
         {/* Active Goals */}
+        {show('goals') && (
         <div className="p-5 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
           <div className="flex items-center gap-2 mb-2">
             <Target className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
@@ -198,10 +227,12 @@ export default function Dashboard() {
             </span>
           )}
         </div>
+        )}
       </div>
+      ) : null}
 
       {/* AI Insights */}
-      {insights.length > 0 && (
+      {show('insights') && insights.length > 0 && (
         <div className="mb-6 space-y-3">
           <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
             {t('dashboard.aiInsights')}
@@ -213,7 +244,7 @@ export default function Dashboard() {
       )}
 
       {/* Today's Tasks Preview */}
-      {data?.tasks?.today?.length > 0 && (
+      {show('todayTasks') && data?.tasks?.today?.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
@@ -236,7 +267,7 @@ export default function Dashboard() {
       )}
 
       {/* Life Review CTA */}
-      {['premium', 'family'].includes(settings?.subscription_tier) && (
+      {show('lifeReview') && ['premium', 'family'].includes(settings?.subscription_tier) && (
         <div className="mb-6">
           <Link to="/reviews">
             <div className="p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:opacity-90 transition-opacity"

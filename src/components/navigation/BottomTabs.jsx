@@ -3,18 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '@/lib/i18n';
 import {
   LayoutDashboard, Wallet, Target, CalendarDays, Heart,
-  Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, MoreHorizontal, X, Sparkles
+  Moon, Users, BookOpen, Briefcase, Activity, BarChart3, Settings, MoreHorizontal, X, Sparkles, Search
 } from 'lucide-react';
 
 const MAIN_TABS = [
   { key: 'dashboard', path: '/', icon: LayoutDashboard },
   { key: 'finance', path: '/finance', icon: Wallet },
-  { key: 'ai', path: '/ai', icon: Sparkles },
+  { key: 'search', path: '/search', icon: Search },
   { key: 'planner', path: '/planner', icon: CalendarDays },
   { key: 'more', path: null, icon: MoreHorizontal },
 ];
 
 const MORE_ITEMS = [
+  { key: 'ai', path: '/ai', icon: Sparkles },
   { key: 'goals', path: '/goals', icon: Target },
   { key: 'spiritual', path: '/spiritual', icon: Heart },
   { key: 'ramadan', path: '/ramadan', icon: Moon },

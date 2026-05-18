@@ -85,7 +85,11 @@ export default function PaywallSheet({ onClose }) {
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bottom-sheet-overlay"
       style={{ background: 'rgba(0,0,0,0.75)' }}>
       <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl bottom-sheet-content"
-        style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+        style={{ 
+          background: 'var(--mizan-elevated)', 
+          border: '1px solid var(--mizan-border)',
+          paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))'
+        }}>
 
         {/* Header */}
         <div className="relative p-6 text-center"

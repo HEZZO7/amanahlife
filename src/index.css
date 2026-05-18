@@ -184,13 +184,20 @@
   background-size: 60px 60px;
 }
 
-/* Bottom sheet global fix */
+/* Bottom sheet global fix - prevents content from being clipped by bottom navigation */
 .bottom-sheet-content {
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+  margin-bottom: env(safe-area-inset-bottom, 0px) !important;
+  max-height: calc(100vh - 80px - env(safe-area-inset-bottom, 0px) - 32px) !important;
 }
 
 .bottom-sheet-overlay {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Ensure all fixed modals respect bottom nav */
+div[class*="fixed"]:has(div[class*="bottom-sheet-content"]) {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
 }
 
 /* Section header emerald border */

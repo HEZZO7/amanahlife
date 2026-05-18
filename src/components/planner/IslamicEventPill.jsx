@@ -50,12 +50,12 @@ export default function IslamicEventPill({ event, compact = false }) {
 function EventDescCard({ event, onClose }) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center pb-8 px-4"
+      className="fixed inset-0 z-50 flex items-end justify-center p-4 bottom-sheet-overlay"
       style={{ background: 'rgba(0,0,0,0.45)' }}
       onClick={onClose}
     >
       <div
-        className="w-full max-w-sm rounded-2xl p-5 shadow-2xl"
+        className="w-full max-w-sm rounded-2xl p-5 shadow-2xl bottom-sheet-content"
         style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-gold)' }}
         onClick={e => e.stopPropagation()}
       >

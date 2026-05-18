@@ -40,17 +40,16 @@ export function DashboardCustomizer({ widgets, onChange }) {
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bottom-sheet-overlay"
           style={{ background: 'rgba(0,0,0,0.5)' }}
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl flex flex-col"
+            className="w-full max-w-sm rounded-t-2xl sm:rounded-2xl flex flex-col bottom-sheet-content"
             style={{
               background: 'var(--mizan-surface)',
               border: '1px solid var(--mizan-border)',
               maxHeight: '85vh',
-              paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 80px)',
             }}
             onClick={(e) => e.stopPropagation()}
           >

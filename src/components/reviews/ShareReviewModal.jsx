@@ -109,8 +109,8 @@ export default function ShareReviewModal({ review, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)' }}>
-      <div className="w-full max-w-md rounded-2xl overflow-hidden" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bottom-sheet-overlay" style={{ background: 'rgba(0,0,0,0.6)' }}>
+      <div className="w-full max-w-md rounded-2xl overflow-hidden bottom-sheet-content" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4" style={{ background: 'var(--mizan-emerald)' }}>
           <div className="flex items-center gap-2">

@@ -34,10 +34,10 @@ export default function TaskTemplateModal({ onClose, onSave, defaultDate, langua
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-4 bottom-sheet-overlay" onClick={onClose}>
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.5)' }} />
       <div
-        className="relative w-full max-w-md rounded-2xl p-5 max-h-[85vh] overflow-y-auto md:mb-0 mb-20"
+        className="relative w-full max-w-md rounded-2xl p-5 max-h-[85vh] overflow-y-auto bottom-sheet-content"
         style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}
         onClick={e => e.stopPropagation()}
       >

@@ -66,8 +66,8 @@ export default function AddDocumentModal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bottom-sheet-overlay">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 bottom-sheet-content" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold" style={{ color: 'var(--mizan-text)' }}>
             {language === 'ar' ? 'إضافة وثيقة' : 'Add Document'}

@@ -5,7 +5,8 @@ import { base44 } from '@/api/base44Client';
 import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Trophy, Target, CheckCircle2, Flame, Star, TrendingUp } from 'lucide-react';
+import { Trophy, Target, CheckCircle2, Flame, Star, TrendingUp, PenLine } from 'lucide-react';
+import ManualReviewForm from '@/components/reviews/ManualReviewForm';
 import BadgesSection from '@/components/achievements/BadgesSection';
 import {
   BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell,
@@ -49,6 +50,7 @@ export default function AchievementsDashboard() {
   const { settings } = useUserSettings();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const lang = language;
 
   useEffect(() => {
@@ -157,7 +159,7 @@ export default function AchievementsDashboard() {
         <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'var(--mizan-emerald)' }}>
           <Trophy className="w-5 h-5 text-white" />
         </div>
-        <div>
+        <div className="flex-1">
           <h1 className="text-xl font-bold" style={{ color: 'var(--mizan-text)' }}>
             {lang === 'ar' ? 'لوحة الإنجازات' : 'Achievements Dashboard'}
           </h1>
@@ -165,6 +167,12 @@ export default function AchievementsDashboard() {
             {lang === 'ar' ? 'تتبع تقدمك الشهري بصريًا' : 'Visually track your monthly progress'}
           </p>
         </div>
+        <Button size="sm" onClick={() => setShowReviewForm(true)}
+          className="gap-1.5 text-xs text-white flex-shrink-0"
+          style={{ background: 'var(--mizan-emerald)' }}>
+          <PenLine className="w-3.5 h-3.5" />
+          {lang === 'ar' ? 'مراجعتي' : 'My Review'}
+        </Button>
       </div>
 
       {/* KPI Cards */}
@@ -288,6 +296,15 @@ export default function AchievementsDashboard() {
 
       {/* Badges */}
       <BadgesSection data={data} language={lang} />
+
+      {showReviewForm && (
+        <ManualReviewForm
+          language={lang}
+          achievementsData={data}
+          onClose={() => setShowReviewForm(false)}
+          onSaved={() => setShowReviewForm(false)}
+        />
+      )}
 
       {/* Motivational footer */}
       <div className="rounded-2xl p-4 text-center" style={{ background: 'linear-gradient(135deg, var(--mizan-emerald) 0%, #12897A 100%)' }}>

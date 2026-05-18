@@ -5,7 +5,8 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import LifeReviewCard from '@/components/reviews/LifeReviewCard';
-import { Sparkles, RefreshCw, ChevronDown } from 'lucide-react';
+import ManualReviewForm from '@/components/reviews/ManualReviewForm';
+import { Sparkles, RefreshCw, ChevronDown, PenLine } from 'lucide-react';
 import { format, subMonths } from 'date-fns';
 
 export default function LifeReviews() {
@@ -18,6 +19,7 @@ export default function LifeReviews() {
   const [generating, setGenerating] = useState(false);
   const [genType, setGenType] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [showManualForm, setShowManualForm] = useState(false);
 
   const isPremium = ['premium', 'family'].includes(settings?.subscription_tier);
 
@@ -83,7 +85,17 @@ export default function LifeReviews() {
             {lang === 'ar' ? 'تقارير ذكية شهرية وسنوية' : 'AI-powered monthly & annual reports'}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            onClick={() => setShowManualForm(true)}
+            size="sm"
+            variant="outline"
+            className="gap-1.5 text-xs"
+            style={{ borderColor: 'var(--mizan-emerald)', color: 'var(--mizan-emerald)' }}
+          >
+            <PenLine className="w-3.5 h-3.5" />
+            {lang === 'ar' ? 'مراجعة يدوية' : 'Manual Review'}
+          </Button>
           <Button
             onClick={() => generateReview('monthly')}
             disabled={generating}
@@ -92,7 +104,7 @@ export default function LifeReviews() {
             className="gap-1.5 text-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${generating && genType === 'monthly' ? 'animate-spin' : ''}`} />
-            {lang === 'ar' ? 'شهري' : 'Monthly'}
+            {lang === 'ar' ? 'شهري AI' : 'Monthly AI'}
           </Button>
           <Button
             onClick={() => generateReview('annual')}
@@ -102,7 +114,7 @@ export default function LifeReviews() {
             style={{ background: 'var(--mizan-emerald)' }}
           >
             <Sparkles className={`w-3.5 h-3.5 ${generating && genType === 'annual' ? 'animate-spin' : ''}`} />
-            {lang === 'ar' ? 'سنوي' : 'Annual'}
+            {lang === 'ar' ? 'سنوي AI' : 'Annual AI'}
           </Button>
         </div>
       </div>
@@ -138,6 +150,14 @@ export default function LifeReviews() {
             />
           ))}
         </div>
+      )}
+
+      {showManualForm && (
+        <ManualReviewForm
+          language={lang}
+          onClose={() => setShowManualForm(false)}
+          onSaved={() => { setShowManualForm(false); loadReviews(); }}
+        />
       )}
 
       {/* Archived */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { base44 } from '@/api/base44Client';
-import { X, AlertCircle } from 'lucide-react';
+import { X, AlertCircle, Sparkles, Tag, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,14 +12,65 @@ const INCOME_CATS = ['salary', 'freelance', 'investment', 'gift', 'other'];
 
 export default function AddTransactionModal({ type, onClose, onSaved }) {
   const { t, language } = useI18n();
+  const isAr = language === 'ar';
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [saving, setSaving] = useState(false);
   const [budgetWarning, setBudgetWarning] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState('');
+  const [autoClassifying, setAutoClassifying] = useState(false);
+  const [autoCategorized, setAutoCategorized] = useState(false);
 
   const cats = type === 'income' ? INCOME_CATS : EXPENSE_CATS;
+
+  // Auto-classify when description changes
+  useEffect(() => {
+    if (!description || description.length < 3) return;
+    const timer = setTimeout(async () => {
+      setAutoClassifying(true);
+      try {
+        const result = await base44.integrations.Core.InvokeLLM({
+          prompt: `Classify this financial transaction and suggest tags.
+Description: "${description}"
+Type: ${type}
+Available categories: ${cats.join(', ')}
+
+Respond in JSON only:
+{
+  "category": "<best matching category from the list>",
+  "tags": ["<tag1>", "<tag2>"] // 2-3 short relevant tags in the same language as the description
+}`,
+          response_json_schema: {
+            type: 'object',
+            properties: {
+              category: { type: 'string' },
+              tags: { type: 'array', items: { type: 'string' } }
+            }
+          }
+        });
+        if (result?.category && cats.includes(result.category)) {
+          setCategory(result.category);
+          setAutoCategorized(true);
+        }
+        if (result?.tags?.length) {
+          setTags(prev => [...new Set([...prev, ...result.tags])]);
+        }
+      } catch (e) { /* silent */ }
+      setAutoClassifying(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [description]);
+
+  const addTag = () => {
+    const t = tagInput.trim();
+    if (t && !tags.includes(t)) setTags(prev => [...prev, t]);
+    setTagInput('');
+  };
+
+  const removeTag = (tag) => setTags(prev => prev.filter(t => t !== tag));
 
   // التحقق من حدود الميزانية عند تغيير المبلغ أو الفئة
   useEffect(() => {
@@ -76,7 +127,10 @@ export default function AddTransactionModal({ type, onClose, onSaved }) {
   const handleSave = async () => {
     if (!amount || !category) return;
     setSaving(true);
-    await base44.entities.Transaction.create({ type, amount: parseFloat(amount), category, description, date, is_halal_verified: true });
+    await base44.entities.Transaction.create({
+      type, amount: parseFloat(amount), category, description, date,
+      is_halal_verified: true, tags, auto_categorized: autoCategorized
+    });
     setSaving(false);
     onSaved();
   };
@@ -137,11 +191,60 @@ export default function AddTransactionModal({ type, onClose, onSaved }) {
           </div>
           <div>
             <Label style={{ color: 'var(--mizan-text-secondary)' }}>{t('finance.description')}</Label>
-            <Input value={description} onChange={e => setDescription(e.target.value)} className="mt-1 h-10 rounded-lg" style={{ background: 'var(--mizan-elevated)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }} />
+            <div className="relative mt-1">
+              <Input value={description} onChange={e => { setDescription(e.target.value); setAutoCategorized(false); }}
+                className="h-10 rounded-lg pe-9"
+                style={{ background: 'var(--mizan-elevated)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }} />
+              {autoClassifying && (
+                <div className="absolute end-3 top-1/2 -translate-y-1/2">
+                  <Sparkles className="w-4 h-4 animate-pulse" style={{ color: 'var(--mizan-emerald)' }} />
+                </div>
+              )}
+            </div>
+            {autoCategorized && (
+              <p className="mt-1 text-xs flex items-center gap-1" style={{ color: 'var(--mizan-emerald)' }}>
+                <Sparkles className="w-3 h-3" />
+                {isAr ? 'تم التصنيف تلقائياً بالذكاء الاصطناعي' : 'Auto-classified by AI'}
+              </p>
+            )}
           </div>
           <div>
             <Label style={{ color: 'var(--mizan-text-secondary)' }}>{t('finance.date')}</Label>
             <Input type="date" value={date} onChange={e => setDate(e.target.value)} className="mt-1 h-10 rounded-lg" style={{ background: 'var(--mizan-elevated)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }} />
+          </div>
+
+          {/* Tags */}
+          <div>
+            <Label style={{ color: 'var(--mizan-text-secondary)' }}>
+              <span className="flex items-center gap-1"><Tag className="w-3 h-3" />{isAr ? 'وسوم' : 'Tags'}</span>
+            </Label>
+            <div className="flex gap-2 mt-1">
+              <Input
+                value={tagInput}
+                onChange={e => setTagInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
+                placeholder={isAr ? 'أضف وسماً...' : 'Add tag...'}
+                className="h-9 rounded-lg flex-1 text-sm"
+                style={{ background: 'var(--mizan-elevated)', borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }}
+              />
+              <button onClick={addTag} className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+                <Plus className="w-4 h-4" style={{ color: 'var(--mizan-emerald)' }} />
+              </button>
+            </div>
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {tags.map(tag => (
+                  <span key={tag} className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium"
+                    style={{ background: 'var(--mizan-emerald)18', color: 'var(--mizan-emerald)', border: '1px solid var(--mizan-emerald)44' }}>
+                    {tag}
+                    <button onClick={() => removeTag(tag)} className="opacity-60 hover:opacity-100">
+                      <X className="w-2.5 h-2.5" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Budget Alert */}

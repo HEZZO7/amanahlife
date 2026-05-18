@@ -25,6 +25,18 @@
     "is_halal_verified": {
       "type": "boolean",
       "default": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Custom tags for search and filtering"
+    },
+    "auto_categorized": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether category was set automatically by AI"
     }
   },
   "required": [

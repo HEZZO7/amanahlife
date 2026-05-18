@@ -3,7 +3,7 @@ import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { format, startOfMonth, endOfMonth, parseISO, isWithinInterval } from 'date-fns';
-import { TrendingUp, TrendingDown, Download, Search, Filter, X, ChevronDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, Download, Search, Filter, X, ChevronDown, Sparkles, Tag } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -54,7 +54,8 @@ export default function TransactionHistory() {
       const q = search.toLowerCase();
       list = list.filter(tx =>
         tx.description?.toLowerCase().includes(q) ||
-        tx.category?.toLowerCase().includes(q)
+        tx.category?.toLowerCase().includes(q) ||
+        tx.tags?.some(tag => tag.toLowerCase().includes(q))
       );
     }
 
@@ -355,12 +356,28 @@ export default function TransactionHistory() {
                         }
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate" style={{ color: 'var(--mizan-text)' }}>
-                          {tx.description || tx.category}
-                        </p>
+                        <div className="flex items-center gap-1">
+                          <p className="text-sm font-medium truncate" style={{ color: 'var(--mizan-text)' }}>
+                            {tx.description || tx.category}
+                          </p>
+                          {tx.auto_categorized && (
+                            <Sparkles className="w-3 h-3 flex-shrink-0 opacity-60" style={{ color: 'var(--mizan-emerald)' }} />
+                          )}
+                        </div>
                         <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
                           {tx.category} · {tx.date}
                         </p>
+                        {tx.tags?.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {tx.tags.map(tag => (
+                              <button key={tag} onClick={() => setSearch(tag)}
+                                className="px-1.5 py-0.5 rounded text-xs"
+                                style={{ background: 'var(--mizan-emerald)15', color: 'var(--mizan-emerald)', border: '1px solid var(--mizan-emerald)30' }}>
+                                #{tag}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       <span className="text-sm font-semibold flex-shrink-0"
                         style={{ color: tx.type === 'income' ? 'var(--mizan-green)' : 'var(--mizan-red)' }}>

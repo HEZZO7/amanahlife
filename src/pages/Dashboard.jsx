@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { DashboardCustomizer, DEFAULT_WIDGETS } from '@/components/dashboard/DashboardCustomizer';
+import WeeklyTaskCalendar from '@/components/dashboard/WeeklyTaskCalendar';
 
 function getGreeting(t) {
   const h = new Date().getHours();
@@ -78,6 +79,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [data, setData] = useState(null);
+  const [allTasks, setAllTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [insights, setInsights] = useState([]);
   const [widgets, setWidgets] = useState(() => {
@@ -90,10 +92,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     const triggerKey = `ai_insights_triggered_${format(new Date(), 'yyyy-MM-dd')}`;
-    Promise.all([base44.auth.me(), buildDashboard()])
-      .then(([u, d]) => {
+    Promise.all([base44.auth.me(), buildDashboard(), base44.entities.Task.list('-due_date', 300)])
+      .then(([u, d, tasks]) => {
         setUser(u);
         setData(d);
+        setAllTasks(tasks.filter(t => !t.is_archived));
         setInsights(d.aiInsights || []);
         setLoading(false);
         // Trigger daily insight generation on first load of the day
@@ -243,27 +246,9 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Today's Tasks Preview */}
-      {show('todayTasks') && data?.tasks?.today?.length > 0 && (
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
-              {t('dashboard.todayTasks')}
-            </h2>
-            <Link to="/planner" className="text-xs" style={{ color: 'var(--mizan-emerald)' }}>{t('common.viewAll')}</Link>
-          </div>
-          <div className="space-y-2">
-            {data.tasks.today.slice(0, 4).map(task => (
-              <div key={task.id} className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-                <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0`} style={{ borderColor: task.status === 'completed' ? 'var(--mizan-emerald)' : 'var(--mizan-border)', background: task.status === 'completed' ? 'var(--mizan-emerald)' : 'transparent' }} />
-                <span className="text-sm flex-1" style={{ color: 'var(--mizan-text)', textDecoration: task.status === 'completed' ? 'line-through' : 'none', opacity: task.status === 'completed' ? 0.5 : 1 }}>{task.title}</span>
-                <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: task.priority === 'high' ? '#C0392B22' : task.priority === 'medium' ? '#B89A5E22' : 'var(--mizan-border)', color: task.priority === 'high' ? 'var(--mizan-red)' : task.priority === 'medium' ? 'var(--mizan-gold)' : 'var(--mizan-text-secondary)' }}>
-                  {task.priority}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Weekly Task Calendar */}
+      {show('todayTasks') && (
+        <WeeklyTaskCalendar tasks={allTasks} />
       )}
 
       {/* Life Review CTA */}

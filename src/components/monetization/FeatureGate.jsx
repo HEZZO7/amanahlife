@@ -60,6 +60,7 @@ export default function FeatureGate({ allowed, feature = 'analytics', fullPage =
     );
   }
 
+
   // Inline locked state
   return (
     <div className="relative rounded-xl overflow-hidden"

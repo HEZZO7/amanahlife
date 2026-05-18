@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Lock, BarChart3, TrendingUp, Target, Heart, Activity } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
 import PaywallSheet from '@/components/monetization/PaywallSheet';
+import FeatureGate from '@/components/monetization/FeatureGate';
 import MonthlyReport from '@/components/analytics/MonthlyReport';
 import { useSubscription } from '@/hooks/useSubscription';
 
@@ -49,7 +50,7 @@ export default function Analytics() {
   const { isPremium } = useSubscription();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
-  const [showPaywall, setShowPaywall] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(!isPremium);
   const currSymbol = settings?.currency_symbol || 'ر.س';
 
   const load = () => {
@@ -112,18 +113,22 @@ export default function Analytics() {
 
   useEffect(() => { load(); }, []);
 
+  // If not premium and paywall was dismissed, show FeatureGate full-page lock
+  if (!isPremium && !showPaywall) {
+    return (
+      <>
+        <FeatureGate allowed={false} feature="analytics" fullPage />
+        <PaywallSheet onClose={() => setShowPaywall(false)} />
+      </>
+    );
+  }
+
   return (
     <div className="p-6 max-w-5xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold mizan-section-header" style={{ color: 'var(--mizan-text)' }}>
           {language === 'ar' ? 'التحليلات' : 'Analytics'}
         </h1>
-        {!isPremium && (
-          <Button onClick={() => setShowPaywall(true)} size="sm" className="h-8 gap-1.5 text-white rounded-lg" style={{ background: 'var(--mizan-gold)' }}>
-            <Lock className="w-3.5 h-3.5" />
-            {language === 'ar' ? 'مميز' : 'Premium'}
-          </Button>
-        )}
       </div>
 
       {loading ? (
@@ -155,7 +160,7 @@ export default function Analytics() {
           </ChartCard>
 
           {/* 2. Prayer Consistency */}
-          <ChartCard title={language === 'ar' ? 'انتظام الصلاة' : 'Prayer Consistency'} isPremium={!isPremium} onUpgrade={() => setShowPaywall(true)} language={language}>
+          <ChartCard title={language === 'ar' ? 'انتظام الصلاة' : 'Prayer Consistency'} isPremium={false} language={language}>
             <div style={{ height: 160 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data.prayerData || []}>
@@ -169,7 +174,7 @@ export default function Analytics() {
           </ChartCard>
 
           {/* 3. Goals by Category */}
-          <ChartCard title={language === 'ar' ? 'الأهداف حسب الفئة' : 'Goals by Category'} isPremium={!isPremium} onUpgrade={() => setShowPaywall(true)} language={language}>
+          <ChartCard title={language === 'ar' ? 'الأهداف حسب الفئة' : 'Goals by Category'} isPremium={false} language={language}>
             <div style={{ height: 160 }} className="flex items-center">
               <ResponsiveContainer width="40%" height="100%">
                 <PieChart>
@@ -193,7 +198,7 @@ export default function Analytics() {
           </ChartCard>
 
           {/* 4. Wellness Trend */}
-          <ChartCard title={language === 'ar' ? 'اتجاه العافية' : 'Wellness Trend'} isPremium={!isPremium} onUpgrade={() => setShowPaywall(true)} language={language}>
+          <ChartCard title={language === 'ar' ? 'اتجاه العافية' : 'Wellness Trend'} isPremium={false} language={language}>
             <div style={{ height: 160 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={data.wellnessData || []}>
@@ -207,7 +212,7 @@ export default function Analytics() {
           </ChartCard>
 
           {/* 5. Task Completion Pie */}
-          <ChartCard title={language === 'ar' ? 'إتمام المهام' : 'Task Completion'} isPremium={!isPremium} onUpgrade={() => setShowPaywall(true)} language={language}>
+          <ChartCard title={language === 'ar' ? 'إتمام المهام' : 'Task Completion'} isPremium={false} language={language}>
             <div style={{ height: 160 }} className="flex items-center">
               <ResponsiveContainer width="40%" height="100%">
                 <PieChart>
@@ -233,7 +238,6 @@ export default function Analytics() {
         </div>
       )}
 
-      {showPaywall && <PaywallSheet onClose={() => setShowPaywall(false)} />}
     </div>
   );
 }

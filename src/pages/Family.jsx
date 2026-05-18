@@ -9,6 +9,7 @@ import WealthTab from '@/components/family/WealthTab';
 import SharedBudgetTab from '@/components/family/SharedBudgetTab';
 import SharedGoalsTab from '@/components/family/SharedGoalsTab';
 import FeatureGate from '@/components/monetization/FeatureGate';
+import PaywallSheet from '@/components/monetization/PaywallSheet';
 import { useSubscription } from '@/hooks/useSubscription';
 
 const TABS = [
@@ -35,6 +36,7 @@ function EmptyState({ label }) {
 export default function Family() {
   const { t, language } = useI18n();
   const { isFamily } = useSubscription();
+  const [showPaywall, setShowPaywall] = useState(!isFamily);
   const [tab, setTab] = useState('members');
   const [members, setMembers] = useState([]);
   const [userMap, setUserMap] = useState({});
@@ -85,6 +87,15 @@ export default function Family() {
     await base44.entities.Task.update(task.id, { status: newStatus });
     load();
   };
+
+  if (!isFamily) {
+    return (
+      <>
+        <FeatureGate allowed={false} feature="family" fullPage />
+        {showPaywall && <PaywallSheet onClose={() => setShowPaywall(false)} />}
+      </>
+    );
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto min-h-screen" style={{ background: 'var(--mizan-bg)' }}>

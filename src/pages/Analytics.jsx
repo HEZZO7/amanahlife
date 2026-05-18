@@ -9,6 +9,7 @@ import { Lock, BarChart3, TrendingUp, Target, Heart, Activity } from 'lucide-rea
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis } from 'recharts';
 import PaywallSheet from '@/components/monetization/PaywallSheet';
 import MonthlyReport from '@/components/analytics/MonthlyReport';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const COLORS = ['#0B5B50','#B89A5E','#12897A','#C0392B','#27AE60','#8A9B97'];
 
@@ -45,10 +46,10 @@ function ChartCard({ title, children, isPremium, onUpgrade, language }) {
 export default function Analytics() {
   const { language } = useI18n();
   const { settings } = useUserSettings();
+  const { isPremium } = useSubscription();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [showPaywall, setShowPaywall] = useState(false);
-  const isPremium = settings?.subscription_tier === 'premium' || settings?.subscription_tier === 'family';
   const currSymbol = settings?.currency_symbol || 'ر.س';
 
   const load = () => {

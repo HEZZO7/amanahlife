@@ -8,6 +8,8 @@ import { Users, CheckSquare, Target, Calendar, Plus, Check } from 'lucide-react'
 import WealthTab from '@/components/family/WealthTab';
 import SharedBudgetTab from '@/components/family/SharedBudgetTab';
 import SharedGoalsTab from '@/components/family/SharedGoalsTab';
+import FeatureGate from '@/components/monetization/FeatureGate';
+import { useSubscription } from '@/hooks/useSubscription';
 
 const TABS = [
   { key: 'members', en: 'Members', ar: 'الأعضاء' },
@@ -32,6 +34,7 @@ function EmptyState({ label }) {
 
 export default function Family() {
   const { t, language } = useI18n();
+  const { isFamily } = useSubscription();
   const [tab, setTab] = useState('members');
   const [members, setMembers] = useState([]);
   const [userMap, setUserMap] = useState({});
@@ -116,21 +119,23 @@ export default function Family() {
         <>
           {/* Members */}
           {tab === 'members' && (
-            <div className="space-y-3">
-              {members.length === 0 ? (
-                <EmptyState label={language === 'ar' ? 'لا يوجد أعضاء عائلة بعد' : 'No family members yet'} />
-              ) : members.map(m => (
-                <div key={m.id} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--mizan-emerald)' }}>
-                    {(userMap[m.user_id] || 'M')[0].toUpperCase()}
+            <FeatureGate allowed={isFamily} feature="family" fullPage>
+              <div className="space-y-3">
+                {members.length === 0 ? (
+                  <EmptyState label={language === 'ar' ? 'لا يوجد أعضاء عائلة بعد' : 'No family members yet'} />
+                ) : members.map(m => (
+                  <div key={m.id} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{ background: 'var(--mizan-emerald)' }}>
+                      {(userMap[m.user_id] || 'M')[0].toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{userMap[m.user_id] || 'Member'}</p>
+                      <p className="text-xs capitalize" style={{ color: 'var(--mizan-text-secondary)' }}>{m.role}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{userMap[m.user_id] || 'Member'}</p>
-                    <p className="text-xs capitalize" style={{ color: 'var(--mizan-text-secondary)' }}>{m.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </FeatureGate>
           )}
 
           {/* Shared Tasks */}
@@ -169,11 +174,14 @@ export default function Family() {
 
           {/* Family Goals */}
           {tab === 'goals' && (
-            <SharedGoalsTab members={members} userMap={userMap} />
+            <FeatureGate allowed={isFamily} feature="family" fullPage>
+              <SharedGoalsTab members={members} userMap={userMap} />
+            </FeatureGate>
           )}
 
           {/* Family Calendar */}
            {tab === 'calendar' && (
+             <FeatureGate allowed={isFamily} feature="family" fullPage>
              <div className="space-y-3">
                {events.length === 0 ? <EmptyState label={language === 'ar' ? 'لا توجد أحداث عائلية' : 'No family events yet'} /> : (
                  events.map(e => (
@@ -191,13 +199,22 @@ export default function Family() {
                  ))
                )}
              </div>
+             </FeatureGate>
            )}
 
            {/* Budget */}
-           {tab === 'budget' && <SharedBudgetTab familyId="shared" />}
+           {tab === 'budget' && (
+             <FeatureGate allowed={isFamily} feature="family" fullPage>
+               <SharedBudgetTab familyId="shared" />
+             </FeatureGate>
+           )}
 
            {/* Wealth */}
-           {tab === 'wealth' && <WealthTab familyId="shared" members={members} userMap={userMap} />}
+           {tab === 'wealth' && (
+             <FeatureGate allowed={isFamily} feature="family" fullPage>
+               <WealthTab familyId="shared" members={members} userMap={userMap} />
+             </FeatureGate>
+           )}
         </>
       )}
     </div>

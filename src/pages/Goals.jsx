@@ -10,6 +10,7 @@ import GoalCard from '@/components/goals/GoalCard';
 import GoalDetail from '@/components/goals/GoalDetail';
 import GoalsProgressChart from '@/components/goals/GoalsProgressChart';
 import GoalMilestones from '@/components/goals/GoalMilestones';
+import GoalsYearTimeline from '@/components/goals/GoalsYearTimeline';
 
 export default function Goals() {
   const { t } = useI18n();
@@ -83,6 +84,13 @@ export default function Goals() {
 
           {/* Progress Chart */}
           {(summary?.goals || []).length > 0 && <GoalsProgressChart goals={summary.goals} tasks={tasks} />}
+
+          {/* Year Timeline */}
+          {(summary?.goals || []).length > 0 && (
+            <div className="mb-6">
+              <GoalsYearTimeline goals={summary.goals} />
+            </div>
+          )}
 
           {/* Filter */}
           <div className="flex gap-2 mb-5">

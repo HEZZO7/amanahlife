@@ -1,112 +1,205 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useI18n } from '@/lib/i18n';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import {
+  RadialBarChart, RadialBar, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend
+} from 'recharts';
+
+const CATEGORY_COLORS = {
+  personal:  '#0B5B50',
+  financial: '#B89A5E',
+  spiritual: '#2EAA96',
+  family:    '#7C6F9F',
+  health:    '#27AE60',
+};
+
+const CATEGORY_LABELS_AR = {
+  personal:  'شخصي',
+  financial: 'مالي',
+  spiritual: 'روحي',
+  family:    'عائلي',
+  health:    'صحي',
+};
+const CATEGORY_LABELS_EN = {
+  personal:  'Personal',
+  financial: 'Financial',
+  spiritual: 'Spiritual',
+  family:    'Family',
+  health:    'Health',
+};
 
 export default function GoalsProgressChart({ goals, tasks }) {
   const { language } = useI18n();
+  const isAr = language === 'ar';
+  const [activeTab, setActiveTab] = useState('progress'); // 'progress' | 'category'
 
-  const chartData = useMemo(() => {
+  // Per-goal progress data
+  const goalData = useMemo(() => {
     return goals
       .filter(g => g.status === 'active' || g.status === 'completed')
       .map(goal => {
         const goalTasks = tasks.filter(t => t.goal_id === goal.id);
         const completedTasks = goalTasks.filter(t => t.status === 'completed').length;
         const totalTasks = goalTasks.length;
-        const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-
+        const progress = goal.progress || (totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0);
         return {
-          name: goal.title,
-          completed: completedTasks,
-          total: totalTasks,
+          id: goal.id,
+          title: goal.title,
+          category: goal.category || 'personal',
           progress,
-          goalId: goal.id,
+          completedTasks,
+          totalTasks,
+          status: goal.status,
         };
       })
       .sort((a, b) => b.progress - a.progress);
   }, [goals, tasks]);
 
-  if (chartData.length === 0) return null;
+  // Category aggregation for pie chart
+  const categoryData = useMemo(() => {
+    const map = {};
+    goals.forEach(g => {
+      const cat = g.category || 'personal';
+      if (!map[cat]) map[cat] = { name: cat, count: 0, completed: 0 };
+      map[cat].count++;
+      if (g.status === 'completed') map[cat].completed++;
+    });
+    return Object.values(map).map(d => ({
+      ...d,
+      label: isAr ? (CATEGORY_LABELS_AR[d.name] || d.name) : (CATEGORY_LABELS_EN[d.name] || d.name),
+      color: CATEGORY_COLORS[d.name] || '#888',
+    }));
+  }, [goals, isAr]);
 
-  const CustomTooltip = ({ active, payload }) => {
+  if (goalData.length === 0 && categoryData.length === 0) return null;
+
+  const tabs = [
+    { id: 'progress', label: isAr ? 'تقدم الأهداف' : 'Goal Progress' },
+    { id: 'category', label: isAr ? 'حسب التصنيف' : 'By Category' },
+  ];
+
+  const CustomPieTooltip = ({ active, payload }) => {
     if (!active || !payload?.[0]) return null;
-    const data = payload[0].payload;
+    const d = payload[0].payload;
     return (
       <div className="p-2 rounded-lg text-xs" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-        <p style={{ color: 'var(--mizan-text)' }}>{data.name}</p>
-        <p style={{ color: 'var(--mizan-emerald)' }}>
-          {language === 'ar' ? 'مهام مكتملة:' : 'Completed:'} {data.completed}/{data.total}
-        </p>
-        <p style={{ color: 'var(--mizan-gold)' }}>
-          {language === 'ar' ? 'التقدم:' : 'Progress:'} {data.progress}%
-        </p>
+        <p className="font-semibold" style={{ color: 'var(--mizan-text)' }}>{d.label}</p>
+        <p style={{ color: 'var(--mizan-text-secondary)' }}>{isAr ? 'الإجمالي:' : 'Total:'} {d.count}</p>
+        <p style={{ color: 'var(--mizan-emerald)' }}>{isAr ? 'مكتمل:' : 'Completed:'} {d.completed}</p>
       </div>
     );
   };
 
   return (
     <div className="mb-6 p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-      <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--mizan-text)' }}>
-        {language === 'ar' ? '📊 تقدم الأهداف طويلة المدى' : '📊 Long-term Goals Progress'}
-      </h3>
-
-      <div style={{ width: '100%', height: '280px', boxSizing: 'border-box', overflow: 'hidden' }}>
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart
-          data={chartData}
-          margin={{ top: 20, right: 30, left: 0, bottom: 60 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--mizan-border)" />
-          <XAxis
-            dataKey="name"
-            angle={-45}
-            textAnchor="end"
-            height={100}
-            tick={{ fontSize: 11, fill: 'var(--mizan-text-secondary)' }}
-          />
-          <YAxis
-            label={{ value: language === 'ar' ? 'المهام' : 'Tasks', angle: -90, position: 'insideLeft' }}
-            tick={{ fontSize: 11, fill: 'var(--mizan-text-secondary)' }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar dataKey="completed" fill="var(--mizan-emerald)" name={language === 'ar' ? 'مكتملة' : 'Completed'} radius={[4, 4, 0, 0]}>
-            {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={entry.progress >= 75 ? 'var(--mizan-green)' : entry.progress >= 50 ? 'var(--mizan-emerald)' : 'var(--mizan-gold)'}
-              />
-            ))}
-          </Bar>
-          <Bar
-            dataKey="total"
-            fill="var(--mizan-border)"
-            name={language === 'ar' ? 'الإجمالي' : 'Total'}
-            opacity={0.4}
-            radius={[4, 4, 0, 0]}
-          />
-        </BarChart>
-      </ResponsiveContainer>
+      {/* Tab switcher */}
+      <div className="flex gap-2 mb-4">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+            style={{
+              background: activeTab === tab.id ? 'var(--mizan-emerald)' : 'var(--mizan-elevated)',
+              color: activeTab === tab.id ? 'white' : 'var(--mizan-text-secondary)',
+              border: `1px solid ${activeTab === tab.id ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}`,
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Legend with progress indicators */}
-      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-        {chartData.slice(0, 6).map(item => (
-          <div key={item.goalId} className="p-2 rounded-lg" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
-            <p className="truncate font-medium" style={{ color: '#d1fae5' }} title={item.name}>{item.name}</p>
-            <div className="flex items-center gap-1 mt-1">
-              <div className="flex-1 h-1.5 rounded-full" style={{ background: 'var(--mizan-border)' }}>
+      {/* Tab: Progress bars per goal */}
+      {activeTab === 'progress' && (
+        <div className="space-y-3">
+          {goalData.map(item => (
+            <div key={item.id}>
+              <div className="flex items-center justify-between mb-1">
+                <span
+                  className="text-xs font-medium truncate max-w-[70%]"
+                  style={{ color: 'var(--mizan-text)' }}
+                  title={item.title}
+                >
+                  {item.title}
+                </span>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-xs px-1.5 py-0.5 rounded-full"
+                    style={{
+                      background: (CATEGORY_COLORS[item.category] || '#888') + '22',
+                      color: CATEGORY_COLORS[item.category] || '#888',
+                    }}
+                  >
+                    {isAr ? (CATEGORY_LABELS_AR[item.category] || item.category) : (CATEGORY_LABELS_EN[item.category] || item.category)}
+                  </span>
+                  <span className="text-xs font-bold" style={{ color: 'var(--mizan-text-secondary)', minWidth: '32px', textAlign: 'right' }}>
+                    {item.progress}%
+                  </span>
+                </div>
+              </div>
+              <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--mizan-border)' }}>
                 <div
-                  className="h-full rounded-full transition-all"
+                  className="h-full rounded-full transition-all duration-500"
                   style={{
                     width: `${item.progress}%`,
-                    background: item.progress >= 75 ? 'var(--mizan-green)' : item.progress >= 50 ? 'var(--mizan-emerald)' : 'var(--mizan-gold)',
+                    background: item.progress >= 75
+                      ? 'var(--mizan-green)'
+                      : item.progress >= 40
+                        ? 'var(--mizan-emerald)'
+                        : 'var(--mizan-gold)',
                   }}
                 />
               </div>
-              <span style={{ color: 'var(--mizan-text-secondary)', minWidth: '20px', textAlign: 'right' }}>{item.progress}%</span>
+              {item.totalTasks > 0 && (
+                <p className="text-xs mt-0.5" style={{ color: 'var(--mizan-text-secondary)' }}>
+                  {isAr
+                    ? `${item.completedTasks} من ${item.totalTasks} مهمة مكتملة`
+                    : `${item.completedTasks}/${item.totalTasks} tasks done`}
+                </p>
+              )}
             </div>
+          ))}
+        </div>
+      )}
+
+      {/* Tab: Pie chart by category */}
+      {activeTab === 'category' && categoryData.length > 0 && (
+        <div>
+          <ResponsiveContainer width="100%" height={220}>
+            <PieChart>
+              <Pie
+                data={categoryData}
+                cx="50%"
+                cy="50%"
+                innerRadius={55}
+                outerRadius={85}
+                paddingAngle={3}
+                dataKey="count"
+              >
+                {categoryData.map((entry, index) => (
+                  <Cell key={index} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomPieTooltip />} />
+            </PieChart>
+          </ResponsiveContainer>
+          {/* Category legend */}
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            {categoryData.map(cat => (
+              <div key={cat.name} className="flex items-center gap-2 p-2 rounded-lg" style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
+                <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: cat.color }} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium truncate" style={{ color: 'var(--mizan-text)' }}>{cat.label}</p>
+                  <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)' }}>
+                    {cat.count} {isAr ? 'هدف' : 'goals'} · {cat.completed} {isAr ? 'مكتمل' : 'done'}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

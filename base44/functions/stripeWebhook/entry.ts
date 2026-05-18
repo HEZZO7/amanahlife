@@ -66,6 +66,28 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Update renewal_date when invoice is paid (subscription renewed)
+    if (event.type === 'invoice.paid') {
+      const inv = event.data.object;
+      const userEmail = inv.customer_email;
+      if (userEmail && inv.subscription) {
+        const existing = await base44.asServiceRole.entities.Subscription.filter({ user_email: userEmail });
+        if (existing.length > 0) {
+          const sub = existing[0];
+          // Calculate next renewal from period_end
+          const periodEnd = inv.lines?.data?.[0]?.period?.end;
+          if (periodEnd) {
+            const renewalDate = new Date(periodEnd * 1000).toISOString().split('T')[0];
+            await base44.asServiceRole.entities.Subscription.update(sub.id, {
+              status: 'active',
+              renewal_date: renewalDate,
+            });
+            console.log(`🔄 Renewal date updated for ${userEmail}: ${renewalDate}`);
+          }
+        }
+      }
+    }
+
     if (event.type === 'invoice.payment_failed') {
       const inv = event.data.object;
       const userEmail = inv.customer_email;

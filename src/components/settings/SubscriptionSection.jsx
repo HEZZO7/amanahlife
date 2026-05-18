@@ -3,7 +3,7 @@ import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
-import { Crown, CheckCircle2, AlertCircle, RefreshCcw } from 'lucide-react';
+import { Crown, CheckCircle2, AlertCircle, RefreshCcw, CreditCard, XCircle, Loader2, ExternalLink } from 'lucide-react';
 import PaywallSheet from '@/components/monetization/PaywallSheet';
 
 const TIER_META = {
@@ -20,7 +20,9 @@ export default function SubscriptionSection() {
   const [subscription, setSubscription] = useState(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [portalLoading, setPortalLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
+  const [portalError, setPortalError] = useState('');
 
   useEffect(() => {
     // Check URL for success/cancelled
@@ -44,6 +46,28 @@ export default function SubscriptionSection() {
     };
     loadSub();
   }, []);
+
+  const openPortal = async () => {
+    if (window !== window.top) {
+      alert(isAr ? 'يرجى فتح التطبيق من المتصفح مباشرةً لإدارة اشتراكك.' : 'Please open the app directly in your browser to manage your subscription.');
+      return;
+    }
+    setPortalLoading(true);
+    setPortalError('');
+    try {
+      const res = await base44.functions.invoke('stripePortal', {
+        return_url: `${window.location.origin}/settings?tab=subscription`,
+      });
+      if (res.data?.url) {
+        window.location.href = res.data.url;
+      } else {
+        setPortalError(res.data?.error || (isAr ? 'حدث خطأ' : 'An error occurred'));
+      }
+    } catch (e) {
+      setPortalError(isAr ? 'تعذّر فتح بوابة الدفع' : 'Could not open billing portal');
+    }
+    setPortalLoading(false);
+  };
 
   const tierLabel = {
     free:    isAr ? 'رفيق الحياة (مجاني)' : 'Life Companion (Free)',
@@ -139,12 +163,50 @@ export default function SubscriptionSection() {
           {isAr ? 'ترقية إلى مميز' : 'Upgrade to Premium'}
         </Button>
       ) : (
-        <Button variant="outline" onClick={() => setShowPaywall(true)}
-          className="w-full h-10 rounded-xl text-sm"
-          style={{ borderColor: 'var(--mizan-border)', color: 'var(--mizan-text-secondary)' }}>
-          <RefreshCcw className="w-3.5 h-3.5 me-2" />
-          {isAr ? 'تغيير الباقة' : 'Change Plan'}
-        </Button>
+        <div className="space-y-2">
+          {/* Change Plan */}
+          <Button variant="outline" onClick={() => setShowPaywall(true)}
+            className="w-full h-10 rounded-xl text-sm"
+            style={{ borderColor: 'var(--mizan-border)', color: 'var(--mizan-text-secondary)' }}>
+            <RefreshCcw className="w-3.5 h-3.5 me-2" />
+            {isAr ? 'تغيير الباقة' : 'Change Plan'}
+          </Button>
+
+          {/* Manage via Stripe Portal */}
+          <div className="p-4 rounded-xl space-y-3" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
+            <p className="text-xs font-semibold" style={{ color: 'var(--mizan-text-secondary)' }}>
+              {isAr ? 'إدارة الاشتراك عبر بوابة الدفع الآمنة' : 'Manage via Secure Billing Portal'}
+            </p>
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" onClick={openPortal} disabled={portalLoading}
+                className="w-full h-10 rounded-xl text-sm justify-start gap-2"
+                style={{ borderColor: 'var(--mizan-border)', color: 'var(--mizan-text)' }}>
+                {portalLoading
+                  ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  : <CreditCard className="w-3.5 h-3.5" style={{ color: 'var(--mizan-emerald)' }} />}
+                {isAr ? 'تحديث بيانات الدفع' : 'Update Payment Method'}
+                <ExternalLink className="w-3 h-3 ms-auto opacity-40" />
+              </Button>
+              <Button variant="outline" onClick={openPortal} disabled={portalLoading}
+                className="w-full h-10 rounded-xl text-sm justify-start gap-2"
+                style={{ borderColor: 'var(--mizan-red)44', color: 'var(--mizan-red)' }}>
+                {portalLoading
+                  ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  : <XCircle className="w-3.5 h-3.5" />}
+                {isAr ? 'إلغاء الاشتراك' : 'Cancel Subscription'}
+                <ExternalLink className="w-3 h-3 ms-auto opacity-40" />
+              </Button>
+            </div>
+            {portalError && (
+              <p className="text-xs" style={{ color: 'var(--mizan-red)' }}>{portalError}</p>
+            )}
+            <p className="text-xs" style={{ color: 'var(--mizan-text-secondary)', opacity: 0.6 }}>
+              {isAr
+                ? 'ستُعاد إلى هذه الصفحة بعد إتمام العملية'
+                : 'You will be returned here after completing the action'}
+            </p>
+          </div>
+        </div>
       )}
 
       {showPaywall && <PaywallSheet onClose={() => setShowPaywall(false)} />}

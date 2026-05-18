@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import LifeReviewCard from '@/components/reviews/LifeReviewCard';
+import ManualReviewCard from '@/components/reviews/ManualReviewCard';
 import ManualReviewForm from '@/components/reviews/ManualReviewForm';
 import { Sparkles, RefreshCw, ChevronDown, PenLine } from 'lucide-react';
 import { format, subMonths } from 'date-fns';
@@ -20,13 +21,32 @@ export default function LifeReviews() {
   const [genType, setGenType] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
   const [showManualForm, setShowManualForm] = useState(false);
+  const [achievementsData, setAchievementsData] = useState(null);
 
   const isPremium = ['premium', 'family'].includes(settings?.subscription_tier);
 
   const loadReviews = async () => {
     setLoading(true);
-    const all = await base44.entities.LifeReview.list('-created_date', 50);
+    const [all, tasks, goals, prayerLogs] = await Promise.all([
+      base44.entities.LifeReview.list('-created_date', 50),
+      base44.entities.Task.list('-created_date', 200),
+      base44.entities.Goal.list('-created_date', 50),
+      base44.entities.PrayerLog.list('-date', 30),
+    ]);
     setReviews(all);
+    // Build achievements snapshot for the manual review form
+    const totalCompleted = tasks.filter(t => t.status === 'completed').length;
+    const completedGoals = goals.filter(g => g.status === 'completed').length;
+    const avgGoalProgress = goals.length > 0
+      ? Math.round(goals.reduce((s, g) => s + (g.progress || 0), 0) / goals.length) : 0;
+    let streak = 0;
+    for (let i = 0; i < 30; i++) {
+      const dateStr = format(new Date(Date.now() - i * 86400000), 'yyyy-MM-dd');
+      const log = prayerLogs.find(p => p.date === dateStr);
+      const count = log ? ['fajr','dhuhr','asr','maghrib','isha'].filter(pr => log[pr]).length : 0;
+      if (count >= 5) streak++; else break;
+    }
+    setAchievementsData({ totalCompleted, completedGoals, totalGoals: goals.length, avgGoalProgress, streak });
     setLoading(false);
   };
 
@@ -143,11 +163,9 @@ export default function LifeReviews() {
       ) : (
         <div className="space-y-5">
           {active.map(r => (
-            <LifeReviewCard
-              key={r.id}
-              review={r}
-              onArchive={() => handleArchive(r.id)}
-            />
+            r.raw_data?.manual
+              ? <ManualReviewCard key={r.id} review={r} language={lang} onArchive={() => handleArchive(r.id)} />
+              : <LifeReviewCard key={r.id} review={r} onArchive={() => handleArchive(r.id)} />
           ))}
         </div>
       )}
@@ -155,6 +173,7 @@ export default function LifeReviews() {
       {showManualForm && (
         <ManualReviewForm
           language={lang}
+          achievementsData={achievementsData}
           onClose={() => setShowManualForm(false)}
           onSaved={() => { setShowManualForm(false); loadReviews(); }}
         />

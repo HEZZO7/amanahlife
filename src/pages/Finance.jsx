@@ -4,7 +4,8 @@ import { useUserSettings } from '@/lib/UserSettingsContext';
 import { getSnapshot } from '@/lib/financeService';
 import { base44 } from '@/api/base44Client';
 import { format } from 'date-fns';
-import { Plus, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, Minus, History } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import FinanceOverview from '@/components/finance/FinanceOverview';
@@ -111,7 +112,20 @@ export default function Finance() {
       ) : (
         <>
           {tab === 'overview' && <FinanceOverview snapshot={snapshot} currSymbol={currSymbol} />}
-          {tab === 'transactions' && <TransactionsList snapshot={snapshot} onRefresh={load} month={month} />}
+          {tab === 'transactions' && (
+            <div className="space-y-4">
+              <div className="flex justify-end">
+                <Link to="/transactions">
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+                    style={{ border: '1px solid var(--mizan-border)', color: 'var(--mizan-text-secondary)', background: 'var(--mizan-surface)' }}>
+                    <History className="w-3.5 h-3.5" />
+                    {settings?.language === 'ar' ? 'عرض كل السجل' : 'Full History'}
+                  </button>
+                </Link>
+              </div>
+              <TransactionsList snapshot={snapshot} onRefresh={load} month={month} />
+            </div>
+          )}
           {tab === 'budget' && <BudgetTracker snapshot={snapshot} month={month} onRefresh={load} />}
           {tab === 'zakat' && <ZakatCalculator />}
         </>

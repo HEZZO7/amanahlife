@@ -29,6 +29,7 @@ import AchievementsDashboard from '@/pages/AchievementsDashboard';
 import Archive from '@/pages/Archive';
 import AmanaVault from '@/pages/AmanaVault';
 import SearchPage from '@/pages/Search';
+import TransactionHistory from '@/pages/TransactionHistory';
 
 // Layout
 import AppLayout from '@/components/navigation/AppLayout';
@@ -74,6 +75,7 @@ const AppRoutes = () => {
         <Route path="/archive" element={<Archive />} />
         <Route path="/vault" element={<AmanaVault />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/transactions" element={<TransactionHistory />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />

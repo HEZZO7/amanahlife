@@ -4,7 +4,7 @@ import ProfileSection from '@/components/settings/ProfileSection';
 import AppearanceSection from '@/components/settings/AppearanceSection';
 import RegionalSection from '@/components/settings/RegionalSection';
 import NotificationsSection from '@/components/settings/NotificationsSection';
-import SubscriptionPlansSection from '@/components/settings/SubscriptionPlansSection';
+import SubscriptionSection from '@/components/settings/SubscriptionSection';
 import DataExportSection from '@/components/settings/DataExportSection';
 import AccountSection from '@/components/settings/AccountSection';
 import ReviewScheduleSection from '@/components/settings/ReviewScheduleSection';
@@ -36,7 +36,7 @@ export default function Settings() {
         </div>
 
         <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-          <SubscriptionPlansSection />
+          <SubscriptionSection />
         </div>
 
         <div className="rounded-xl p-5" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>

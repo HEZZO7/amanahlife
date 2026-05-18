@@ -5,8 +5,6 @@ import { base44 } from '@/api/base44Client';
 import { Plus, AlertTriangle, Trash2, Pencil, Check, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import BudgetAlertsBanner from './BudgetAlertsBanner';
-
 // Predefined category suggestions
 const CATEGORY_SUGGESTIONS_AR = [
   'طعام وشراب', 'مواصلات', 'فواتير', 'ترفيه', 'ملابس',
@@ -85,11 +83,6 @@ export default function BudgetTracker({ snapshot, month, onRefresh }) {
 
   return (
     <div className="space-y-4">
-
-      {/* Inline alerts inside budget tab */}
-      {budgets.some(b => b.percent >= 80) && (
-        <BudgetAlertsBanner budgetStatus={budgets} />
-      )}
 
       {/* Summary row */}
       {budgets.length > 0 && (

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Users, CheckSquare, Target, Calendar, Plus, Check } from 'lucide-react';
 import WealthTab from '@/components/family/WealthTab';
 import SharedBudgetTab from '@/components/family/SharedBudgetTab';
+import SharedGoalsTab from '@/components/family/SharedGoalsTab';
 
 const TABS = [
   { key: 'members', en: 'Members', ar: 'الأعضاء' },
@@ -168,21 +169,7 @@ export default function Family() {
 
           {/* Family Goals */}
           {tab === 'goals' && (
-            <div className="space-y-3">
-              {goals.length === 0 ? <EmptyState label={language === 'ar' ? 'لا توجد أهداف عائلية' : 'No family goals yet'} /> : (
-                goals.map(g => (
-                  <div key={g.id} className="p-4 rounded-xl" style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)' }}>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium" style={{ color: 'var(--mizan-text)' }}>{g.title}</p>
-                      <span className="text-xs font-bold" style={{ color: 'var(--mizan-emerald)' }}>{g.progress || 0}%</span>
-                    </div>
-                    <div className="h-1.5 rounded-full" style={{ background: 'var(--mizan-border)' }}>
-                      <div className="h-1.5 rounded-full" style={{ width: `${g.progress || 0}%`, background: 'var(--mizan-emerald)' }} />
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
+            <SharedGoalsTab members={members} userMap={userMap} />
           )}
 
           {/* Family Calendar */}

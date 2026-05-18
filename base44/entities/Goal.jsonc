@@ -37,6 +37,33 @@
     },
     "family_id": {
       "type": "string"
+    },
+    "is_shared": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this goal is shared with family members"
+    },
+    "contributors": {
+      "type": "array",
+      "description": "List of family member contributions",
+      "items": {
+        "type": "object",
+        "properties": {
+          "user_email": {
+            "type": "string"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "contribution": {
+            "type": "number",
+            "description": "Contribution percentage 0-100"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "required": [

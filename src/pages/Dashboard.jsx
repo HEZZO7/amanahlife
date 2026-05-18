@@ -10,6 +10,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { DashboardCustomizer, DEFAULT_WIDGETS } from '@/components/dashboard/DashboardCustomizer';
 import WeeklyTaskCalendar from '@/components/dashboard/WeeklyTaskCalendar';
+import BudgetAlertsBanner from '@/components/finance/BudgetAlertsBanner';
 
 function getGreeting(t) {
   const h = new Date().getHours();
@@ -233,6 +234,11 @@ export default function Dashboard() {
         )}
       </div>
       ) : null}
+
+      {/* Budget Alerts */}
+      {show('finance') && data?.finance?.budgetStatus?.some(b => b.percent >= 80) && (
+        <BudgetAlertsBanner budgetStatus={data.finance.budgetStatus} />
+      )}
 
       {/* AI Insights */}
       {show('insights') && insights.length > 0 && (

@@ -12,6 +12,7 @@ import TransactionsList from '@/components/finance/TransactionsList';
 import BudgetTracker from '@/components/finance/BudgetTracker';
 import AddTransactionModal from '@/components/finance/AddTransactionModal';
 import ZakatCalculator from '@/components/finance/ZakatCalculator';
+import BudgetAlertsBanner from '@/components/finance/BudgetAlertsBanner';
 
 const TABS = ['overview', 'transactions', 'budget', 'zakat'];
 
@@ -80,6 +81,11 @@ export default function Finance() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Budget Alerts Banner */}
+      {!loading && snapshot?.budgetStatus?.length > 0 && (
+        <BudgetAlertsBanner budgetStatus={snapshot.budgetStatus} />
       )}
 
       {/* Tabs */}

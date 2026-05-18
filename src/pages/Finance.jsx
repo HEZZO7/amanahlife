@@ -111,7 +111,7 @@ export default function Finance() {
       ) : (
         <>
           {tab === 'overview' && <FinanceOverview snapshot={snapshot} currSymbol={currSymbol} />}
-          {tab === 'transactions' && <TransactionsList snapshot={snapshot} onRefresh={load} />}
+          {tab === 'transactions' && <TransactionsList snapshot={snapshot} onRefresh={load} month={month} />}
           {tab === 'budget' && <BudgetTracker snapshot={snapshot} month={month} onRefresh={load} />}
           {tab === 'zakat' && <ZakatCalculator />}
         </>

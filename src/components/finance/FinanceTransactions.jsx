@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, TrendingUp, TrendingDown, Trash2, X } from 'lucide-react';
+import { Plus, TrendingUp, TrendingDown, Trash2, X, Download } from 'lucide-react';
 import { format } from 'date-fns';
 
 const EXPENSE_CATS = ['food', 'transport', 'housing', 'health', 'education', 'clothing', 'entertainment', 'utilities', 'charity', 'other'];
@@ -63,7 +63,7 @@ function AddTxForm({ onSave, onCancel }) {
   );
 }
 
-export default function FinanceTransactions({ data, onReload }) {
+export default function FinanceTransactions({ data, onReload, month }) {
   const { language } = useI18n();
   const { settings } = useUserSettings();
   const [showAdd, setShowAdd] = useState(false);
@@ -72,6 +72,34 @@ export default function FinanceTransactions({ data, onReload }) {
 
   const txns = data?.recentTransactions || [];
   const filtered = filter === 'all' ? txns : txns.filter(tx => tx.type === filter);
+
+  const handleExportCSV = () => {
+    const isAr = language === 'ar';
+    const headers = isAr
+      ? ['التاريخ', 'النوع', 'الفئة', 'الوصف', 'المبلغ']
+      : ['Date', 'Type', 'Category', 'Description', 'Amount'];
+
+    const rows = txns.map(tx => [
+      tx.date || '',
+      tx.type === 'income' ? (isAr ? 'دخل' : 'Income') : (isAr ? 'مصروف' : 'Expense'),
+      tx.category || '',
+      tx.description || '',
+      tx.type === 'income' ? tx.amount : -tx.amount,
+    ]);
+
+    const csvContent = [headers, ...rows]
+      .map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const bom = '\uFEFF'; // BOM for Arabic support in Excel
+    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transactions-${month || 'export'}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const handleDelete = async (id) => {
     await base44.entities.Transaction.delete(id);
@@ -90,10 +118,19 @@ export default function FinanceTransactions({ data, onReload }) {
             </button>
           ))}
         </div>
-        <Button size="sm" onClick={() => setShowAdd(true)} className="h-9 rounded-lg text-white gap-1.5" style={{ background: 'var(--mizan-emerald)' }}>
-          <Plus className="w-3.5 h-3.5" />
-          {language === 'ar' ? 'إضافة' : 'Add'}
-        </Button>
+        <div className="flex items-center gap-2">
+          {txns.length > 0 && (
+            <Button size="sm" variant="outline" onClick={handleExportCSV} className="h-9 rounded-lg gap-1.5"
+              style={{ borderColor: 'var(--mizan-border)', color: 'var(--mizan-text-secondary)' }}>
+              <Download className="w-3.5 h-3.5" />
+              {language === 'ar' ? 'تصدير CSV' : 'Export CSV'}
+            </Button>
+          )}
+          <Button size="sm" onClick={() => setShowAdd(true)} className="h-9 rounded-lg text-white gap-1.5" style={{ background: 'var(--mizan-emerald)' }}>
+            <Plus className="w-3.5 h-3.5" />
+            {language === 'ar' ? 'إضافة' : 'Add'}
+          </Button>
+        </div>
       </div>
 
       {showAdd && <AddTxForm onSave={() => { setShowAdd(false); onReload(); }} onCancel={() => setShowAdd(false)} />}

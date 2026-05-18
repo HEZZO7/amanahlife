@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useI18n } from '@/lib/i18n';
 import { useUserSettings } from '@/lib/UserSettingsContext';
 import { base44 } from '@/api/base44Client';
-import { TrendingUp, TrendingDown, Trash2 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Trash2, Download } from 'lucide-react';
 import { format } from 'date-fns';
 
-export default function TransactionsList({ snapshot, onRefresh }) {
-  const { t } = useI18n();
+export default function TransactionsList({ snapshot, onRefresh, month }) {
+  const { t, language } = useI18n();
   const { settings } = useUserSettings();
   const currSymbol = settings?.currency_symbol || 'ر.س';
   const [filter, setFilter] = useState('all');
@@ -19,24 +19,64 @@ export default function TransactionsList({ snapshot, onRefresh }) {
     onRefresh();
   };
 
+  const handleExportCSV = () => {
+    const isAr = language === 'ar';
+    const headers = isAr
+      ? ['التاريخ', 'النوع', 'الفئة', 'الوصف', 'المبلغ']
+      : ['Date', 'Type', 'Category', 'Description', 'Amount'];
+
+    const rows = txns.map(tx => [
+      tx.date || '',
+      tx.type === 'income' ? (isAr ? 'دخل' : 'Income') : (isAr ? 'مصروف' : 'Expense'),
+      tx.category || '',
+      tx.description || '',
+      tx.type === 'income' ? tx.amount : -tx.amount,
+    ]);
+
+    const csvContent = [headers, ...rows]
+      .map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const bom = '\uFEFF';
+    const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transactions-${month || 'export'}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-4">
-      {/* Filter */}
-      <div className="flex gap-2">
-        {['all', 'income', 'expense'].map(f => (
+      {/* Filter + Export */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex gap-2">
+          {['all', 'income', 'expense'].map(f => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className="px-4 py-1.5 rounded-full text-xs font-medium transition-all"
+              style={{
+                background: filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-surface)',
+                color: filter === f ? 'white' : 'var(--mizan-text-secondary)',
+                border: `1px solid ${filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}`,
+              }}
+            >
+              {t(`finance.${f === 'all' ? 'all' : f}`)}
+            </button>
+          ))}
+        </div>
+        {txns.length > 0 && (
           <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className="px-4 py-1.5 rounded-full text-xs font-medium transition-all"
-            style={{
-              background: filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-surface)',
-              color: filter === f ? 'white' : 'var(--mizan-text-secondary)',
-              border: `1px solid ${filter === f ? 'var(--mizan-emerald)' : 'var(--mizan-border)'}`,
-            }}
+            onClick={handleExportCSV}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+            style={{ border: '1px solid var(--mizan-border)', color: 'var(--mizan-text-secondary)', background: 'var(--mizan-surface)' }}
           >
-            {t(`finance.${f === 'all' ? 'all' : f}`)}
+            <Download className="w-3.5 h-3.5" />
+            {language === 'ar' ? 'تصدير CSV' : 'Export CSV'}
           </button>
-        ))}
+        )}
       </div>
 
       {/* List */}

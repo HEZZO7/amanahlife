@@ -82,9 +82,9 @@ export default function PaywallSheet({ onClose }) {
   const currentPricing = billing === 'yearly' ? plan.yearly : plan.monthly;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bottom-sheet-overlay"
       style={{ background: 'rgba(0,0,0,0.75)' }}>
-      <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
+      <div className="w-full max-w-md rounded-2xl overflow-hidden shadow-2xl bottom-sheet-content"
         style={{ background: 'var(--mizan-elevated)', border: '1px solid var(--mizan-border)' }}>
 
         {/* Header */}

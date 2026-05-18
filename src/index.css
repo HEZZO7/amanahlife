@@ -184,6 +184,15 @@
   background-size: 60px 60px;
 }
 
+/* Bottom sheet global fix */
+.bottom-sheet-content {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+.bottom-sheet-overlay {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* Section header emerald border */
 .mizan-section-header {
   border-left: 2px solid var(--mizan-emerald);

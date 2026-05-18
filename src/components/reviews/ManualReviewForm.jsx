@@ -116,9 +116,9 @@ Respond in ${isAr ? 'Arabic' : 'English'} only. No emojis. Be warm and specific.
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bottom-sheet-overlay"
       style={{ background: 'rgba(0,0,0,0.5)' }}>
-      <div className="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col"
+      <div className="w-full max-w-lg rounded-2xl overflow-hidden flex flex-col bottom-sheet-content"
         style={{ background: 'var(--mizan-surface)', border: '1px solid var(--mizan-border)', maxHeight: '90vh' }}>
 
         {/* Header */}

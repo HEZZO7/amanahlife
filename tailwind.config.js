@@ -4,6 +4,9 @@ module.exports = {
     content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
   	extend: {
+  		padding: {
+  			'nav-safe': 'calc(80px + env(safe-area-inset-bottom, 0px))',
+  		},
   		fontFamily: {
   			inter: ['var(--font-inter)'],
   			arabic: ['var(--font-arabic)']

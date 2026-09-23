@@ -1,0 +1,39 @@
+{
+  "name": "Goal Completed \u2014 AI Celebration Insight",
+  "description": "When a goal is marked as completed, generates a celebratory AI insight card on the dashboard",
+  "trigger": {
+    "condition": "${ ((.trigger.changed_fields | index(\"status\") != null) and (.trigger.data.status == \"completed\")) }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "update"
+      ],
+      "entity_name": "Goal"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "goal_completed_ai_celebration_insight",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "aiInsightTriggers",
+            "args": {
+              "goal_completed": "{{data.title}}"
+            }
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "aiInsightTriggers"
+  }
+}
